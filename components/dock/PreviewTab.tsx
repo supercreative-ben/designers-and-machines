@@ -185,7 +185,13 @@ export default function PreviewTab({
           </div>
         ) : (
           <div className="flex flex-col gap-9">
-            {event.speakers.map((speaker) => {
+            {[...event.speakers]
+              .sort(
+                (a, b) =>
+                  (likes.counts[`${event.id}/${b.handle}`] ?? 1) -
+                  (likes.counts[`${event.id}/${a.handle}`] ?? 1)
+              )
+              .map((speaker) => {
               const projectImage = projectImageUrl(speaker);
               const likeKey = `${event.id}/${speaker.handle}`;
               return (

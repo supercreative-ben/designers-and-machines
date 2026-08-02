@@ -366,6 +366,11 @@ export default function Hero() {
     playing: false,
     codeVisible: false,
   });
+  // Session-editable copies of the Strudel sources (the code overlay writes
+  // here; edits hot-swap the running pattern).
+  const [trackCodes, setTrackCodes] = React.useState<string[]>(() =>
+    TRACKS.map((t) => t.code)
+  );
 
   // Music is on by default, but browsers only allow audio after a user
   // gesture — so the first track starts on the visitor's first click/tap.
@@ -376,15 +381,15 @@ export default function Hero() {
     return () => window.removeEventListener("pointerdown", start);
   }, []);
 
-  // Depends on playing/track only — toggling the code overlay must not
-  // re-evaluate (and restart) the running pattern.
+  // Evaluates on play/track change and on live code edits — but not when the
+  // overlay is merely toggled, which must not restart the running pattern.
   React.useEffect(() => {
     if (music.playing) {
-      void playTrack(TRACKS[music.trackIndex].code);
+      void playTrack(trackCodes[music.trackIndex]);
     } else {
       void stopMusic();
     }
-  }, [music.playing, music.trackIndex]);
+  }, [music.playing, music.trackIndex, trackCodes]);
 
   React.useEffect(() => {
     const update = () =>
@@ -457,8 +462,15 @@ export default function Hero() {
 
       {/* Live Strudel source for the current track, toggled from Play */}
       <CodeOverlay
-        code={TRACKS[music.trackIndex].code}
+        code={trackCodes[music.trackIndex]}
         visible={music.codeVisible}
+        onCodeChange={(code) =>
+          setTrackCodes((codes) =>
+            codes[music.trackIndex] === code
+              ? codes
+              : codes.map((c, i) => (i === music.trackIndex ? code : c))
+          )
+        }
       />
 
       {/* Interactive rope layer (above artwork, below text/nav) */}
