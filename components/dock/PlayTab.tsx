@@ -52,7 +52,7 @@ function Slider({
 }) {
   const pct = ((value - min) / (max - min)) * 100;
   return (
-    <div className="relative h-[52px] overflow-hidden rounded-[14px] bg-[#282523]">
+    <div className="relative h-[42px] overflow-hidden rounded-[14px] bg-[#282523]">
       <div
         className="absolute inset-y-0 left-0 bg-[#4E4A47]"
         style={{ width: `${pct}%` }}
@@ -128,43 +128,49 @@ export default function PlayTab({
         </div>
       </div>
 
-      <div className="flex flex-col gap-2.5">
-        <Slider
-          label="Gravity"
-          value={settings.gravity}
-          onChange={(gravity) => onSettingsChange({ ...settings, gravity })}
-          min={0}
-          max={20}
-        />
-        <Slider
-          label="Radius"
-          value={settings.radius}
-          onChange={(radius) => onSettingsChange({ ...settings, radius })}
-          min={10}
-          max={300}
-          step={5}
-        />
-        <Slider
-          label="Push Force"
-          value={settings.pushForce}
-          onChange={(pushForce) => onSettingsChange({ ...settings, pushForce })}
-          min={0}
-          max={50}
-        />
-        <Slider
-          label="Friction"
-          value={settings.friction}
-          onChange={(friction) => onSettingsChange({ ...settings, friction })}
-          min={0}
-          max={50}
-        />
-        <Slider
-          label="Slack"
-          value={settings.slack}
-          onChange={(slack) => onSettingsChange({ ...settings, slack })}
-          min={0}
-          max={100}
-        />
+      {/* -mt-1 trims the parent's 20px gap so the label sits 16px below Theme */}
+      <div className="-mt-1 flex flex-col gap-3">
+        <SectionLabel>Strings</SectionLabel>
+        <div className="flex flex-col gap-2.5">
+          <Slider
+            label="Gravity"
+            value={settings.gravity}
+            onChange={(gravity) => onSettingsChange({ ...settings, gravity })}
+            min={0}
+            max={20}
+          />
+          <Slider
+            label="Radius"
+            value={settings.radius}
+            onChange={(radius) => onSettingsChange({ ...settings, radius })}
+            min={10}
+            max={300}
+            step={5}
+          />
+          <Slider
+            label="Push Force"
+            value={settings.pushForce}
+            onChange={(pushForce) =>
+              onSettingsChange({ ...settings, pushForce })
+            }
+            min={0}
+            max={50}
+          />
+          <Slider
+            label="Friction"
+            value={settings.friction}
+            onChange={(friction) => onSettingsChange({ ...settings, friction })}
+            min={0}
+            max={50}
+          />
+          <Slider
+            label="Slack"
+            value={settings.slack}
+            onChange={(slack) => onSettingsChange({ ...settings, slack })}
+            min={0}
+            max={100}
+          />
+        </div>
       </div>
 
       <div className="flex flex-col gap-3">
