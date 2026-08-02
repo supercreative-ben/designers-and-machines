@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import GravityLines from "./GravityLines";
+import BottomDock from "./dock/BottomDock";
+import type { RopeSettings } from "./dock/PlayTab";
 
 const STAGE_WIDTH = 755;
 const STAGE_HEIGHT = 312;
 
 const ROPE_ANCHORS: [string, string] = ["rope-anchor-a", "rope-anchor-b"];
-
-const NAV_ITEMS = ["Preview", "Play", "Chat", "Join"] as const;
 
 function HumanFace(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -350,6 +350,10 @@ function Ampersand(props: React.SVGProps<SVGSVGElement>) {
 
 export default function Hero() {
   const [scale, setScale] = React.useState(1);
+  const [ropeSettings, setRopeSettings] = React.useState<RopeSettings>({
+    color: "#FF4433",
+    gravity: 5,
+  });
 
   React.useEffect(() => {
     const update = () =>
@@ -411,26 +415,16 @@ export default function Hero() {
           Monthly demo dinners in SF for designers who explore how we create
           with machines.
         </p>
-        <nav className="pointer-events-auto mt-6 flex items-center rounded-full border border-white/[0.06] bg-[#2A2725]/90 px-2 py-1.5">
-          {NAV_ITEMS.map((item) => (
-            <button
-              key={item}
-              type="button"
-              className="rounded-full px-5 py-1.5 text-[13px] text-[#A29E9A] transition-colors hover:text-[#EDEAE6]"
-            >
-              {item}
-            </button>
-          ))}
-        </nav>
+        <BottomDock settings={ropeSettings} onSettingsChange={setRopeSettings} />
       </div>
 
       {/* Interactive rope layer (above artwork, below text/nav) */}
       <GravityLines
         className="absolute inset-0 z-10 cursor-crosshair"
         anchorIds={ROPE_ANCHORS}
-        lineColor="#FF4433"
+        lineColor={ropeSettings.color}
         lineWidth={3}
-        gravity={5}
+        gravity={ropeSettings.gravity}
         friction={10}
         slack={10}
         holeSize={12}

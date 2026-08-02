@@ -25,6 +25,7 @@ type Rope = {
 };
 
 export interface GravityLinesProps {
+  /** A CSS color, or "rainbow" to give every rope its own hue. */
   lineColor?: string;
   lineWidth?: number;
   gravity?: number;
@@ -77,6 +78,24 @@ export default function GravityLines({
   const mouseRef = React.useRef({ x: -1000, y: -1000, vx: 0, vy: 0 });
   const ropesRef = React.useRef<Rope[]>([]);
   const draggingRef = React.useRef<Rope | null>(null);
+
+  // Settings live in a ref read every frame, so changing them (e.g. from the
+  // Play tab knobs) tunes the simulation live without resetting the ropes.
+  const settings = {
+    lineColor,
+    lineWidth,
+    gravity,
+    friction,
+    slack,
+    holeSize,
+    holeColor,
+    interactionRadius,
+    pushStrength,
+  };
+  const settingsRef = React.useRef(settings);
+  React.useEffect(() => {
+    settingsRef.current = settings;
+  });
 
   const handleMouseMove = React.useCallback((e: React.MouseEvent) => {
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -190,12 +209,13 @@ export default function GravityLines({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, width, height);
 
-      const g = gravity * 0.1;
-      const f = 1 - friction * 0.01;
+      const s = settingsRef.current;
+      const g = s.gravity * 0.1;
+      const f = 1 - s.friction * 0.01;
       const anchors = getAnchors();
       const mouse = mouseRef.current;
 
-      ropesRef.current.forEach((rope) => {
+      ropesRef.current.forEach((rope, ropeIndex) => {
         let startX: number, startY: number, endX: number, endY: number;
 
         if (rope.type === "default") {
@@ -220,16 +240,19 @@ export default function GravityLines({
         }
 
         // Holes at both attachment points
-        ctx.fillStyle = holeColor;
+        ctx.fillStyle = s.holeColor;
         ctx.beginPath();
-        ctx.arc(startX, startY, holeSize / 2, 0, Math.PI * 2);
+        ctx.arc(startX, startY, s.holeSize / 2, 0, Math.PI * 2);
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(endX, endY, holeSize / 2, 0, Math.PI * 2);
+        ctx.arc(endX, endY, s.holeSize / 2, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle =
+          s.lineColor === "rainbow"
+            ? `hsl(${(ropeIndex * 67) % 360} 90% 60%)`
+            : s.lineColor;
+        ctx.lineWidth = s.lineWidth;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
 
@@ -258,11 +281,11 @@ export default function GravityLines({
           const dx = p.x - mouse.x;
           const dy = p.y - mouse.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < interactionRadius) {
-            const force = (interactionRadius - dist) / interactionRadius;
+          if (dist < s.interactionRadius) {
+            const force = (s.interactionRadius - dist) / s.interactionRadius;
             const angle = Math.atan2(dy, dx);
-            p.x += Math.cos(angle) * force * pushStrength;
-            p.y += Math.sin(angle) * force * pushStrength;
+            p.x += Math.cos(angle) * force * s.pushStrength;
+            p.y += Math.sin(angle) * force * s.pushStrength;
           }
         }
 
@@ -275,7 +298,7 @@ export default function GravityLines({
             const dy = p2.y - p1.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             if (dist === 0) continue;
-            const diff = dist - segmentLength * (1 + slack * 0.01);
+            const diff = dist - segmentLength * (1 + s.slack * 0.01);
             const percent = diff / dist / 2;
             const offsetX = dx * percent;
             const offsetY = dy * percent;
@@ -331,18 +354,7 @@ export default function GravityLines({
       resizeObserver.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, [
-    lineColor,
-    lineWidth,
-    gravity,
-    friction,
-    slack,
-    holeSize,
-    holeColor,
-    interactionRadius,
-    pushStrength,
-    anchorIds,
-  ]);
+  }, [anchorIds]);
 
   return (
     <div

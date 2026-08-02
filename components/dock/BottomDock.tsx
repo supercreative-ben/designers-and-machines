@@ -1,0 +1,107 @@
+"use client";
+
+import * as React from "react";
+import PreviewTab from "./PreviewTab";
+import PlayTab, { type RopeSettings } from "./PlayTab";
+import ChatTab from "./ChatTab";
+import JoinTab from "./JoinTab";
+
+export type TabId = "preview" | "play" | "chat" | "join";
+
+const TABS: { id: TabId; label: string }[] = [
+  { id: "preview", label: "Preview" },
+  { id: "play", label: "Play" },
+  { id: "chat", label: "Chat" },
+  { id: "join", label: "Join" },
+];
+
+const CARD_WIDTH = 320;
+
+export default function BottomDock({
+  settings,
+  onSettingsChange,
+}: {
+  settings: RopeSettings;
+  onSettingsChange: (settings: RopeSettings) => void;
+}) {
+  const [activeTab, setActiveTab] = React.useState<TabId | null>(null);
+
+  React.useEffect(() => {
+    if (!activeTab) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveTab(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeTab]);
+
+  return (
+    <div className="pointer-events-auto relative mt-6">
+      {/* Expanding card. Same size for every tab; content scrolls vertically. */}
+      <div
+        className={`absolute -bottom-3 left-1/2 -translate-x-1/2 origin-bottom overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-300 ease-out ${
+          activeTab
+            ? "opacity-100 scale-100 translate-y-0"
+            : "pointer-events-none opacity-0 scale-95 translate-y-3"
+        }`}
+        style={{
+          width: CARD_WIDTH,
+          height: "min(470px, calc(100dvh - 96px))",
+        }}
+        role="dialog"
+        aria-modal="false"
+      >
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={() => setActiveTab(null)}
+          className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
+        >
+          <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
+            <path
+              d="M2 2L12 12M12 2L2 12"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+          </svg>
+        </button>
+        <div className="h-full">
+          {activeTab === "preview" && <PreviewTab onNavigate={setActiveTab} />}
+          {activeTab === "play" && (
+            <PlayTab settings={settings} onSettingsChange={onSettingsChange} />
+          )}
+          {activeTab === "chat" && <ChatTab />}
+          {activeTab === "join" && <JoinTab />}
+        </div>
+      </div>
+
+      {/* Tab pill — stays on top of the card when it's open */}
+      <nav
+        className={`relative z-10 flex items-center rounded-full border px-2 py-1.5 transition-colors ${
+          activeTab
+            ? "border-transparent bg-[#211E1C]"
+            : "border-white/[0.06] bg-[#2A2725]/90"
+        }`}
+      >
+        {TABS.map((tab) => {
+          const active = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setActiveTab(active ? null : tab.id)}
+              className={`rounded-full px-5 py-1.5 text-[13px] transition-colors ${
+                active
+                  ? "bg-white font-medium text-black"
+                  : "text-[#A29E9A] hover:text-[#EDEAE6]"
+              }`}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
+      </nav>
+    </div>
+  );
+}

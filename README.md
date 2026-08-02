@@ -18,6 +18,10 @@ Open [http://localhost:3000](http://localhost:3000).
 - `app/` — layout, page, and global styles
 - `components/Hero.tsx` — hero layout: silhouettes, ampersand, text, and nav
 - `components/GravityLines.tsx` — canvas rope physics (verlet integration), ported from a Framer code component
+- `components/dock/` — bottom pill nav and the expanding card with the Preview / Play / Chat / Join tabs
+- `data/events.ts` — monthly demo lineups shown in the Preview tab (sample data, replace with real lineups)
+- `data/tracks.ts` — Strudel patterns for the Play tab's music section
+- `data/site.ts` — site config (set `LUMA_EMBED_URL` to enable the Join tab embed)
 
 ## Deploy
 
