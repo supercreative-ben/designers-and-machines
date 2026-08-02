@@ -1,8 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import ClickSounds from "@/components/ClickSounds";
 import Presence from "@/components/Presence";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#211e1c",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://designers-and-machines.vercel.app"),

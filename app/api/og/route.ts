@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 /**
- * Resolves a page's Open Graph image and redirects to it, so the Preview tab
- * can show project cards from nothing but the project URL. Cached for a day.
+ * Resolves a page's Open Graph image and serves its bytes, so the Lineup tab
+ * can show project cards from nothing but the project URL. Proxying (rather
+ * than redirecting) lets next/image resize it into small WebPs and lets the
+ * CDN cache it. Cached for a day.
  *
  *   /api/og?url=https://efecto.app/
  */
@@ -64,12 +66,16 @@ export async function GET(req: NextRequest) {
     if (!image) {
       return new NextResponse("No Open Graph image found", { status: 404 });
     }
-    const redirect = NextResponse.redirect(image, 302);
-    redirect.headers.set(
-      "cache-control",
-      "public, s-maxage=86400, stale-while-revalidate=604800"
-    );
-    return redirect;
+    const img = await fetch(image, { next: { revalidate: 86400 } });
+    if (!img.ok) {
+      return new NextResponse("Upstream image error", { status: 502 });
+    }
+    return new NextResponse(await img.arrayBuffer(), {
+      headers: {
+        "content-type": img.headers.get("content-type") ?? "image/jpeg",
+        "cache-control": "public, s-maxage=86400, stale-while-revalidate=604800",
+      },
+    });
   } catch {
     return new NextResponse("Failed to fetch page", { status: 502 });
   }

@@ -362,7 +362,9 @@ export default function GravityLines({
     const resizeObserver = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
-        const dpr = window.devicePixelRatio || 1;
+        // Cap at 2x: 3x mobile screens more than double the pixels drawn per
+        // frame for no visible gain on a moving canvas.
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = Math.round(width * dpr);
         canvas.height = Math.round(height * dpr);
         sizeRef.current = { width, height, dpr };

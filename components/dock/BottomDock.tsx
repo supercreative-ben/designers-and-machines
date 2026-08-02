@@ -1,10 +1,15 @@
 "use client";
 
 import * as React from "react";
-import PreviewTab from "./PreviewTab";
-import PlayTab, { type MusicState, type RopeSettings } from "./PlayTab";
-import ChatTab from "./ChatTab";
-import JoinTab from "./JoinTab";
+import dynamic from "next/dynamic";
+import type { MusicState, RopeSettings } from "./PlayTab";
+
+// Tab contents are code-split out of the initial bundle; they're prefetched
+// after load so opening a tab is still instant.
+const PreviewTab = dynamic(() => import("./PreviewTab"));
+const PlayTab = dynamic(() => import("./PlayTab"));
+const ChatTab = dynamic(() => import("./ChatTab"));
+const JoinTab = dynamic(() => import("./JoinTab"));
 
 export type TabId = "preview" | "play" | "chat" | "join";
 
@@ -59,6 +64,18 @@ export default function BottomDock({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [activeTab]);
+
+  // Warm the code-split tab chunks once the page has settled, so the first
+  // tab open doesn't wait on a network fetch.
+  React.useEffect(() => {
+    const timeout = setTimeout(() => {
+      void import("./PreviewTab");
+      void import("./PlayTab");
+      void import("./ChatTab");
+      void import("./JoinTab");
+    }, 2500);
+    return () => clearTimeout(timeout);
+  }, []);
 
   // The closed card collapses to exactly the pill's rect so opening reads as
   // the pill morphing into the card.

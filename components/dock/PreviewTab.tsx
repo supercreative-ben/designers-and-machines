@@ -216,6 +216,7 @@ export default function PreviewTab({
                       alt={speaker.name}
                       width={34}
                       height={34}
+                      loading="lazy"
                       className="size-[34px] rounded-full bg-[#55524F] object-cover"
                       unoptimized
                     />
@@ -243,9 +244,12 @@ export default function PreviewTab({
                   >
                     {projectImage ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={projectImage}
                         alt={`${speaker.name}'s project`}
+                        width={560}
+                        height={344}
+                        loading="lazy"
                         className="h-[172px] w-full object-cover"
                       />
                     ) : (

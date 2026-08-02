@@ -19,6 +19,7 @@ export default function JoinTab() {
     <div className="h-full px-3 pb-16 pt-3">
       <iframe
         src={LUMA_EMBED_URL}
+        loading="lazy"
         className="h-full w-full rounded-2xl border-0"
         allow="fullscreen; payment"
         aria-label="Lu.ma event"

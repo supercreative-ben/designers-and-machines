@@ -33,6 +33,8 @@ function Avatar({ user, size }: { user: ChatUser; size: number }) {
       alt={user.name}
       width={size}
       height={size}
+      loading="lazy"
+      decoding="async"
       className="shrink-0 rounded-full bg-[#55524F] object-cover"
       style={{ width: size, height: size }}
     />

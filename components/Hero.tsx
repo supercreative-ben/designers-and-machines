@@ -1,12 +1,15 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import GravityLines from "./GravityLines";
-import CodeOverlay from "./CodeOverlay";
 import BottomDock from "./dock/BottomDock";
 import type { MusicState, RopeSettings } from "./dock/PlayTab";
 import { TRACKS } from "@/data/tracks";
 import { playTrack, stopMusic } from "@/lib/strudel";
+
+// Loaded only when the visitor toggles the code overlay from Play.
+const CodeOverlay = dynamic(() => import("./CodeOverlay"), { ssr: false });
 
 const STAGE_WIDTH = 872;
 const STAGE_HEIGHT = 315;
@@ -462,18 +465,21 @@ export default function Hero() {
         />
       </div>
 
-      {/* Live Strudel source for the current track, toggled from Play */}
-      <CodeOverlay
-        code={trackCodes[music.trackIndex]}
-        visible={music.codeVisible}
-        onCodeChange={(code) =>
-          setTrackCodes((codes) =>
-            codes[music.trackIndex] === code
-              ? codes
-              : codes.map((c, i) => (i === music.trackIndex ? code : c))
-          )
-        }
-      />
+      {/* Live Strudel source for the current track, toggled from Play.
+          Conditionally mounted so the chunk only loads on first toggle. */}
+      {music.codeVisible && (
+        <CodeOverlay
+          code={trackCodes[music.trackIndex]}
+          visible={music.codeVisible}
+          onCodeChange={(code) =>
+            setTrackCodes((codes) =>
+              codes[music.trackIndex] === code
+                ? codes
+                : codes.map((c, i) => (i === music.trackIndex ? code : c))
+            )
+          }
+        />
+      )}
 
       {/* Interactive rope layer (above artwork, below text/nav) */}
       <GravityLines
