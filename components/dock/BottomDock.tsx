@@ -107,6 +107,7 @@ export default function BottomDock({
             <button
               key={tab.id}
               type="button"
+              data-sound="tab"
               onClick={() => setActiveTab(active ? null : tab.id)}
               className={`rounded-full px-5 py-1.5 text-[13px] font-medium transition-colors ${
                 active
