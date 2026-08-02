@@ -5,8 +5,8 @@ import GravityLines from "./GravityLines";
 import BottomDock from "./dock/BottomDock";
 import type { RopeSettings } from "./dock/PlayTab";
 
-const STAGE_WIDTH = 755;
-const STAGE_HEIGHT = 312;
+const STAGE_WIDTH = 872;
+const STAGE_HEIGHT = 315;
 
 const ROPE_ANCHORS: [string, string] = ["rope-anchor-a", "rope-anchor-b"];
 
@@ -377,31 +377,32 @@ export default function Hero() {
         >
           <Ampersand
             className="pointer-events-none absolute left-1/2 -translate-x-1/2"
-            style={{ top: 2, width: 287, height: 310 }}
+            style={{ top: 0, width: 290, height: 315 }}
           />
           {/*
             The face SVGs are Figma exports whose viewBoxes include room for
-            drop shadows. They're rendered at 1.4x their native units and
-            offset so the face itself starts at the stage origin.
+            drop shadows. They're scaled so each face is exactly 315px tall
+            (matching the ampersand) and offset so the face itself starts at
+            the stage's top edge.
           */}
           <HumanFace
             className="pointer-events-none absolute"
-            style={{ left: -136, top: -13, width: 446.6, height: 504 }}
+            style={{ left: -163.5, top: -15.6, width: 537.1, height: 606.2 }}
           />
           <RobotFace
             className="pointer-events-none absolute"
-            style={{ left: 492, top: -14, width: 400.4, height: 504 }}
+            style={{ left: 555, top: -16.9, width: 482, height: 606.7 }}
           />
           {/* Rope attachment points (measured by GravityLines) */}
           <div
             id={ROPE_ANCHORS[0]}
             className="absolute size-px"
-            style={{ left: 118, top: 85 }}
+            style={{ left: 142, top: 102 }}
           />
           <div
             id={ROPE_ANCHORS[1]}
             className="absolute size-px"
-            style={{ left: 638, top: 92 }}
+            style={{ left: 731, top: 111 }}
           />
         </div>
       </div>
