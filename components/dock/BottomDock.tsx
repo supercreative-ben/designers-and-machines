@@ -22,11 +22,15 @@ export default function BottomDock({
   onSettingsChange,
   music,
   onMusicChange,
+  pet,
+  onPetChange,
 }: {
   settings: RopeSettings;
   onSettingsChange: (settings: RopeSettings) => void;
   music: MusicState;
   onMusicChange: (music: MusicState) => void;
+  pet: boolean;
+  onPetChange: (pet: boolean) => void;
 }) {
   const [activeTab, setActiveTab] = React.useState<TabId | null>(null);
 
@@ -78,6 +82,8 @@ export default function BottomDock({
               onSettingsChange={onSettingsChange}
               music={music}
               onMusicChange={onMusicChange}
+              pet={pet}
+              onPetChange={onPetChange}
             />
           )}
           {activeTab === "chat" && <ChatTab />}

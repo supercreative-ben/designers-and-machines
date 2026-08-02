@@ -82,11 +82,15 @@ export default function PlayTab({
   onSettingsChange,
   music,
   onMusicChange,
+  pet,
+  onPetChange,
 }: {
   settings: RopeSettings;
   onSettingsChange: (settings: RopeSettings) => void;
   music: MusicState;
   onMusicChange: (music: MusicState) => void;
+  pet: boolean;
+  onPetChange: (pet: boolean) => void;
 }) {
   const { trackIndex, playing } = music;
   const track = TRACKS[trackIndex];
@@ -130,6 +134,25 @@ export default function PlayTab({
           value={settings.gravity}
           onChange={(gravity) => onSettingsChange({ ...settings, gravity })}
         />
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <SectionLabel>Pet</SectionLabel>
+        <button
+          type="button"
+          onClick={() => onPetChange(!pet)}
+          className={`w-full rounded-xl px-4 py-3 text-[13px] font-medium transition-colors ${
+            pet
+              ? "bg-white text-black"
+              : "bg-[#1D1B1A] text-[#A5A19D] hover:text-white"
+          }`}
+        >
+          {pet ? "Send the pet home" : "Spawn a pet"}
+        </button>
+        <p className="text-[12px] leading-relaxed text-[#8B8885]">
+          A tiny pixel man and his dog wander the page. Click to call him
+          over, or steer with the arrow keys.
+        </p>
       </div>
 
       <div className="flex flex-col gap-3">
