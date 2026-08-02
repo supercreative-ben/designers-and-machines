@@ -3,7 +3,9 @@
 import * as React from "react";
 import GravityLines from "./GravityLines";
 import BottomDock from "./dock/BottomDock";
-import type { RopeSettings } from "./dock/PlayTab";
+import type { MusicState, RopeSettings } from "./dock/PlayTab";
+import { TRACKS } from "@/data/tracks";
+import { playTrack, stopMusic } from "@/lib/strudel";
 
 const STAGE_WIDTH = 872;
 const STAGE_HEIGHT = 315;
@@ -354,6 +356,27 @@ export default function Hero() {
     color: "#FF4433",
     gravity: 5,
   });
+  const [music, setMusic] = React.useState<MusicState>({
+    trackIndex: 0,
+    playing: false,
+  });
+
+  // Music is on by default, but browsers only allow audio after a user
+  // gesture — so the first track starts on the visitor's first click/tap.
+  React.useEffect(() => {
+    const start = () =>
+      setMusic((m) => (m.playing ? m : { ...m, playing: true }));
+    window.addEventListener("pointerdown", start, { once: true });
+    return () => window.removeEventListener("pointerdown", start);
+  }, []);
+
+  React.useEffect(() => {
+    if (music.playing) {
+      void playTrack(TRACKS[music.trackIndex].code);
+    } else {
+      void stopMusic();
+    }
+  }, [music]);
 
   React.useEffect(() => {
     const update = () =>
@@ -416,7 +439,12 @@ export default function Hero() {
           Monthly demo dinners in SF for designers who explore how we create
           with machines.
         </p>
-        <BottomDock settings={ropeSettings} onSettingsChange={setRopeSettings} />
+        <BottomDock
+          settings={ropeSettings}
+          onSettingsChange={setRopeSettings}
+          music={music}
+          onMusicChange={setMusic}
+        />
       </div>
 
       {/* Interactive rope layer (above artwork, below text/nav) */}

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import PreviewTab from "./PreviewTab";
-import PlayTab, { type RopeSettings } from "./PlayTab";
+import PlayTab, { type MusicState, type RopeSettings } from "./PlayTab";
 import ChatTab from "./ChatTab";
 import JoinTab from "./JoinTab";
 
@@ -20,9 +20,13 @@ const CARD_WIDTH = 320;
 export default function BottomDock({
   settings,
   onSettingsChange,
+  music,
+  onMusicChange,
 }: {
   settings: RopeSettings;
   onSettingsChange: (settings: RopeSettings) => void;
+  music: MusicState;
+  onMusicChange: (music: MusicState) => void;
 }) {
   const [activeTab, setActiveTab] = React.useState<TabId | null>(null);
 
@@ -69,7 +73,12 @@ export default function BottomDock({
         <div className="h-full">
           {activeTab === "preview" && <PreviewTab onNavigate={setActiveTab} />}
           {activeTab === "play" && (
-            <PlayTab settings={settings} onSettingsChange={onSettingsChange} />
+            <PlayTab
+              settings={settings}
+              onSettingsChange={onSettingsChange}
+              music={music}
+              onMusicChange={onMusicChange}
+            />
           )}
           {activeTab === "chat" && <ChatTab />}
           {activeTab === "join" && <JoinTab />}

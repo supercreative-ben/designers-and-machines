@@ -2,11 +2,15 @@
 
 import * as React from "react";
 import { TRACKS } from "@/data/tracks";
-import { playTrack, stopMusic } from "@/lib/strudel";
 
 export type RopeSettings = {
   color: string;
   gravity: number;
+};
+
+export type MusicState = {
+  trackIndex: number;
+  playing: boolean;
 };
 
 const SWATCHES: { id: string; value: string; css: string }[] = [
@@ -76,29 +80,23 @@ function Chevron({ direction }: { direction: "left" | "right" }) {
 export default function PlayTab({
   settings,
   onSettingsChange,
+  music,
+  onMusicChange,
 }: {
   settings: RopeSettings;
   onSettingsChange: (settings: RopeSettings) => void;
+  music: MusicState;
+  onMusicChange: (music: MusicState) => void;
 }) {
-  const [trackIndex, setTrackIndex] = React.useState(0);
-  const [playing, setPlaying] = React.useState(false);
+  const { trackIndex, playing } = music;
   const track = TRACKS[trackIndex];
 
-  const switchTrack = async (nextIndex: number) => {
-    setTrackIndex(nextIndex);
-    if (playing) {
-      await playTrack(TRACKS[nextIndex].code);
-    }
+  const switchTrack = (nextIndex: number) => {
+    onMusicChange({ ...music, trackIndex: nextIndex });
   };
 
-  const togglePlay = async () => {
-    if (playing) {
-      setPlaying(false);
-      await stopMusic();
-    } else {
-      setPlaying(true);
-      await playTrack(track.code);
-    }
+  const togglePlay = () => {
+    onMusicChange({ ...music, playing: !playing });
   };
 
   return (
@@ -158,7 +156,7 @@ export default function PlayTab({
             </button>
           </div>
         </div>
-        <pre className="overflow-x-hidden whitespace-pre-wrap break-words rounded-xl bg-[#1D1B1A] p-4 font-mono text-[13px] leading-relaxed text-[#8B8885]">
+        <pre className="max-h-44 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words rounded-xl bg-[#1D1B1A] p-4 font-mono text-[13px] leading-relaxed text-[#8B8885]">
           {track.code}
         </pre>
         <button
