@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { EVENTS, avatarUrl } from "@/data/events";
+import { EVENTS, avatarUrl, projectImageUrl } from "@/data/events";
 import type { TabId } from "./BottomDock";
 
 function Chevron({ direction }: { direction: "left" | "right" }) {
@@ -78,7 +78,9 @@ export default function PreviewTab({
           </div>
         ) : (
           <div className="flex flex-col gap-6">
-            {event.speakers.map((speaker) => (
+            {event.speakers.map((speaker) => {
+              const projectImage = projectImageUrl(speaker);
+              return (
               <div key={speaker.handle} className="flex flex-col gap-3">
                 <a
                   href={`https://x.com/${speaker.handle}`}
@@ -103,25 +105,28 @@ export default function PreviewTab({
                     </div>
                   </div>
                 </a>
-                <a
-                  href={speaker.projectUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block overflow-hidden rounded-xl bg-[#55524F] transition-opacity hover:opacity-90"
-                >
-                  {speaker.projectImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={speaker.projectImage}
-                      alt=""
-                      className="aspect-[2/1] w-full object-cover"
-                    />
-                  ) : (
-                    <div className="aspect-[2/1] w-full" />
-                  )}
-                </a>
+                {speaker.projectUrl && (
+                  <a
+                    href={speaker.projectUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block overflow-hidden rounded-xl bg-[#55524F] transition-opacity hover:opacity-90"
+                  >
+                    {projectImage ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={projectImage}
+                        alt={`${speaker.name}'s project`}
+                        className="aspect-[2/1] w-full object-cover"
+                      />
+                    ) : (
+                      <div className="aspect-[2/1] w-full" />
+                    )}
+                  </a>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
