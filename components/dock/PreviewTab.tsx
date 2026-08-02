@@ -24,9 +24,11 @@ export default function PreviewTab({
 }: {
   onNavigate: (tab: TabId) => void;
 }) {
-  // Start on the latest announced (non-upcoming) month
+  // Start on the latest month that has an announced lineup
   const lastAnnounced = React.useMemo(() => {
-    const idx = EVENTS.findLastIndex((e) => !e.upcoming);
+    const idx = EVENTS.findLastIndex(
+      (e) => !e.upcoming && e.speakers.length > 0
+    );
     return idx === -1 ? 0 : idx;
   }, []);
   const [index, setIndex] = React.useState(lastAnnounced);
@@ -71,7 +73,7 @@ export default function PreviewTab({
             <button
               type="button"
               onClick={() => onNavigate("join")}
-              className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-transform hover:scale-[1.03]"
+              className="text-sm font-medium text-[#A5A19D] underline underline-offset-4 transition-colors hover:text-white"
             >
               Demo at the next dinner
             </button>

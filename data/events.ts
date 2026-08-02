@@ -68,8 +68,26 @@ export const EVENTS: DemoEvent[] = [
   },
   {
     id: "2026-04",
-    title: "April 2026",
+    title: "April 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
+    speakers: [],
+  },
+  {
+    id: "2026-05",
+    title: "May 2026 lineup",
+    venue: "Hosted at Rox in San Francisco",
+    speakers: [],
+  },
+  {
+    id: "2026-06",
+    title: "June 2026 lineup",
+    venue: "Hosted at PostHog in San Francisco",
+    speakers: [],
+  },
+  {
+    id: "2026-08",
+    title: "August 2026",
+    venue: "San Francisco",
     upcoming: true,
     speakers: [],
   },
