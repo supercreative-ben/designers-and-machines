@@ -142,8 +142,12 @@ export default function PreviewTab({
 
   return (
     <div className="flex h-full flex-col overflow-y-auto">
-      <header className="relative shrink-0 px-5 pb-4 pt-5 pr-28">
-        <h2 className="text-[15px] font-medium text-white">{event.title}</h2>
+      <header className="relative shrink-0 px-5 pb-4 pt-5">
+        {/* Only the title needs to clear the nav buttons; the venue line
+            below them can use the full card width. */}
+        <h2 className="pr-[90px] text-[15px] font-medium text-white">
+          {event.title}
+        </h2>
         <p className="mt-1 text-sm text-[#A5A19D]">{event.venue}</p>
         {/* Pinned right so the buttons never shift with the title's width */}
         <div className="absolute right-[54px] top-[18px] flex items-center">
@@ -193,13 +197,9 @@ export default function PreviewTab({
           </div>
         ) : (
           <div className="flex flex-col gap-9">
-            {[...event.speakers]
-              .sort(
-                (a, b) =>
-                  (likes.counts[`${event.id}/${b.handle}`] ?? 1) -
-                  (likes.counts[`${event.id}/${a.handle}`] ?? 1)
-              )
-              .map((speaker) => {
+            {/* Data order, not like order — resorting after likes load made
+                the cards jump around. */}
+            {event.speakers.map((speaker) => {
               const projectImage = projectImageUrl(speaker);
               const likeKey = `${event.id}/${speaker.handle}`;
               return (
