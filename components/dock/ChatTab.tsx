@@ -252,12 +252,12 @@ export default function ChatTab() {
       </div>
       {/* 10px insets make the composer the same width as the tab pill below */}
       <div className="shrink-0 px-[10px] pb-[58px]">
-        <div className="pb-1.5 pl-2.5 text-[11px] text-[#8B8885]">
+        <div className="pb-1.5 text-center text-[11px] text-[#8B8885]">
           {online === null
             ? "\u00A0"
             : online === 1
-              ? "1 person connected worldwide"
-              : `${online} people connected worldwide`}
+              ? "1 designer connected"
+              : `${online} designers connected`}
         </div>
         <div className="flex items-end gap-2 rounded-[22px] border border-white/[0.1] py-1.5 pl-4 pr-1.5">
           <textarea
