@@ -356,6 +356,10 @@ export default function Hero() {
   const [ropeSettings, setRopeSettings] = React.useState<RopeSettings>({
     color: "#FF4433",
     gravity: 5,
+    radius: 100,
+    pushForce: 15,
+    friction: 10,
+    slack: 10,
   });
   const [music, setMusic] = React.useState<MusicState>({
     trackIndex: 0,
@@ -458,12 +462,12 @@ export default function Hero() {
         lineColor={ropeSettings.color}
         lineWidth={3}
         gravity={ropeSettings.gravity}
-        friction={10}
-        slack={10}
+        friction={ropeSettings.friction}
+        slack={ropeSettings.slack}
         holeSize={12}
         holeColor="#111111"
-        interactionRadius={100}
-        pushStrength={15}
+        interactionRadius={ropeSettings.radius}
+        pushStrength={ropeSettings.pushForce}
       />
 
       {/* Pixel pet overlay (above artwork/ropes, below text and dock) */}

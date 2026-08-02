@@ -6,6 +6,10 @@ import { TRACKS } from "@/data/tracks";
 export type RopeSettings = {
   color: string;
   gravity: number;
+  radius: number;
+  pushForce: number;
+  friction: number;
+  slack: number;
 };
 
 export type MusicState = {
@@ -30,35 +34,44 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   return <div className="text-[15px] font-medium text-white">{children}</div>;
 }
 
-function GravitySlider({
+function Slider({
+  label,
   value,
   onChange,
+  min,
+  max,
+  step = 1,
 }: {
+  label: string;
   value: number;
   onChange: (v: number) => void;
+  min: number;
+  max: number;
+  step?: number;
 }) {
-  const min = 0;
-  const max = 20;
   const pct = ((value - min) / (max - min)) * 100;
   return (
-    <div className="relative h-11 overflow-hidden rounded-xl bg-[#1D1B1A]">
-      <div
-        className="absolute inset-y-0 left-0 rounded-xl bg-white"
-        style={{ width: `${pct}%` }}
-      />
-      <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-medium text-white mix-blend-difference">
-        {value}
+    <div className="flex flex-col gap-3">
+      <SectionLabel>{label}</SectionLabel>
+      <div className="relative h-11 overflow-hidden rounded-xl bg-[#1D1B1A]">
+        <div
+          className="absolute inset-y-0 left-0 rounded-xl bg-white"
+          style={{ width: `${pct}%` }}
+        />
+        <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-medium text-white mix-blend-difference">
+          {value}
+        </div>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          aria-label={label}
+          className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
+        />
       </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={1}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        aria-label="Gravity"
-        className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
-      />
     </div>
   );
 }
@@ -128,13 +141,42 @@ export default function PlayTab({
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <SectionLabel>Gravity</SectionLabel>
-        <GravitySlider
-          value={settings.gravity}
-          onChange={(gravity) => onSettingsChange({ ...settings, gravity })}
-        />
-      </div>
+      <Slider
+        label="Gravity"
+        value={settings.gravity}
+        onChange={(gravity) => onSettingsChange({ ...settings, gravity })}
+        min={0}
+        max={20}
+      />
+      <Slider
+        label="Radius"
+        value={settings.radius}
+        onChange={(radius) => onSettingsChange({ ...settings, radius })}
+        min={10}
+        max={300}
+        step={5}
+      />
+      <Slider
+        label="Push Force"
+        value={settings.pushForce}
+        onChange={(pushForce) => onSettingsChange({ ...settings, pushForce })}
+        min={0}
+        max={50}
+      />
+      <Slider
+        label="Friction"
+        value={settings.friction}
+        onChange={(friction) => onSettingsChange({ ...settings, friction })}
+        min={0}
+        max={50}
+      />
+      <Slider
+        label="Slack"
+        value={settings.slack}
+        onChange={(slack) => onSettingsChange({ ...settings, slack })}
+        min={0}
+        max={100}
+      />
 
       <div className="flex flex-col gap-3">
         <SectionLabel>Pet</SectionLabel>
