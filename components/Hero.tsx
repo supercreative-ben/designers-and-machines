@@ -4,7 +4,6 @@ import * as React from "react";
 import GravityLines from "./GravityLines";
 import BottomDock from "./dock/BottomDock";
 import type { MusicState, RopeSettings } from "./dock/PlayTab";
-import { Walker } from "./pet/Walker";
 import { TRACKS } from "@/data/tracks";
 import { playTrack, stopMusic } from "@/lib/strudel";
 
@@ -365,7 +364,6 @@ export default function Hero() {
     trackIndex: 0,
     playing: false,
   });
-  const [pet, setPet] = React.useState(false);
 
   // Music is on by default, but browsers only allow audio after a user
   // gesture — so the first track starts on the visitor's first click/tap.
@@ -450,8 +448,6 @@ export default function Hero() {
           onSettingsChange={setRopeSettings}
           music={music}
           onMusicChange={setMusic}
-          pet={pet}
-          onPetChange={setPet}
         />
       </div>
 
@@ -469,9 +465,6 @@ export default function Hero() {
         interactionRadius={ropeSettings.radius}
         pushStrength={ropeSettings.pushForce}
       />
-
-      {/* Pixel pet overlay (above artwork/ropes, below text and dock) */}
-      {pet && <Walker />}
     </section>
   );
 }
