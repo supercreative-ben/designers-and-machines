@@ -29,6 +29,18 @@ export default function BottomDock({
   onMusicChange: (music: MusicState) => void;
 }) {
   const [activeTab, setActiveTab] = React.useState<TabId | null>(null);
+  // Keep the last tab's content mounted while the card animates out, so it
+  // doesn't fade away empty.
+  const [renderedTab, setRenderedTab] = React.useState<TabId | null>(null);
+
+  React.useEffect(() => {
+    if (activeTab) {
+      setRenderedTab(activeTab);
+      return;
+    }
+    const timeout = setTimeout(() => setRenderedTab(null), 500);
+    return () => clearTimeout(timeout);
+  }, [activeTab]);
 
   // Returning from the X OAuth flow lands on /#chat — open the Chat tab.
   React.useEffect(() => {
@@ -51,10 +63,10 @@ export default function BottomDock({
     <div className="pointer-events-auto relative mt-6">
       {/* Expanding card. Same size for every tab; content scrolls vertically. */}
       <div
-        className={`absolute -bottom-3 left-1/2 -translate-x-1/2 origin-bottom overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-300 ease-out ${
+        className={`absolute -bottom-3 left-1/2 -translate-x-1/2 origin-bottom overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
           activeTab
             ? "opacity-100 scale-100 translate-y-0"
-            : "pointer-events-none opacity-0 scale-95 translate-y-3"
+            : "pointer-events-none opacity-0 scale-[0.97] translate-y-4"
         }`}
         style={{
           width: CARD_WIDTH,
@@ -79,8 +91,10 @@ export default function BottomDock({
           </svg>
         </button>
         <div className="h-full">
-          {activeTab === "preview" && <PreviewTab onNavigate={setActiveTab} />}
-          {activeTab === "play" && (
+          {renderedTab === "preview" && (
+            <PreviewTab onNavigate={setActiveTab} />
+          )}
+          {renderedTab === "play" && (
             <PlayTab
               settings={settings}
               onSettingsChange={onSettingsChange}
@@ -88,8 +102,8 @@ export default function BottomDock({
               onMusicChange={onMusicChange}
             />
           )}
-          {activeTab === "chat" && <ChatTab />}
-          {activeTab === "join" && <JoinTab />}
+          {renderedTab === "chat" && <ChatTab />}
+          {renderedTab === "join" && <JoinTab />}
         </div>
       </div>
 
