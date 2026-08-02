@@ -70,7 +70,25 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-04",
     title: "April 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
-    speakers: [],
+    speakers: [
+      {
+        name: "Daniel Farrell",
+        handle: "D_R_Farrell",
+        projectUrl: "https://onlook.com/",
+        // onlook.com has no Open Graph image, so we ship a screenshot.
+        projectImage: "/projects/onlook.png",
+      },
+      {
+        name: "Harshit Beniwal",
+        handle: "harshitbeni",
+        projectUrl: "https://harshitbeni.com/apps",
+      },
+      {
+        name: "Alex Burdin",
+        handle: "buburdin",
+        projectUrl: "https://handofyou.app/",
+      },
+    ],
   },
   {
     id: "2026-05",
@@ -82,7 +100,35 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-06",
     title: "June 2026 lineup",
     venue: "Hosted at PostHog in San Francisco",
-    speakers: [],
+    speakers: [
+      {
+        name: "Sam Gorman",
+        handle: "samueljgorman",
+        projectUrl: "https://rivet.design/",
+      },
+      {
+        name: "Flora Guo",
+        handle: "floguo",
+        projectUrl: "https://www.floguo.com/",
+      },
+      {
+        // Protodash is Stripe-internal; this links its public write-up.
+        name: "Owen Williams",
+        handle: "ow",
+        projectUrl:
+          "https://www.chatprd.ai/how-i-ai/stripe-owen-williams-on-buildling-internal-prototyping-studio",
+      },
+      {
+        name: "Pierre-Louis Soulié",
+        handle: "plsoulie",
+        projectUrl: "https://nanocorp.so",
+      },
+      {
+        name: "Evan Pun",
+        handle: "evanpun",
+        projectUrl: "https://ghostpanel.design/",
+      },
+    ],
   },
   {
     id: "2026-08",
