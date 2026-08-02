@@ -49,7 +49,7 @@ export const EVENTS: DemoEvent[] = [
       },
       {
         name: "Sam Gorman",
-        handle: "samueljgorman",
+        handle: "gormankind",
         projectUrl: "https://rivet.design/",
       },
       {
@@ -141,7 +141,7 @@ export const EVENTS: DemoEvent[] = [
     speakers: [
       {
         name: "Sam Gorman",
-        handle: "samueljgorman",
+        handle: "gormankind",
         projectUrl: "https://rivet.design/",
       },
       {
@@ -177,8 +177,9 @@ export const EVENTS: DemoEvent[] = [
   },
 ];
 
+/** X profile picture, proxied and cached by our own /api/avatar route. */
 export function avatarUrl(handle: string) {
-  return `https://unavatar.io/x/${handle}`;
+  return `/api/avatar?handle=${encodeURIComponent(handle)}`;
 }
 
 /** Project card image: manual override, or the page's own OG image. */

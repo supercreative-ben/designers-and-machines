@@ -34,36 +34,38 @@ export default function PreviewTab({
   const [index, setIndex] = React.useState(lastAnnounced);
   const event = EVENTS[index];
 
+  const navButtonClass =
+    "p-1 text-white transition-colors enabled:hover:text-white disabled:text-[#8B8885] disabled:opacity-40";
+
   return (
-    <div className="flex h-full flex-col">
-      <header className="shrink-0 px-5 pb-4 pt-5 pr-14">
-        <div className="flex items-center gap-2">
-          <h2 className="text-[15px] font-medium text-white">{event.title}</h2>
-          <div className="flex items-center">
-            <button
-              type="button"
-              aria-label="Previous month"
-              disabled={index === 0}
-              onClick={() => setIndex((i) => i - 1)}
-              className="p-1 text-[#8B8885] transition-colors enabled:hover:text-white disabled:opacity-40"
-            >
-              <Chevron direction="left" />
-            </button>
-            <button
-              type="button"
-              aria-label="Next month"
-              disabled={index === EVENTS.length - 1}
-              onClick={() => setIndex((i) => i + 1)}
-              className="p-1 text-white transition-colors enabled:hover:text-white disabled:opacity-40 disabled:text-[#8B8885]"
-            >
-              <Chevron direction="right" />
-            </button>
-          </div>
-        </div>
+    <div className="flex h-full flex-col overflow-y-auto">
+      <header className="relative shrink-0 px-5 pb-4 pt-5 pr-28">
+        <h2 className="text-[15px] font-medium text-white">{event.title}</h2>
         <p className="mt-1 text-sm text-[#A5A19D]">{event.venue}</p>
+        {/* Pinned right so the buttons never shift with the title's width */}
+        <div className="absolute right-[54px] top-[18px] flex items-center">
+          <button
+            type="button"
+            aria-label="Previous month"
+            disabled={index === 0}
+            onClick={() => setIndex((i) => i - 1)}
+            className={navButtonClass}
+          >
+            <Chevron direction="left" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next month"
+            disabled={index === EVENTS.length - 1}
+            onClick={() => setIndex((i) => i + 1)}
+            className={navButtonClass}
+          >
+            <Chevron direction="right" />
+          </button>
+        </div>
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-20">
+      <div className="flex-1 px-5 pb-20">
         {event.upcoming ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
             <p className="max-w-[220px] text-sm leading-relaxed text-[#A5A19D]">
