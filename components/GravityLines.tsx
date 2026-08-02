@@ -60,6 +60,28 @@ function createPoints(
   return points;
 }
 
+// Soft pluck when a string point is pinned: lower note when starting a
+// string, higher confirm when dropping its end. Web Audio, no files.
+let audioCtx: AudioContext | null = null;
+function pinSound(kind: "start" | "end") {
+  try {
+    audioCtx ??= new AudioContext();
+    if (audioCtx.state === "suspended") void audioCtx.resume();
+    const t = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const from = kind === "start" ? 520 : 780;
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(from, t);
+    osc.frequency.exponentialRampToValueAtTime(from * 0.72, t + 0.09);
+    gain.gain.setValueAtTime(0.07, t);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.14);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t);
+    osc.stop(t + 0.15);
+  } catch {}
+}
+
 export default function GravityLines({
   lineColor = "#FF4433",
   lineWidth = 3,
@@ -121,11 +143,13 @@ export default function GravityLines({
     const y = e.clientY - rect.top;
 
     if (draggingRef.current) {
+      pinSound("end");
       draggingRef.current.isDragging = false;
       draggingRef.current.endX = x;
       draggingRef.current.endY = y;
       draggingRef.current = null;
     } else {
+      pinSound("start");
       const rope: Rope = {
         points: createPoints(x, y, x, y),
         type: "user",

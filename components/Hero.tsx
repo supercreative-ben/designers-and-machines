@@ -356,10 +356,10 @@ export default function Hero() {
   const [ropeSettings, setRopeSettings] = React.useState<RopeSettings>({
     color: "#FF4433",
     gravity: 5,
-    radius: 100,
+    radius: 50,
     pushForce: 15,
     friction: 10,
-    slack: 10,
+    slack: 25,
   });
   const [music, setMusic] = React.useState<MusicState>({
     trackIndex: 0,

@@ -136,20 +136,21 @@ export default function PreviewTab({
       .catch(() => {});
   };
 
+  // Same round button style as the card's close button
   const navButtonClass =
-    "p-1 text-white transition-colors enabled:hover:text-white disabled:text-[#8B8885] disabled:opacity-40";
+    "flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors enabled:hover:text-white disabled:opacity-40";
 
   return (
     <div className="flex h-full flex-col overflow-y-auto">
       <header className="relative shrink-0 px-5 pb-4 pt-5">
         {/* Only the title needs to clear the nav buttons; the venue line
             below them can use the full card width. */}
-        <h2 className="pr-[90px] text-[15px] font-medium text-white">
+        <h2 className="pr-[120px] text-[15px] font-medium text-white">
           {event.title}
         </h2>
         <p className="mt-1 text-sm text-[#A5A19D]">{event.venue}</p>
         {/* Pinned right so the buttons never shift with the title's width */}
-        <div className="absolute right-[54px] top-[18px] flex items-center">
+        <div className="absolute right-[54px] top-3.5 flex items-center gap-1.5">
           <button
             type="button"
             aria-label="Previous month"

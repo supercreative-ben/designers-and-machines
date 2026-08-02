@@ -25,11 +25,6 @@ const SWATCHES: { id: string; value: string; css: string }[] = [
   { id: "red", value: "#FF4433", css: "#FF4433" },
   { id: "orange", value: "#FF8324", css: "#FF8324" },
   { id: "yellow", value: "#FFD84D", css: "#FFD84D" },
-  {
-    id: "rainbow",
-    value: "rainbow",
-    css: "conic-gradient(from 220deg, #FF4433, #FFD84D, #2E2EFF, #FF48C4, #FF4433)",
-  },
 ];
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -90,8 +85,7 @@ export default function PlayTab({
   music: MusicState;
   onMusicChange: (music: MusicState) => void;
 }) {
-  const { trackIndex, playing } = music;
-  const track = TRACKS[trackIndex];
+  const { playing } = music;
 
   const togglePlay = () => {
     onMusicChange({ ...music, playing: !playing });
@@ -131,53 +125,9 @@ export default function PlayTab({
       </div>
 
       <div className="flex flex-col gap-3">
-        <SectionLabel>Strings</SectionLabel>
-        <div className="flex flex-col gap-2.5">
-          <Slider
-            label="Gravity"
-            value={settings.gravity}
-            onChange={(gravity) => onSettingsChange({ ...settings, gravity })}
-            min={0}
-            max={20}
-          />
-          <Slider
-            label="Radius"
-            value={settings.radius}
-            onChange={(radius) => onSettingsChange({ ...settings, radius })}
-            min={10}
-            max={300}
-            step={5}
-          />
-          <Slider
-            label="Push Force"
-            value={settings.pushForce}
-            onChange={(pushForce) =>
-              onSettingsChange({ ...settings, pushForce })
-            }
-            min={0}
-            max={50}
-          />
-          <Slider
-            label="Friction"
-            value={settings.friction}
-            onChange={(friction) => onSettingsChange({ ...settings, friction })}
-            min={0}
-            max={50}
-          />
-          <Slider
-            label="Slack"
-            value={settings.slack}
-            onChange={(slack) => onSettingsChange({ ...settings, slack })}
-            min={0}
-            max={100}
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
+          <SectionLabel>Music</SectionLabel>
           <div className="flex items-center gap-2.5">
-            <SectionLabel>Music</SectionLabel>
             <button
               type="button"
               onClick={togglePlay}
@@ -243,7 +193,50 @@ export default function PlayTab({
               )}
             </button>
           </div>
-          <span className="text-sm text-[#A5A19D]">{track.name}</span>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <SectionLabel>Strings</SectionLabel>
+        <div className="flex flex-col gap-2.5">
+          <Slider
+            label="Gravity"
+            value={settings.gravity}
+            onChange={(gravity) => onSettingsChange({ ...settings, gravity })}
+            min={0}
+            max={20}
+          />
+          <Slider
+            label="Radius"
+            value={settings.radius}
+            onChange={(radius) => onSettingsChange({ ...settings, radius })}
+            min={10}
+            max={300}
+            step={5}
+          />
+          <Slider
+            label="Push Force"
+            value={settings.pushForce}
+            onChange={(pushForce) =>
+              onSettingsChange({ ...settings, pushForce })
+            }
+            min={0}
+            max={50}
+          />
+          <Slider
+            label="Friction"
+            value={settings.friction}
+            onChange={(friction) => onSettingsChange({ ...settings, friction })}
+            min={0}
+            max={50}
+          />
+          <Slider
+            label="Slack"
+            value={settings.slack}
+            onChange={(slack) => onSettingsChange({ ...settings, slack })}
+            min={0}
+            max={100}
+          />
         </div>
       </div>
     </div>
