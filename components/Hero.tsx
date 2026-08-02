@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import GravityLines from "./GravityLines";
+import CodeOverlay from "./CodeOverlay";
 import BottomDock from "./dock/BottomDock";
 import type { MusicState, RopeSettings } from "./dock/PlayTab";
 import { TRACKS } from "@/data/tracks";
@@ -363,6 +364,7 @@ export default function Hero() {
   const [music, setMusic] = React.useState<MusicState>({
     trackIndex: 0,
     playing: false,
+    codeVisible: false,
   });
 
   // Music is on by default, but browsers only allow audio after a user
@@ -374,13 +376,15 @@ export default function Hero() {
     return () => window.removeEventListener("pointerdown", start);
   }, []);
 
+  // Depends on playing/track only — toggling the code overlay must not
+  // re-evaluate (and restart) the running pattern.
   React.useEffect(() => {
     if (music.playing) {
       void playTrack(TRACKS[music.trackIndex].code);
     } else {
       void stopMusic();
     }
-  }, [music]);
+  }, [music.playing, music.trackIndex]);
 
   React.useEffect(() => {
     const update = () =>
@@ -450,6 +454,12 @@ export default function Hero() {
           onMusicChange={setMusic}
         />
       </div>
+
+      {/* Live Strudel source for the current track, toggled from Play */}
+      <CodeOverlay
+        code={TRACKS[music.trackIndex].code}
+        visible={music.codeVisible}
+      />
 
       {/* Interactive rope layer (above artwork, below text/nav) */}
       <GravityLines

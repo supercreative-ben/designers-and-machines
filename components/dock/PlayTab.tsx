@@ -15,6 +15,8 @@ export type RopeSettings = {
 export type MusicState = {
   trackIndex: number;
   playing: boolean;
+  /** Shows the track's Strudel source as a live overlay on the main page. */
+  codeVisible: boolean;
 };
 
 const SWATCHES: { id: string; value: string; css: string }[] = [
@@ -197,12 +199,52 @@ export default function PlayTab({
                 </svg>
               )}
             </button>
+            <button
+              type="button"
+              onClick={() =>
+                onMusicChange({ ...music, codeVisible: !music.codeVisible })
+              }
+              aria-label={
+                music.codeVisible ? "Hide Strudel code" : "Show Strudel code"
+              }
+              aria-pressed={music.codeVisible}
+              className={`flex size-7 items-center justify-center rounded-full transition-colors ${
+                music.codeVisible
+                  ? "bg-white text-black"
+                  : "bg-white/[0.08] text-[#A5A19D] hover:text-white"
+              }`}
+            >
+              {music.codeVisible ? (
+                <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
+                  <path
+                    d="M1.2 7S3.3 3.2 7 3.2 12.8 7 12.8 7 10.7 10.8 7 10.8 1.2 7 1.2 7Z"
+                    stroke="currentColor"
+                    strokeWidth="1.3"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="7" cy="7" r="1.7" fill="currentColor" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
+                  <path
+                    d="M1.2 7S3.3 3.2 7 3.2 12.8 7 12.8 7 10.7 10.8 7 10.8 1.2 7 1.2 7Z"
+                    stroke="currentColor"
+                    strokeWidth="1.3"
+                    strokeLinejoin="round"
+                  />
+                  <circle cx="7" cy="7" r="1.7" fill="currentColor" />
+                  <path
+                    d="M2.2 12 11.8 2"
+                    stroke="currentColor"
+                    strokeWidth="1.3"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              )}
+            </button>
           </div>
           <span className="text-sm text-[#A5A19D]">{track.name}</span>
         </div>
-        <pre className="max-h-44 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words rounded-xl bg-[#1D1B1A] p-4 font-mono text-[13px] leading-relaxed text-[#8B8885]">
-          {track.code}
-        </pre>
       </div>
     </div>
   );
