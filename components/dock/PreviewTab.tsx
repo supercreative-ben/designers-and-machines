@@ -64,10 +64,12 @@ export default function PreviewTab({
 }: {
   onNavigate: (tab: TabId) => void;
 }) {
-  // Start on the upcoming month — the next dinner is what visitors care
-  // about first; history is a swipe away.
+  // Start on the latest past event with an announced lineup — the upcoming
+  // month is one click forward.
   const defaultIndex = React.useMemo(() => {
-    const idx = EVENTS.findIndex((e) => e.upcoming);
+    const idx = EVENTS.findLastIndex(
+      (e) => !e.upcoming && e.speakers.length > 0
+    );
     return idx === -1 ? EVENTS.length - 1 : idx;
   }, []);
   const [index, setIndex] = React.useState(defaultIndex);

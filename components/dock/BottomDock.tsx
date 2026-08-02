@@ -77,6 +77,21 @@ export default function BottomDock({
     return () => clearTimeout(timeout);
   }, []);
 
+  // On phones the card fills 92% of the viewport; elsewhere it's fixed.
+  const [cardWidth, setCardWidth] = React.useState(CARD_WIDTH);
+
+  React.useEffect(() => {
+    const update = () =>
+      setCardWidth(
+        window.innerWidth < 640
+          ? Math.round(window.innerWidth * 0.92)
+          : CARD_WIDTH
+      );
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
   // The closed card collapses to exactly the pill's rect so opening reads as
   // the pill morphing into the card.
   const navRef = React.useRef<HTMLElement>(null);
@@ -106,7 +121,7 @@ export default function BottomDock({
         style={
           activeTab
             ? {
-                width: CARD_WIDTH,
+                width: cardWidth,
                 height: CARD_HEIGHT,
                 borderRadius: 28,
                 bottom: -12,
@@ -124,7 +139,7 @@ export default function BottomDock({
         {/* Full-size inner frame so content never reflows while morphing */}
         <div
           className="absolute left-1/2 top-0 -translate-x-1/2"
-          style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
+          style={{ width: cardWidth, height: CARD_HEIGHT }}
         >
           <button
             type="button"

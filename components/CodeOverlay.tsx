@@ -101,7 +101,7 @@ export default function CodeOverlay({
   const parts = buildParts(draft, ranges);
 
   return (
-    <div className="fixed inset-y-0 left-0 z-[15] w-[min(30vw,420px)] overflow-y-auto py-5 pl-6 pr-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <div className="fixed inset-y-0 left-0 z-[15] w-full overflow-y-auto py-5 pl-6 pr-2 [scrollbar-width:none] sm:w-[min(30vw,420px)] [&::-webkit-scrollbar]:hidden">
       <div className="relative">
         <pre aria-hidden className={`${CODE_CLASS} text-[#6E6B67]`}>
           {parts.map((part, i) =>
