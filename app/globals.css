@@ -17,6 +17,49 @@ body {
     sans-serif;
 }
 
+/* Shimmering loading text (ThinkingIndicator) */
+@keyframes shimmer {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.shimmer-text {
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    #8b8885 0%,
+    #8b8885 35%,
+    #ffffff 50%,
+    #8b8885 65%,
+    #8b8885 100%
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes word-in {
+  from {
+    transform: translateY(80%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.word-in {
+  animation:
+    word-in 0.24s cubic-bezier(0.4, 0, 0.2, 1),
+    shimmer 1.5s ease-in-out infinite;
+}
+
 /* Subtle film grain over the whole page */
 body::after {
   content: "";

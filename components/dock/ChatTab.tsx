@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import ThinkingIndicator from "@/components/ThinkingIndicator";
 
 type ChatUser = {
   id: string;
@@ -174,7 +175,7 @@ export default function ChatTab() {
   if (!status.loaded) {
     return (
       <div className="flex h-full items-center justify-center pb-16">
-        <p className="text-sm text-[#8B8885]">Loading…</p>
+        <ThinkingIndicator words={["Connecting", "Loading", "Syncing"]} />
       </div>
     );
   }
@@ -204,13 +205,6 @@ export default function ChatTab() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="shrink-0 px-5 pt-4 text-[11px] text-[#8B8885]">
-        {online === null
-          ? "\u00A0"
-          : online === 1
-            ? "1 person connected worldwide"
-            : `${online} people connected worldwide`}
-      </div>
       <div
         ref={scrollRef}
         onScroll={(e) => {
@@ -218,10 +212,10 @@ export default function ChatTab() {
           stickToBottomRef.current =
             el.scrollHeight - el.scrollTop - el.clientHeight < 40;
         }}
-        className="min-h-0 flex-1 overflow-y-auto px-5 pb-4 pt-3"
+        className="min-h-0 flex-1 overflow-y-auto px-5 pb-4 pt-5"
       >
         {messages === null ? (
-          <p className="text-sm text-[#8B8885]">Loading messages…</p>
+          <ThinkingIndicator words={["Loading", "Fetching", "Listening"]} />
         ) : messages.length === 0 ? (
           <p className="text-sm text-[#8B8885]">
             No messages yet — say hi to the group.
@@ -257,7 +251,14 @@ export default function ChatTab() {
         )}
       </div>
       {/* 10px insets make the composer the same width as the tab pill below */}
-      <div className="shrink-0 px-[10px] pb-[72px]">
+      <div className="shrink-0 px-[10px] pb-[58px]">
+        <div className="pb-1.5 pl-2.5 text-[11px] text-[#8B8885]">
+          {online === null
+            ? "\u00A0"
+            : online === 1
+              ? "1 person connected worldwide"
+              : `${online} people connected worldwide`}
+        </div>
         <div className="flex items-end gap-2 rounded-[22px] border border-white/[0.1] py-1.5 pl-4 pr-1.5">
           <textarea
             ref={inputRef}
