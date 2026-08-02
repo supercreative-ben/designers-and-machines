@@ -123,11 +123,6 @@ export const EVENTS: DemoEvent[] = [
         projectImage: "/projects/logo-agent.png",
       },
       {
-        name: "Chloe Park",
-        handle: "chloepark",
-        projectUrl: "https://www.magicpath.ai/",
-      },
-      {
         name: "Roy Jad",
         handle: "jad2222222",
         projectUrl: "https://humanoid-index.com/",
