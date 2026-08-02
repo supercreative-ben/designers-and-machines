@@ -9,7 +9,7 @@ import JoinTab from "./JoinTab";
 export type TabId = "preview" | "play" | "chat" | "join";
 
 const TABS: { id: TabId; label: string }[] = [
-  { id: "preview", label: "Preview" },
+  { id: "preview", label: "Lineup" },
   { id: "play", label: "Play" },
   { id: "chat", label: "Chat" },
   { id: "join", label: "Join" },

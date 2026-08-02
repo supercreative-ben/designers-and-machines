@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
 /**
- * Serves X profile pictures through our own origin so visitors never hit
- * unavatar.io directly (it rate-limits aggressively). Successful images are
- * cached for a week on the CDN; if both sources fail we return a lettered
- * placeholder with a short cache so the next visit can retry.
+ * Serves X profile pictures through our own origin. fxtwitter is tried first:
+ * it returns the real avatar URL and 404s on unknown handles, while
+ * unavatar.io rate-limits aggressively (429s) and can serve X's generic
+ * placeholder image with a 200. Successful images are cached for a week on
+ * the CDN; if both sources fail we return a lettered placeholder with a
+ * short cache so the next visit can retry.
  *
  *   /api/avatar?handle=pablostanley
  */
@@ -17,18 +19,6 @@ const WEEK = 604800;
 async function fetchAvatar(
   handle: string
 ): Promise<{ body: ArrayBuffer; type: string } | null> {
-  try {
-    const res = await fetch(`https://unavatar.io/x/${handle}?fallback=false`, {
-      next: { revalidate: WEEK },
-    });
-    if (res.ok) {
-      return {
-        body: await res.arrayBuffer(),
-        type: res.headers.get("content-type") ?? "image/png",
-      };
-    }
-  } catch {}
-
   try {
     const res = await fetch(`https://api.fxtwitter.com/${handle}`, {
       next: { revalidate: WEEK },
@@ -48,6 +38,18 @@ async function fetchAvatar(
           };
         }
       }
+    }
+  } catch {}
+
+  try {
+    const res = await fetch(`https://unavatar.io/x/${handle}?fallback=false`, {
+      next: { revalidate: WEEK },
+    });
+    if (res.ok) {
+      return {
+        body: await res.arrayBuffer(),
+        type: res.headers.get("content-type") ?? "image/png",
+      };
     }
   } catch {}
 

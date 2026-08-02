@@ -5,9 +5,13 @@ import Presence from "@/components/Presence";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://designers-and-machines.vercel.app"),
   title: "Designers and Machines",
   description:
     "Monthly demo dinners in SF for designers who explore how we create with machines.",
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

@@ -17,6 +17,9 @@ export type DemoEvent = {
   venue: string;
   /** Upcoming events show a call-to-action instead of the lineup. */
   upcoming?: boolean;
+  /** Shown on the event's Lineup card — format, the why of the event, etc.
+   * One paragraph per array entry. */
+  description?: string[];
   speakers: Speaker[];
 };
 
@@ -168,6 +171,7 @@ export const EVENTS: DemoEvent[] = [
     title: "August 2026",
     venue: "San Francisco",
     upcoming: true,
+    description: ["5 demos, 5 min each. No slides."],
     speakers: [],
   },
 ];

@@ -171,6 +171,14 @@ export default function PreviewTab({
       <div className="flex-1 px-5 pb-20">
         {event.upcoming ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+            {event.description?.map((paragraph) => (
+              <p
+                key={paragraph}
+                className="max-w-[240px] text-sm leading-relaxed text-[#EDEAE6]"
+              >
+                {paragraph}
+              </p>
+            ))}
             <p className="max-w-[220px] text-sm leading-relaxed text-[#A5A19D]">
               The lineup isn&apos;t announced yet. Want to show what
               you&apos;ve been making with machines?

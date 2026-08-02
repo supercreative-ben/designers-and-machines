@@ -4,11 +4,8 @@ import { getSessionUser } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
+// Reading the chat is public; only posting requires a session.
 export async function GET() {
-  const user = await getSessionUser();
-  if (!user) {
-    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-  }
   const messages = await listMessages();
   return NextResponse.json({ messages });
 }

@@ -452,6 +452,9 @@ export default function Hero() {
           Monthly demo dinners in SF for designers who explore how we create
           with machines.
         </p>
+        <p className="mt-1.5 text-center text-sm leading-snug text-[#EDEAE6]">
+          Next dinner on Aug 20th (7 spots left)
+        </p>
         <BottomDock
           settings={ropeSettings}
           onSettingsChange={setRopeSettings}

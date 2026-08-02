@@ -81,9 +81,8 @@ export default function ChatTab() {
     };
   }, []);
 
-  // Poll for messages while signed in.
+  // Poll for messages — the chat is readable by everyone.
   React.useEffect(() => {
-    if (!status.user) return;
     let cancelled = false;
     const load = async () => {
       try {
@@ -101,7 +100,7 @@ export default function ChatTab() {
       cancelled = true;
       clearInterval(interval);
     };
-  }, [status.user]);
+  }, []);
 
   // Keep the view pinned to the newest message unless the user scrolled up.
   React.useEffect(() => {
@@ -112,7 +111,6 @@ export default function ChatTab() {
 
   // Live count of people currently on the site.
   React.useEffect(() => {
-    if (!status.user) return;
     let cancelled = false;
     const load = async () => {
       try {
@@ -128,7 +126,7 @@ export default function ChatTab() {
       cancelled = true;
       clearInterval(interval);
     };
-  }, [status.user]);
+  }, []);
 
   // Grow the input with its content, up to a max height, then scroll inside.
   React.useEffect(() => {
@@ -176,29 +174,6 @@ export default function ChatTab() {
     return (
       <div className="flex h-full items-center justify-center pb-16">
         <ThinkingIndicator words={["Connecting", "Loading", "Syncing"]} />
-      </div>
-    );
-  }
-
-  if (!status.user) {
-    return (
-      <div className="flex h-full flex-col items-center justify-center gap-3 px-5 pb-16">
-        <a
-          href={status.configured ? "/api/auth/x/login" : undefined}
-          aria-disabled={!status.configured}
-          className={`rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-transform ${
-            status.configured
-              ? "hover:scale-[1.03]"
-              : "cursor-not-allowed opacity-60"
-          }`}
-        >
-          Connect 𝕏 to chat
-        </a>
-        <p className="max-w-[230px] text-center text-sm leading-relaxed text-[#A5A19D]">
-          {status.configured
-            ? "To verify your identity"
-            : "X sign-in isn't configured yet — check back soon."}
-        </p>
       </div>
     );
   }
@@ -259,6 +234,20 @@ export default function ChatTab() {
               ? "1 designer connected"
               : `${online} designers connected`}
         </div>
+        {!status.user ? (
+          // Anyone can read the chat; connecting X is only needed to post.
+          <a
+            href={status.configured ? "/api/auth/x/login" : undefined}
+            aria-disabled={!status.configured}
+            className={`flex h-[47px] items-center justify-center rounded-[22px] bg-white text-sm font-medium text-black transition-transform ${
+              status.configured
+                ? "hover:scale-[1.02]"
+                : "cursor-not-allowed opacity-60"
+            }`}
+          >
+            Connect 𝕏 to chat
+          </a>
+        ) : (
         <div className="flex items-end gap-2 rounded-[22px] border border-white/[0.1] py-1.5 pl-4 pr-1.5">
           <textarea
             ref={inputRef}
@@ -293,6 +282,7 @@ export default function ChatTab() {
             </svg>
           </button>
         </div>
+        )}
       </div>
     </div>
   );
