@@ -108,9 +108,9 @@ export default function BottomDock({
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(active ? null : tab.id)}
-              className={`rounded-full px-5 py-1.5 text-[13px] transition-colors ${
+              className={`rounded-full px-5 py-1.5 text-[13px] font-medium transition-colors ${
                 active
-                  ? "bg-white font-medium text-black"
+                  ? "bg-white text-black"
                   : "text-[#A29E9A] hover:text-[#EDEAE6]"
               }`}
             >
