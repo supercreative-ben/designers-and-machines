@@ -173,12 +173,13 @@ function RobotFace(props: React.SVGProps<SVGSVGElement>) {
         />
       </g>
       <defs>
+        {/* Same five shadows as the human face, mirrored to fall right. */}
         <filter
           id="filter0_ddddd_678_600"
-          x="0"
-          y="0"
-          width="335.029"
-          height="373.899"
+          x="-20"
+          y="-20"
+          width="400"
+          height="400"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
@@ -190,10 +191,10 @@ function RobotFace(props: React.SVGProps<SVGSVGElement>) {
             result="hardAlpha"
           />
           <feOffset dx="4" dy="5" />
-          <feGaussianBlur stdDeviation="7.5" />
+          <feGaussianBlur stdDeviation="7" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.32 0"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
           />
           <feBlend
             mode="normal"
@@ -206,11 +207,11 @@ function RobotFace(props: React.SVGProps<SVGSVGElement>) {
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
             result="hardAlpha"
           />
-          <feOffset dx="16" dy="21" />
-          <feGaussianBlur stdDeviation="13" />
+          <feOffset dx="14" dy="20" />
+          <feGaussianBlur stdDeviation="12.5" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.22 0"
           />
           <feBlend
             mode="normal"
@@ -223,11 +224,11 @@ function RobotFace(props: React.SVGProps<SVGSVGElement>) {
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
             result="hardAlpha"
           />
-          <feOffset dx="36" dy="47" />
-          <feGaussianBlur stdDeviation="18" />
+          <feOffset dx="32" dy="45" />
+          <feGaussianBlur stdDeviation="16.5" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.09 0"
           />
           <feBlend
             mode="normal"
@@ -240,11 +241,11 @@ function RobotFace(props: React.SVGProps<SVGSVGElement>) {
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
             result="hardAlpha"
           />
-          <feOffset dx="64" dy="84" />
-          <feGaussianBlur stdDeviation="21" />
+          <feOffset dx="57" dy="80" />
+          <feGaussianBlur stdDeviation="19.5" />
           <feColorMatrix
             type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0"
           />
           <feBlend
             mode="normal"
@@ -257,8 +258,8 @@ function RobotFace(props: React.SVGProps<SVGSVGElement>) {
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
             result="hardAlpha"
           />
-          <feOffset dx="101" dy="131" />
-          <feGaussianBlur stdDeviation="23" />
+          <feOffset dx="90" dy="125" />
+          <feGaussianBlur stdDeviation="21.5" />
           <feColorMatrix
             type="matrix"
             values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.01 0"
