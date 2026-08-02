@@ -169,23 +169,35 @@ export default function PlayTab({
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <SectionLabel>Music</SectionLabel>
+          <div className="flex items-center gap-2.5">
+            <SectionLabel>Music</SectionLabel>
+            <button
+              type="button"
+              onClick={togglePlay}
+              aria-label={playing ? "Pause music" : "Play music"}
+              className={`flex size-7 items-center justify-center rounded-full transition-colors ${
+                playing
+                  ? "bg-white text-black"
+                  : "bg-white/[0.08] text-[#A5A19D] hover:text-white"
+              }`}
+            >
+              {playing ? (
+                <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
+                  <rect x="2" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
+                  <rect x="7" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
+                  <path d="M3.5 1.8v8.4c0 .5.55.8.98.54l6.6-4.2a.63.63 0 0 0 0-1.08l-6.6-4.2a.63.63 0 0 0-.98.54Z" fill="currentColor" />
+                </svg>
+              )}
+            </button>
+          </div>
           <span className="text-sm text-[#A5A19D]">{track.name}</span>
         </div>
         <pre className="max-h-44 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words rounded-xl bg-[#1D1B1A] p-4 font-mono text-[13px] leading-relaxed text-[#8B8885]">
           {track.code}
         </pre>
-        <button
-          type="button"
-          onClick={togglePlay}
-          className={`self-start rounded-full px-4 py-2 text-[13px] font-medium transition-colors ${
-            playing
-              ? "bg-white text-black"
-              : "bg-[#1D1B1A] text-[#A5A19D] hover:text-white"
-          }`}
-        >
-          {playing ? `Stop — ${track.name}` : `Play ${track.name}`}
-        </button>
       </div>
     </div>
   );
