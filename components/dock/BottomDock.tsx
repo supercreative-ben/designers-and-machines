@@ -16,6 +16,7 @@ const TABS: { id: TabId; label: string }[] = [
 ];
 
 const CARD_WIDTH = 320;
+const CARD_HEIGHT = "min(470px, calc(100dvh - 96px))";
 
 export default function BottomDock({
   settings,
@@ -59,56 +60,96 @@ export default function BottomDock({
     return () => window.removeEventListener("keydown", onKey);
   }, [activeTab]);
 
+  // The closed card collapses to exactly the pill's rect so opening reads as
+  // the pill morphing into the card.
+  const navRef = React.useRef<HTMLElement>(null);
+  const [pill, setPill] = React.useState({ width: 298, height: 40 });
+
+  React.useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+    const update = () =>
+      setPill({ width: el.offsetWidth, height: el.offsetHeight });
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="pointer-events-auto relative mt-6">
-      {/* Expanding card. Same size for every tab; content scrolls vertically. */}
+      {/* Expanding card: morphs between the pill's rect and full size.
+          Content keeps its full-size layout and is cropped during the morph.
+          `visibility` transitions discretely — it hides only once the close
+          animation finishes, and shows immediately on open. */}
       <div
-        className={`absolute -bottom-3 left-1/2 -translate-x-1/2 origin-bottom overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          activeTab
-            ? "opacity-100 scale-100 translate-y-0"
-            : "pointer-events-none opacity-0 scale-[0.97] translate-y-4"
+        className={`absolute left-1/2 -translate-x-1/2 overflow-hidden border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+          activeTab ? "" : "pointer-events-none invisible"
         }`}
-        style={{
-          width: CARD_WIDTH,
-          height: "min(470px, calc(100dvh - 96px))",
-        }}
+        style={
+          activeTab
+            ? {
+                width: CARD_WIDTH,
+                height: CARD_HEIGHT,
+                borderRadius: 28,
+                bottom: -12,
+              }
+            : {
+                width: pill.width,
+                height: pill.height,
+                borderRadius: pill.height / 2,
+                bottom: 0,
+              }
+        }
         role="dialog"
         aria-modal="false"
       >
-        <button
-          type="button"
-          aria-label="Close"
-          onClick={() => setActiveTab(null)}
-          className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
+        {/* Full-size inner frame so content never reflows while morphing */}
+        <div
+          className="absolute left-1/2 top-0 -translate-x-1/2"
+          style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
         >
-          <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
-            <path
-              d="M2 2L12 12M12 2L2 12"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
-        <div className="h-full">
-          {renderedTab === "preview" && (
-            <PreviewTab onNavigate={setActiveTab} />
-          )}
-          {renderedTab === "play" && (
-            <PlayTab
-              settings={settings}
-              onSettingsChange={onSettingsChange}
-              music={music}
-              onMusicChange={onMusicChange}
-            />
-          )}
-          {renderedTab === "chat" && <ChatTab />}
-          {renderedTab === "join" && <JoinTab />}
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={() => setActiveTab(null)}
+            className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
+          >
+            <svg
+              viewBox="0 0 14 14"
+              fill="none"
+              className="size-3.5"
+              aria-hidden
+            >
+              <path
+                d="M2 2L12 12M12 2L2 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+          <div className="h-full">
+            {renderedTab === "preview" && (
+              <PreviewTab onNavigate={setActiveTab} />
+            )}
+            {renderedTab === "play" && (
+              <PlayTab
+                settings={settings}
+                onSettingsChange={onSettingsChange}
+                music={music}
+                onMusicChange={onMusicChange}
+              />
+            )}
+            {renderedTab === "chat" && <ChatTab />}
+            {renderedTab === "join" && <JoinTab />}
+          </div>
         </div>
       </div>
 
       {/* Tab pill — stays on top of the card when it's open */}
       <nav
+        ref={navRef}
         className={`relative z-10 flex items-center rounded-full border p-[3px] transition-colors ${
           activeTab
             ? "border-transparent bg-[#211E1C]"
