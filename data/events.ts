@@ -94,7 +94,45 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-05",
     title: "May 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
-    speakers: [],
+    // Two more demos that night ("Kyle" — Vizcom, and "Chris" — AI chat
+    // prototype) are pending identity confirmation before being listed.
+    speakers: [
+      {
+        name: "ML Howell",
+        handle: "marlouiise",
+        projectUrl: "https://doodle.mary-louise.com/",
+        // No Open Graph image on the page, so we ship a screenshot.
+        projectImage: "/projects/doodles.png",
+      },
+      {
+        name: "Omar Abdul-Rahim",
+        handle: "omarabdulrahim_",
+        projectUrl: "https://avec.ai/",
+      },
+      {
+        name: "Evil Rabbit",
+        handle: "evilrabbit_",
+        projectUrl: "https://vercel.com/geist",
+      },
+      {
+        // Demoed the Composio logo agent; the case study page beats the raw
+        // gallery (logos.composio.dev), which renders empty without JS data.
+        name: "Malay Vasa",
+        handle: "MalayVasa",
+        projectUrl: "https://www.malayvasa.com/work/logo-agent",
+        projectImage: "/projects/logo-agent.png",
+      },
+      {
+        name: "Chloe Park",
+        handle: "chloepark",
+        projectUrl: "https://www.magicpath.ai/",
+      },
+      {
+        name: "Roy Jad",
+        handle: "jad2222222",
+        projectUrl: "https://humanoid-index.com/",
+      },
+    ],
   },
   {
     id: "2026-06",
