@@ -34,6 +34,14 @@ export default function BottomDock({
 }) {
   const [activeTab, setActiveTab] = React.useState<TabId | null>(null);
 
+  // Returning from the X OAuth flow lands on /#chat — open the Chat tab.
+  React.useEffect(() => {
+    if (window.location.hash === "#chat") {
+      setActiveTab("chat");
+      history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
+
   React.useEffect(() => {
     if (!activeTab) return;
     const onKey = (e: KeyboardEvent) => {
