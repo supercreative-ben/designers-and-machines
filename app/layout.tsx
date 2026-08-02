@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import ClickSounds from "@/components/ClickSounds";
+import Presence from "@/components/Presence";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body className="min-h-full">
         {children}
         <ClickSounds />
+        <Presence />
         <Analytics />
       </body>
     </html>

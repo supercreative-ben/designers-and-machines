@@ -54,7 +54,9 @@ export default function ChatTab() {
   const [messages, setMessages] = React.useState<Message[] | null>(null);
   const [draft, setDraft] = React.useState("");
   const [sending, setSending] = React.useState(false);
+  const [online, setOnline] = React.useState<number | null>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const stickToBottomRef = React.useRef(true);
 
   React.useEffect(() => {
@@ -107,6 +109,35 @@ export default function ChatTab() {
     }
   }, [messages]);
 
+  // Live count of people currently on the site.
+  React.useEffect(() => {
+    if (!status.user) return;
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/api/presence");
+        if (!res.ok) return;
+        const data = (await res.json()) as { count: number };
+        if (!cancelled) setOnline(data.count);
+      } catch {}
+    };
+    void load();
+    const interval = setInterval(load, 25_000);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, [status.user]);
+
+  // Grow the input with its content, up to a max height, then scroll inside.
+  React.useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+    el.style.overflowY = el.scrollHeight > 120 ? "auto" : "hidden";
+  }, [draft, status.user]);
+
   const send = async () => {
     const text = draft.trim();
     if (!text || sending || !status.user) return;
@@ -138,12 +169,6 @@ export default function ChatTab() {
     } finally {
       setSending(false);
     }
-  };
-
-  const disconnect = async () => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    setStatus((s) => ({ ...s, user: null }));
-    setMessages(null);
   };
 
   if (!status.loaded) {
@@ -179,6 +204,13 @@ export default function ChatTab() {
 
   return (
     <div className="flex h-full flex-col">
+      <div className="shrink-0 px-5 pt-4 text-[11px] text-[#8B8885]">
+        {online === null
+          ? "\u00A0"
+          : online === 1
+            ? "1 person connected worldwide"
+            : `${online} people connected worldwide`}
+      </div>
       <div
         ref={scrollRef}
         onScroll={(e) => {
@@ -186,7 +218,7 @@ export default function ChatTab() {
           stickToBottomRef.current =
             el.scrollHeight - el.scrollTop - el.clientHeight < 40;
         }}
-        className="min-h-0 flex-1 overflow-y-auto px-5 pb-4 pt-5"
+        className="min-h-0 flex-1 overflow-y-auto px-5 pb-4 pt-3"
       >
         {messages === null ? (
           <p className="text-sm text-[#8B8885]">Loading messages…</p>
@@ -225,32 +257,39 @@ export default function ChatTab() {
         )}
       </div>
       <div className="shrink-0 px-5 pb-[72px]">
-        <div className="flex items-center gap-2 rounded-xl bg-[#1D1B1A] px-3 py-2">
-          <input
+        {/* Styled to match the tab pill below: same background, radius, padding */}
+        <div className="flex items-end gap-2 rounded-[22px] bg-[#211E1C] py-1.5 pl-4 pr-1.5">
+          <textarea
+            ref={inputRef}
+            rows={1}
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && send()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                send();
+              }
+            }}
             placeholder="Message the group"
             maxLength={500}
-            className="min-w-0 flex-1 bg-transparent text-sm text-white placeholder:text-[#8B8885] focus:outline-none"
+            className="min-w-0 flex-1 resize-none bg-transparent py-[7px] text-[13px] leading-snug text-white placeholder:text-[#8B8885] focus:outline-none"
           />
           <button
             type="button"
             onClick={send}
             disabled={!draft.trim() || sending}
-            className="text-sm font-medium text-white transition-opacity disabled:opacity-40"
+            aria-label="Send message"
+            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-white text-black transition-opacity disabled:opacity-40"
           >
-            Send
-          </button>
-        </div>
-        <div className="mt-2 flex items-center justify-between text-[11px] text-[#8B8885]">
-          <span>@{status.user.handle}</span>
-          <button
-            type="button"
-            onClick={disconnect}
-            className="transition-colors hover:text-white"
-          >
-            Disconnect
+            <svg viewBox="0 0 16 16" fill="none" className="size-4" aria-hidden>
+              <path
+                d="M8 12.5v-9M4.5 7 8 3.5 11.5 7"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </div>
