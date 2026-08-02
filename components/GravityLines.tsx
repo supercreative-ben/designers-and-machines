@@ -60,8 +60,8 @@ function createPoints(
   return points;
 }
 
-// Soft pluck when a string point is pinned: lower note when starting a
-// string, higher confirm when dropping its end. Web Audio, no files.
+// Soft pluck at a random pitch when a string point is pinned. Web Audio,
+// no files.
 let audioCtx: AudioContext | null = null;
 function pinSound(kind: "start" | "end") {
   try {
@@ -70,7 +70,10 @@ function pinSound(kind: "start" | "end") {
     const t = audioCtx.currentTime;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    const from = kind === "start" ? 520 : 780;
+    // Random pitch per pluck; end pins sit in a slightly higher band so
+    // finishing a string still reads as a confirmation.
+    const from =
+      kind === "start" ? 380 + Math.random() * 320 : 550 + Math.random() * 450;
     osc.type = "triangle";
     osc.frequency.setValueAtTime(from, t);
     osc.frequency.exponentialRampToValueAtTime(from * 0.72, t + 0.09);
