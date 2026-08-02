@@ -47,6 +47,23 @@ export const EVENTS: DemoEvent[] = [
         handle: "micka_design",
         projectUrl: "https://www.fluidfunctionalism.com/",
       },
+      {
+        name: "Sam Gorman",
+        handle: "samueljgorman",
+        projectUrl: "https://rivet.design/",
+      },
+      {
+        name: "Eve Bouffard",
+        handle: "eve_bouff",
+        projectUrl: "https://www.ycombinator.com/",
+      },
+      {
+        name: "Cynthia Chen",
+        handle: "yescynfria",
+        projectUrl: "https://hellothisis.cc/",
+        // hellothisis.cc has no Open Graph image, so we ship a screenshot.
+        projectImage: "/projects/hellothisis.png",
+      },
     ],
   },
   {
