@@ -95,7 +95,7 @@ export default function BottomDock({
 
       {/* Tab pill — stays on top of the card when it's open */}
       <nav
-        className={`relative z-10 flex items-center rounded-full border px-2 py-1.5 transition-colors ${
+        className={`relative z-10 flex items-center rounded-full border p-[3px] transition-colors ${
           activeTab
             ? "border-transparent bg-[#211E1C]"
             : "border-white/[0.06] bg-[#2A2725]/90"
