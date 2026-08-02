@@ -106,7 +106,7 @@ export default function PlayTab({
   };
 
   return (
-    <div className="flex h-full flex-col gap-5 overflow-y-auto px-5 pb-20 pt-5">
+    <div className="flex h-full flex-col gap-8 overflow-y-auto px-5 pb-20 pt-5">
       <div className="flex flex-col gap-3">
         <SectionLabel>Theme</SectionLabel>
         <div className="flex items-center gap-2.5">
@@ -128,8 +128,7 @@ export default function PlayTab({
         </div>
       </div>
 
-      {/* -mt-1 trims the parent's 20px gap so the label sits 16px below Theme */}
-      <div className="-mt-1 flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         <SectionLabel>Strings</SectionLabel>
         <div className="flex flex-col gap-2.5">
           <Slider

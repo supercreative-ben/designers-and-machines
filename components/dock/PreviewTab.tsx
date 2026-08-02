@@ -81,7 +81,7 @@ export default function PreviewTab({
             </button>
           </div>
         ) : (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-9">
             {event.speakers.map((speaker) => {
               const projectImage = projectImageUrl(speaker);
               return (
