@@ -121,10 +121,10 @@ export default function PreviewTab({
                       <img
                         src={projectImage}
                         alt={`${speaker.name}'s project`}
-                        className="aspect-[2/1] w-full object-cover"
+                        className="h-[172px] w-full object-cover"
                       />
                     ) : (
-                      <div className="aspect-[2/1] w-full" />
+                      <div className="h-[172px] w-full" />
                     )}
                   </a>
                 )}
