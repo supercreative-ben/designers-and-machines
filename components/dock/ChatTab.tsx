@@ -247,7 +247,7 @@ export default function ChatTab() {
                       {timeAgo(message.sentAt)}
                     </span>
                   </div>
-                  <p className="mt-0.5 whitespace-pre-wrap break-words text-sm leading-relaxed text-[#D8D5D1]">
+                  <p className="whitespace-pre-wrap break-words text-sm leading-snug text-[#D8D5D1]">
                     {message.text}
                   </p>
                 </div>
@@ -256,9 +256,9 @@ export default function ChatTab() {
           </div>
         )}
       </div>
-      <div className="shrink-0 px-5 pb-[72px]">
-        {/* Styled to match the tab pill below: same background, radius, padding */}
-        <div className="flex items-end gap-2 rounded-[22px] bg-[#211E1C] py-1.5 pl-4 pr-1.5">
+      {/* 10px insets make the composer the same width as the tab pill below */}
+      <div className="shrink-0 px-[10px] pb-[72px]">
+        <div className="flex items-end gap-2 rounded-[22px] border border-white/[0.1] py-1.5 pl-4 pr-1.5">
           <textarea
             ref={inputRef}
             rows={1}
