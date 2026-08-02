@@ -102,7 +102,7 @@ export default function PlayTab({
   };
 
   return (
-    <div className="flex h-full flex-col gap-5 overflow-y-auto px-5 pb-20 pt-5 pr-14">
+    <div className="flex h-full flex-col gap-5 overflow-y-auto px-5 pb-20 pt-5">
       <div className="flex flex-col gap-3">
         <SectionLabel>Ties</SectionLabel>
         <div className="flex items-center gap-2.5">
