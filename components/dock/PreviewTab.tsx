@@ -5,6 +5,46 @@ import Image from "next/image";
 import { EVENTS, avatarUrl, projectImageUrl } from "@/data/events";
 import type { TabId } from "./BottomDock";
 
+/** Stable per-browser id so likes survive reloads and can be undone. */
+function visitorId(): string {
+  let id = localStorage.getItem("dm-visitor-id");
+  if (!id) {
+    id = crypto.randomUUID();
+    localStorage.setItem("dm-visitor-id", id);
+  }
+  return id;
+}
+
+function LikeButton({
+  count,
+  liked,
+  onToggle,
+}: {
+  count: number;
+  liked: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={liked ? "Unlike project" : "Like project"}
+      aria-pressed={liked}
+      className={`flex shrink-0 items-center gap-1.5 rounded-full bg-white/[0.08] px-3.5 py-2 text-sm font-medium transition-colors ${
+        liked ? "text-[#EB5545]" : "text-[#D8D5D1] hover:text-white"
+      }`}
+    >
+      <svg viewBox="0 0 16 16" className="size-[15px]" aria-hidden>
+        <path
+          d="M8 13.8 2.9 8.9a3.4 3.4 0 0 1 0-4.9 3.6 3.6 0 0 1 5 0l.1.1.1-.1a3.6 3.6 0 0 1 5 0 3.4 3.4 0 0 1 0 4.9L8 13.8Z"
+          fill="currentColor"
+        />
+      </svg>
+      {count}
+    </button>
+  );
+}
+
 function Chevron({ direction }: { direction: "left" | "right" }) {
   return (
     <svg viewBox="0 0 16 16" fill="none" className="size-4" aria-hidden>
@@ -33,6 +73,69 @@ export default function PreviewTab({
   }, []);
   const [index, setIndex] = React.useState(lastAnnounced);
   const event = EVENTS[index];
+
+  // Public like counts, keyed by "eventId/handle". Every project shows at
+  // least the 1 baseline like until the real counts load.
+  const [likes, setLikes] = React.useState<{
+    counts: Record<string, number>;
+    liked: Set<string>;
+  }>({ counts: {}, liked: new Set() });
+  // Keys the visitor toggled this session — they win over a late-arriving
+  // initial fetch, so a slow GET can't undo an optimistic like.
+  const localTogglesRef = React.useRef(new Map<string, boolean>());
+
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch(`/api/likes?visitor=${visitorId()}`)
+      .then((r) => r.json())
+      .then((data: { counts: Record<string, number>; liked: string[] }) => {
+        if (cancelled) return;
+        const liked = new Set(data.liked);
+        const counts = { ...data.counts };
+        for (const [key, isLiked] of localTogglesRef.current) {
+          if (isLiked && !liked.has(key)) {
+            liked.add(key);
+            counts[key] = (counts[key] ?? 1) + 1;
+          } else if (!isLiked && liked.has(key)) {
+            liked.delete(key);
+            counts[key] = Math.max(1, (counts[key] ?? 1) - 1);
+          }
+        }
+        setLikes({ counts, liked });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const toggleLike = (key: string) => {
+    const wasLiked = likes.liked.has(key);
+    localTogglesRef.current.set(key, !wasLiked);
+    // Optimistic flip; the POST response settles the real count.
+    setLikes((prev) => {
+      const liked = new Set(prev.liked);
+      const counts = { ...prev.counts };
+      if (wasLiked) liked.delete(key);
+      else liked.add(key);
+      counts[key] = Math.max(1, (counts[key] ?? 1) + (wasLiked ? -1 : 1));
+      return { counts, liked };
+    });
+    fetch("/api/likes", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ key, visitor: visitorId(), liked: !wasLiked }),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: { count: number } | null) => {
+        if (data)
+          setLikes((prev) => ({
+            ...prev,
+            counts: { ...prev.counts, [key]: data.count },
+          }));
+      })
+      .catch(() => {});
+  };
 
   const navButtonClass =
     "p-1 text-white transition-colors enabled:hover:text-white disabled:text-[#8B8885] disabled:opacity-40";
@@ -84,31 +187,39 @@ export default function PreviewTab({
           <div className="flex flex-col gap-9">
             {event.speakers.map((speaker) => {
               const projectImage = projectImageUrl(speaker);
+              const likeKey = `${event.id}/${speaker.handle}`;
               return (
               <div key={speaker.handle} className="flex flex-col gap-3">
-                <a
-                  href={`https://x.com/${speaker.handle}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-3"
-                >
-                  <Image
-                    src={avatarUrl(speaker.handle)}
-                    alt={speaker.name}
-                    width={34}
-                    height={34}
-                    className="size-[34px] rounded-full bg-[#55524F] object-cover"
-                    unoptimized
+                <div className="flex items-center justify-between gap-3">
+                  <a
+                    href={`https://x.com/${speaker.handle}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex min-w-0 items-center gap-3"
+                  >
+                    <Image
+                      src={avatarUrl(speaker.handle)}
+                      alt={speaker.name}
+                      width={34}
+                      height={34}
+                      className="size-[34px] rounded-full bg-[#55524F] object-cover"
+                      unoptimized
+                    />
+                    <div className="min-w-0">
+                      <div className="truncate text-sm font-medium text-white">
+                        {speaker.name}
+                      </div>
+                      <div className="truncate text-[13px] text-[#A5A19D] transition-colors group-hover:text-white">
+                        @{speaker.handle}
+                      </div>
+                    </div>
+                  </a>
+                  <LikeButton
+                    count={likes.counts[likeKey] ?? 1}
+                    liked={likes.liked.has(likeKey)}
+                    onToggle={() => toggleLike(likeKey)}
                   />
-                  <div>
-                    <div className="text-sm font-medium text-white">
-                      {speaker.name}
-                    </div>
-                    <div className="text-[13px] text-[#A5A19D] transition-colors group-hover:text-white">
-                      @{speaker.handle}
-                    </div>
-                  </div>
-                </a>
+                </div>
                 {speaker.projectUrl && (
                   <a
                     href={speaker.projectUrl}
