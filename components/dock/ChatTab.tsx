@@ -61,6 +61,22 @@ export default function ChatTab() {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const stickToBottomRef = React.useRef(true);
+  // The tab pill's rect, so the connect button can match it exactly.
+  const [pill, setPill] = React.useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+
+  React.useEffect(() => {
+    const nav = document.querySelector("nav");
+    if (!nav) return;
+    const update = () =>
+      setPill({ width: nav.offsetWidth, height: nav.offsetHeight });
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, []);
 
   React.useEffect(() => {
     let cancelled = false;
@@ -241,11 +257,12 @@ export default function ChatTab() {
           <a
             href={status.configured ? "/api/auth/x/login" : undefined}
             aria-disabled={!status.configured}
-            className={`flex h-[47px] items-center justify-center rounded-[22px] bg-white text-sm font-medium text-black transition-transform ${
+            className={`mx-auto flex items-center justify-center rounded-full bg-white text-sm font-medium text-black transition-transform ${
               status.configured
                 ? "hover:scale-[1.02]"
                 : "cursor-not-allowed opacity-60"
             }`}
+            style={{ width: pill?.width, height: pill?.height ?? 40 }}
           >
             Connect 𝕏 to chat
           </a>
