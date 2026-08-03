@@ -40,6 +40,7 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-03",
     title: "March 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
+    featuredImage: "/dinners/2026-03.jpg",
     speakers: [
       {
         name: "Lele Zhang",
@@ -79,6 +80,7 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-04",
     title: "April 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
+    featuredImage: "/dinners/2026-04.jpg",
     speakers: [
       {
         name: "Daniel Farrell",
@@ -103,6 +105,7 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-05",
     title: "May 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
+    featuredImage: "/dinners/2026-05.jpg",
     // Two more demos that night ("Kyle" — Vizcom, and "Chris" — AI chat
     // prototype) are pending identity confirmation before being listed.
     speakers: [
@@ -142,6 +145,7 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-06",
     title: "June 2026 lineup",
     venue: "Hosted at PostHog in San Francisco",
+    featuredImage: "/dinners/2026-06.jpg",
     speakers: [
       {
         name: "Sam Gorman",

@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       { pathname: "/api/og" },
       { pathname: "/api/avatar" },
       { pathname: "/projects/**" },
+      { pathname: "/dinners/**" },
     ],
   },
 };

@@ -15,10 +15,10 @@ const JoinTab = dynamic(() => import("./JoinTab"));
 export type TabId = "preview" | "play" | "chat" | "people" | "join";
 
 const TABS: { id: TabId; label: string }[] = [
+  { id: "people", label: "People" },
   { id: "preview", label: "Lineup" },
   { id: "chat", label: "Chat" },
   { id: "play", label: "Play" },
-  { id: "people", label: "People" },
   { id: "join", label: "Join" },
 ];
 
@@ -177,7 +177,7 @@ export default function BottomDock({
               />
             )}
             {renderedTab === "chat" && <ChatTab />}
-            {renderedTab === "people" && <PeopleTab />}
+            {renderedTab === "people" && <PeopleTab onNavigate={setActiveTab} />}
             {renderedTab === "join" && <JoinTab />}
           </div>
         </div>

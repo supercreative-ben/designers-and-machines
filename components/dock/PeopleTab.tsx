@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ATTENDEES, TWEETS } from "@/data/people";
 import { avatarUrl } from "@/data/events";
+import type { TabId } from "./BottomDock";
 
 declare global {
   interface Window {
@@ -82,7 +83,11 @@ function TweetEmbed({ url }: { url: string }) {
   return <div ref={ref} className="[&_iframe]:!max-w-full" />;
 }
 
-export default function PeopleTab() {
+export default function PeopleTab({
+  onNavigate,
+}: {
+  onNavigate: (tab: TabId) => void;
+}) {
   return (
     <div className="h-full overflow-y-auto">
       <header className="px-5 pb-4 pt-5">
@@ -131,6 +136,17 @@ export default function PeopleTab() {
             ))}
           </div>
         )}
+
+        <p className="mt-8 text-center text-sm leading-relaxed text-[#A5A19D]">
+          Want to be part of it?{" "}
+          <button
+            type="button"
+            onClick={() => onNavigate("join")}
+            className="font-medium underline underline-offset-4 transition-colors hover:text-white"
+          >
+            Request to join the next dinner.
+          </button>
+        </p>
       </div>
     </div>
   );
