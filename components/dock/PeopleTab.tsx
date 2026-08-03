@@ -99,25 +99,49 @@ export default function PeopleTab({
 
       <div className="px-5 pb-20">
         <div className="grid grid-cols-5 gap-x-3 gap-y-4">
-          {ATTENDEES.map((person) => (
-            <a
-              key={person.handle}
-              href={`https://x.com/${person.handle}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={`${person.name} — @${person.handle}`}
-              className="group flex justify-center"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+          {ATTENDEES.map((person) => {
+            const avatar =
+              person.avatar ??
+              (person.handle ? avatarUrl(person.handle) : null);
+            const face = avatar ? (
+              // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={avatarUrl(person.handle)}
+                src={avatar}
                 alt={person.name}
                 loading="lazy"
                 decoding="async"
                 className="size-[44px] rounded-full bg-[#55524F] object-cover transition-transform duration-200 group-hover:scale-110"
               />
-            </a>
-          ))}
+            ) : (
+              // Guests who didn't share an X handle get an initial
+              <span className="flex size-[44px] items-center justify-center rounded-full bg-[#55524F] text-sm font-medium text-[#D8D5D1]">
+                {person.name.charAt(0)}
+              </span>
+            );
+            if (!person.handle) {
+              return (
+                <span
+                  key={person.name}
+                  title={person.name}
+                  className="flex justify-center"
+                >
+                  {face}
+                </span>
+              );
+            }
+            return (
+              <a
+                key={person.handle}
+                href={`https://x.com/${person.handle}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`${person.name} — @${person.handle}`}
+                className="group flex justify-center"
+              >
+                {face}
+              </a>
+            );
+          })}
         </div>
 
         <h3 className="mb-3 mt-8 text-sm font-medium text-white">
