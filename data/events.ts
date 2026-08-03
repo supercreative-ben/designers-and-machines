@@ -47,6 +47,12 @@ export const EVENTS: DemoEvent[] = [
     title: "March 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
     featuredImage: "/dinners/2026-03.jpg",
+    tweets: [
+      "https://x.com/ben_issen/status/2028944496617242913",
+      "https://x.com/ben_issen/status/2034879547766911215",
+      "https://x.com/pau_wee_/status/2069242404688015763",
+      "https://x.com/micka_design/status/2034853206573162883",
+    ],
     speakers: [
       {
         name: "Lele Zhang",
@@ -87,6 +93,10 @@ export const EVENTS: DemoEvent[] = [
     title: "April 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
     featuredImage: "/dinners/2026-04.jpg",
+    tweets: [
+      "https://x.com/floguo/status/2050375812810223897",
+      "https://x.com/MalayVasa/status/2050281747192143904",
+    ],
     speakers: [
       {
         name: "Daniel Farrell",
@@ -112,6 +122,12 @@ export const EVENTS: DemoEvent[] = [
     title: "May 2026 lineup",
     venue: "Hosted at Rox in San Francisco",
     featuredImage: "/dinners/2026-05.jpg",
+    tweets: [
+      "https://x.com/MalayVasa/status/2054814709623456208",
+      "https://x.com/ben_issen/status/2055116438860681702",
+      "https://x.com/evilrabbit_/status/2054735827276865885",
+      "https://x.com/aibek_design/status/2050297484736602189",
+    ],
     // Two more demos that night ("Kyle" — Vizcom, and "Chris" — AI chat
     // prototype) are pending identity confirmation before being listed.
     speakers: [
@@ -152,6 +168,14 @@ export const EVENTS: DemoEvent[] = [
     title: "June 2026 lineup",
     venue: "Hosted at PostHog in San Francisco",
     featuredImage: "/dinners/2026-06.jpg",
+    tweets: [
+      "https://x.com/tinathetechie/status/2069299201071346165",
+      "https://x.com/DrCapsoul/status/2074531894843387974",
+      "https://x.com/falcone_design/status/2069245665667092905",
+      "https://x.com/Priyank/status/2069262181141463274",
+      "https://x.com/cjmlgrto/status/2069292671529890048",
+      "https://x.com/okkshitij/status/2069457325266702342",
+    ],
     speakers: [
       {
         name: "Sam Gorman",
