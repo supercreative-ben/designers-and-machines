@@ -17,19 +17,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   icons: {
-    icon: [
-      { url: "/icon-light.png", type: "image/png" },
-      {
-        url: "/icon-light.png",
-        type: "image/png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark.png",
-        type: "image/png",
-        media: "(prefers-color-scheme: dark)",
-      },
-    ],
+    // One SVG whose fill flips with prefers-color-scheme — browsers ignore
+    // media attributes on favicon links, so the switch must live inside the
+    // file. favicon.ico (black head) stays as the non-SVG fallback.
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: "/icon-dark.png",
   },
 };
