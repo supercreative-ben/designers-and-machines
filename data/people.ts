@@ -20,13 +20,6 @@ const MORE_ATTENDEES: Attendee[] = [
   { name: "Ben Issen", handle: "ben_issen", editions: [] },
 ];
 
-/**
- * X posts about the dinners, rendered as embedded tweets at the bottom of
- * the People tab. One status URL per entry, e.g.
- * "https://x.com/ben_issen/status/1234567890123456789".
- */
-export const TWEETS: string[] = [];
-
 // Demo givers count as attendees of their month even if the guest export
 // missed them (hosts and speakers don't always register through Lu.ma).
 const speakerAttendees: Attendee[] = EVENTS.flatMap((event) =>

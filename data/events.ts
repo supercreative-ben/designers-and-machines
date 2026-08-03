@@ -21,11 +21,17 @@ export type DemoEvent = {
    * One paragraph per array entry. */
   description?: string[];
   /**
-   * Featured photo from the dinner, shown at the bottom of the Lineup card.
+   * Featured photo from the dinner, shown at the bottom of the People card.
    * Drop the file in public/dinners/ and reference it like
    * "/dinners/2026-03.jpg". A placeholder box shows until it's set.
    */
   featuredImage?: string;
+  /**
+   * X posts about this dinner, rendered as embedded tweets at the bottom of
+   * the month's card. One status URL per entry, e.g.
+   * "https://x.com/ben_issen/status/1234567890123456789".
+   */
+  tweets?: string[];
   speakers: Speaker[];
 };
 

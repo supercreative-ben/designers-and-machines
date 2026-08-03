@@ -9,14 +9,12 @@ import type { MusicState, RopeSettings } from "./PlayTab";
 const PreviewTab = dynamic(() => import("./PreviewTab"));
 const PlayTab = dynamic(() => import("./PlayTab"));
 const ChatTab = dynamic(() => import("./ChatTab"));
-const PeopleTab = dynamic(() => import("./PeopleTab"));
 const JoinTab = dynamic(() => import("./JoinTab"));
 
-export type TabId = "preview" | "play" | "chat" | "people" | "join";
+export type TabId = "preview" | "play" | "chat" | "join";
 
 const TABS: { id: TabId; label: string }[] = [
-  { id: "people", label: "People" },
-  { id: "preview", label: "Lineup" },
+  { id: "preview", label: "People" },
   { id: "chat", label: "Chat" },
   { id: "play", label: "Play" },
   { id: "join", label: "Join" },
@@ -74,7 +72,6 @@ export default function BottomDock({
       void import("./PreviewTab");
       void import("./PlayTab");
       void import("./ChatTab");
-      void import("./PeopleTab");
       void import("./JoinTab");
     }, 2500);
     return () => clearTimeout(timeout);
@@ -177,7 +174,6 @@ export default function BottomDock({
               />
             )}
             {renderedTab === "chat" && <ChatTab />}
-            {renderedTab === "people" && <PeopleTab onNavigate={setActiveTab} />}
             {renderedTab === "join" && <JoinTab />}
           </div>
         </div>

@@ -3,6 +3,8 @@
 import * as React from "react";
 import Image from "next/image";
 import { EVENTS, avatarUrl, projectImageUrl } from "@/data/events";
+import { ATTENDEES } from "@/data/people";
+import TweetEmbed from "../TweetEmbed";
 import type { TabId } from "./BottomDock";
 
 /** Stable per-browser id so likes survive reloads and can be undone. */
@@ -42,6 +44,61 @@ function LikeButton({
       </svg>
       {count}
     </button>
+  );
+}
+
+/** Tight grid of everyone who came to this month's dinner. */
+function AttendeeGrid({ eventId }: { eventId: string }) {
+  const attendees = React.useMemo(
+    () => ATTENDEES.filter((a) => a.editions.includes(eventId)),
+    [eventId]
+  );
+  if (attendees.length === 0) return null;
+  return (
+    <div className="grid grid-cols-6 gap-x-2 gap-y-2.5">
+      {attendees.map((person) => {
+        const avatar =
+          person.avatar ?? (person.handle ? avatarUrl(person.handle) : null);
+        const face = avatar ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={avatar}
+            alt={person.name}
+            loading="lazy"
+            decoding="async"
+            className="size-10 rounded-full bg-[#55524F] object-cover transition-transform duration-200 group-hover:scale-110"
+          />
+        ) : (
+          // Guests who didn't share an X handle get an initial
+          <span className="flex size-10 items-center justify-center rounded-full bg-[#55524F] text-sm font-medium text-[#D8D5D1]">
+            {person.name.charAt(0)}
+          </span>
+        );
+        if (!person.handle) {
+          return (
+            <span
+              key={person.name}
+              title={person.name}
+              className="flex justify-center"
+            >
+              {face}
+            </span>
+          );
+        }
+        return (
+          <a
+            key={person.handle}
+            href={`https://x.com/${person.handle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`${person.name} — @${person.handle}`}
+            className="group flex justify-center"
+          >
+            {face}
+          </a>
+        );
+      })}
+    </div>
   );
 }
 
@@ -199,6 +256,7 @@ export default function PreviewTab({
           </div>
         ) : (
           <div className="flex flex-col gap-9">
+            <AttendeeGrid eventId={event.id} />
             {/* Data order, not like order — resorting after likes load made
                 the cards jump around. */}
             {event.speakers.map((speaker) => {
@@ -281,17 +339,38 @@ export default function PreviewTab({
               </div>
             )}
 
-            <p className="text-center text-sm leading-relaxed text-[#A5A19D]">
-              Want to host a future dinner?{" "}
-              <a
-                href="https://twitter.com/ben_issen"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium underline underline-offset-4 transition-colors hover:text-white"
-              >
-                Contact Ben directly.
-              </a>
-            </p>
+            {/* Testimonials from X about this dinner */}
+            {event.tweets && event.tweets.length > 0 && (
+              <div className="flex flex-col gap-3">
+                {event.tweets.map((url) => (
+                  <TweetEmbed key={url} url={url} />
+                ))}
+              </div>
+            )}
+
+            <div className="flex flex-col gap-2">
+              <p className="text-center text-sm leading-relaxed text-[#A5A19D]">
+                Want to be part of it?{" "}
+                <button
+                  type="button"
+                  onClick={() => onNavigate("join")}
+                  className="font-medium underline underline-offset-4 transition-colors hover:text-white"
+                >
+                  Request to join.
+                </button>
+              </p>
+              <p className="text-center text-sm leading-relaxed text-[#A5A19D]">
+                Want to host a future dinner?{" "}
+                <a
+                  href="https://twitter.com/ben_issen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium underline underline-offset-4 transition-colors hover:text-white"
+                >
+                  Contact Ben directly.
+                </a>
+              </p>
+            </div>
           </div>
         )}
       </div>
