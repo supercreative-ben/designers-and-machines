@@ -7,7 +7,10 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const user = await getSessionUser();
   return NextResponse.json({
-    configured: Boolean(process.env.X_CLIENT_ID && process.env.X_CLIENT_SECRET),
+    configured: Boolean(
+      (process.env.X_CONSUMER_KEY && process.env.X_CONSUMER_SECRET) ||
+        (process.env.X_CLIENT_ID && process.env.X_CLIENT_SECRET)
+    ),
     user,
   });
 }

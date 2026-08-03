@@ -49,9 +49,17 @@ export default function BottomDock({
     return () => clearTimeout(timeout);
   }, [activeTab]);
 
+  // A failed X sign-in redirects back with ?chat_error=reason; keep it so the
+  // Chat tab can explain what went wrong (the URL itself is cleaned below).
+  const [chatError, setChatError] = React.useState<string | null>(null);
+
   // Returning from the X OAuth flow lands on /#chat — open the Chat tab.
   React.useEffect(() => {
-    if (window.location.hash === "#chat") {
+    const error = new URLSearchParams(window.location.search).get(
+      "chat_error"
+    );
+    if (error) setChatError(error);
+    if (window.location.hash === "#chat" || error) {
       setActiveTab("chat");
       history.replaceState(null, "", window.location.pathname);
     }
@@ -178,7 +186,9 @@ export default function BottomDock({
                 onMusicChange={onMusicChange}
               />
             )}
-            {renderedTab === "chat" && <ChatTab />}
+            {renderedTab === "chat" && (
+              <ChatTab error={chatError} onDismissError={() => setChatError(null)} />
+            )}
             {renderedTab === "join" && <JoinTab />}
           </div>
         </div>
