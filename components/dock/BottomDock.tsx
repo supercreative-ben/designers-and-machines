@@ -22,8 +22,8 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "join", label: "Join" },
 ];
 
-const CARD_WIDTH = 320;
-const CARD_HEIGHT = "min(470px, calc(100dvh - 96px))";
+const CARD_WIDTH = 352;
+const CARD_HEIGHT = "min(500px, calc(100dvh - 96px))";
 
 export default function BottomDock({
   settings,
@@ -200,7 +200,7 @@ export default function BottomDock({
               type="button"
               data-sound="tab"
               onClick={() => setActiveTab(active ? null : tab.id)}
-              className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
+              className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
                 active
                   ? "bg-white text-black"
                   : "text-[#A29E9A] hover:text-[#EDEAE6]"
