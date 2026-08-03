@@ -44,7 +44,7 @@ export type DemoEvent = {
 export const EVENTS: DemoEvent[] = [
   {
     id: "2026-03",
-    title: "March 2026 lineup",
+    title: "March 2026",
     venue: "Hosted at Rox in San Francisco",
     featuredImage: "/dinners/2026-03.jpg",
     tweets: [
@@ -90,7 +90,7 @@ export const EVENTS: DemoEvent[] = [
   },
   {
     id: "2026-04",
-    title: "April 2026 lineup",
+    title: "April 2026",
     venue: "Hosted at Rox in San Francisco",
     featuredImage: "/dinners/2026-04.jpg",
     tweets: [
@@ -119,7 +119,7 @@ export const EVENTS: DemoEvent[] = [
   },
   {
     id: "2026-05",
-    title: "May 2026 lineup",
+    title: "May 2026",
     venue: "Hosted at Rox in San Francisco",
     featuredImage: "/dinners/2026-05.jpg",
     tweets: [
@@ -161,11 +161,16 @@ export const EVENTS: DemoEvent[] = [
         handle: "jad2222222",
         projectUrl: "https://humanoid-index.com/",
       },
+      {
+        name: "Aibek Yegemberdin",
+        handle: "aibek_design",
+        projectUrl: "https://wonder.design/",
+      },
     ],
   },
   {
     id: "2026-06",
-    title: "June 2026 lineup",
+    title: "June 2026",
     venue: "Hosted at PostHog in San Francisco",
     featuredImage: "/dinners/2026-06.jpg",
     tweets: [

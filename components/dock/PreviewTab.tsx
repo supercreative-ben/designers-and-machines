@@ -47,6 +47,15 @@ function LikeButton({
   );
 }
 
+/** Name label that appears above an attendee's avatar on hover. */
+function AttendeeTooltip({ label }: { label: string }) {
+  return (
+    <span className="pointer-events-none absolute -top-7 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-md bg-black/90 px-2 py-1 text-[11px] font-medium text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+      {label}
+    </span>
+  );
+}
+
 /** Tight grid of everyone who came to this month's dinner. */
 function AttendeeGrid({ eventId }: { eventId: string }) {
   const attendees = React.useMemo(
@@ -78,10 +87,10 @@ function AttendeeGrid({ eventId }: { eventId: string }) {
           return (
             <span
               key={person.name}
-              title={person.name}
-              className="flex justify-center"
+              className="group relative flex justify-center"
             >
               {face}
+              <AttendeeTooltip label={person.name} />
             </span>
           );
         }
@@ -91,10 +100,10 @@ function AttendeeGrid({ eventId }: { eventId: string }) {
             href={`https://x.com/${person.handle}`}
             target="_blank"
             rel="noopener noreferrer"
-            title={`${person.name} — @${person.handle}`}
-            className="group flex justify-center"
+            className="group relative flex justify-center"
           >
             {face}
+            <AttendeeTooltip label={person.name} />
           </a>
         );
       })}
@@ -344,7 +353,7 @@ export default function PreviewTab({
             {event.tweets && event.tweets.length > 0 && (
               <div
                 data-theme="dark"
-                className="flex flex-col gap-3 [&_.react-tweet-theme]:my-0 [&_.react-tweet-theme]:max-w-none"
+                className="flex flex-col gap-1.5 [&_.react-tweet-theme]:my-0 [&_.react-tweet-theme]:max-w-none"
               >
                 {event.tweets.map((url) => {
                   const id = url.match(/status(?:es)?\/(\d+)/)?.[1];

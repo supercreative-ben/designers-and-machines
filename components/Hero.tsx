@@ -7,7 +7,7 @@ import BottomDock from "./dock/BottomDock";
 import type { MusicState, RopeSettings } from "./dock/PlayTab";
 import { TRACKS } from "@/data/tracks";
 import { playTrack, stopMusic } from "@/lib/strudel";
-import { EVENTS, avatarUrl } from "@/data/events";
+import { avatarUrl } from "@/data/events";
 
 // Loaded only when the visitor toggles the code overlay from Play.
 const CodeOverlay = dynamic(() => import("./CodeOverlay"), { ssr: false });
@@ -355,18 +355,21 @@ function Ampersand(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+/** Hand-picked faces for the hero's rotating avatar. */
+const FEATURED_HANDLES = [
+  "evilrabbit_",
+  "eve_bouff",
+  "pablostanley",
+  "ben_issen",
+];
+
 /**
- * Tiny avatar inside the "(N spots left)" parenthesis, cycling through past
- * demo givers every 2 seconds. All frames stay mounted so switching never
- * flashes an unloaded image.
+ * Tiny avatar inside the "(N spots left)" parenthesis, cycling through a few
+ * featured regulars every 2 seconds. All frames stay mounted so switching
+ * never flashes an unloaded image.
  */
 function RotatingAvatar() {
-  const handles = React.useMemo(() => {
-    const seen = new Set<string>();
-    for (const event of EVENTS)
-      for (const speaker of event.speakers) seen.add(speaker.handle);
-    return [...seen];
-  }, []);
+  const handles = FEATURED_HANDLES;
   const [current, setCurrent] = React.useState(0);
 
   React.useEffect(() => {
@@ -513,7 +516,7 @@ export default function Hero() {
             phones (hence the 1px-smaller type below 380px). */}
         <p className="mt-1.5 max-w-[340px] text-center text-sm leading-snug text-[#8B8885] max-[379px]:text-[13px]">
           A monthly dinner in SF where 5 designers demo what they&apos;re
-          building with AI. No slides, 5 min each.
+          building with AI. 5 min each.
           <br />
           Next dinner on Aug 20th (<RotatingAvatar />
           {spots.soldOut
