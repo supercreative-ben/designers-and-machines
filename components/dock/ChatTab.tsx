@@ -35,8 +35,10 @@ function describeError(reason: string): string {
     return "X sign-in was cancelled before finishing.";
   if (reason.startsWith("x_"))
     return `X refused the sign-in request (${reason.slice(2)}). The X app may be suspended — check the X developer portal.`;
-  if (reason === "token_401")
-    return "X rejected the app credentials — the client secret on the server no longer matches the X app.";
+  if (reason === "token_401" || reason === "request_token_401")
+    return "X rejected the app credentials — the keys on the server no longer match the X app.";
+  if (reason.startsWith("request_token_") || reason.startsWith("access_token_"))
+    return `Couldn't start sign-in with X (error ${reason.split("_").pop()}). Please try again.`;
   if (reason.startsWith("token_"))
     return `Couldn't complete sign-in with X (error ${reason.slice(6)}). Please try again.`;
   if (reason === "profile_429")
