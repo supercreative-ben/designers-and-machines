@@ -7,6 +7,7 @@ import BottomDock from "./dock/BottomDock";
 import type { MusicState, RopeSettings } from "./dock/PlayTab";
 import { TRACKS } from "@/data/tracks";
 import { playTrack, stopMusic } from "@/lib/strudel";
+import { EVENTS, avatarUrl } from "@/data/events";
 
 // Loaded only when the visitor toggles the code overlay from Play.
 const CodeOverlay = dynamic(() => import("./CodeOverlay"), { ssr: false });
@@ -354,6 +355,52 @@ function Ampersand(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+/**
+ * Tiny avatar inside the "(N spots left)" parenthesis, cycling through past
+ * demo givers every 2 seconds. All frames stay mounted so switching never
+ * flashes an unloaded image.
+ */
+function RotatingAvatar() {
+  const handles = React.useMemo(() => {
+    const seen = new Set<string>();
+    for (const event of EVENTS)
+      for (const speaker of event.speakers) seen.add(speaker.handle);
+    return [...seen];
+  }, []);
+  const [current, setCurrent] = React.useState(0);
+
+  React.useEffect(() => {
+    if (handles.length < 2) return;
+    const timer = setInterval(
+      () => setCurrent((i) => (i + 1) % handles.length),
+      2000
+    );
+    return () => clearInterval(timer);
+  }, [handles.length]);
+
+  if (handles.length === 0) return null;
+  return (
+    <span
+      className="relative mr-1.5 inline-block size-4 align-[-3px]"
+      aria-hidden
+    >
+      {handles.map((handle, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={handle}
+          src={avatarUrl(handle)}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className={`absolute inset-0 size-4 rounded-full bg-[#55524F] object-cover transition-opacity duration-300 ${
+            i === current ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ))}
+    </span>
+  );
+}
+
 export default function Hero() {
   const [scale, setScale] = React.useState(1);
   const [ropeSettings, setRopeSettings] = React.useState<RopeSettings>({
@@ -375,13 +422,24 @@ export default function Hero() {
     TRACKS.map((t) => t.code)
   );
 
-  // Music is on by default, but browsers only allow audio after a user
-  // gesture — so the first track starts on the visitor's first click/tap.
+  // Live spots-remaining for the next dinner, straight from Lu.ma.
+  const [spots, setSpots] = React.useState<{
+    remaining: number | null;
+    soldOut: boolean;
+  }>({ remaining: null, soldOut: false });
+
   React.useEffect(() => {
-    const start = () =>
-      setMusic((m) => (m.playing ? m : { ...m, playing: true }));
-    window.addEventListener("pointerdown", start, { once: true });
-    return () => window.removeEventListener("pointerdown", start);
+    let cancelled = false;
+    fetch("/api/spots")
+      .then((r) => r.json())
+      .then((data: { spotsRemaining: number | null; soldOut: boolean }) => {
+        if (cancelled) return;
+        setSpots({ remaining: data.spotsRemaining, soldOut: data.soldOut });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Evaluates on play/track change and on live code edits — but not when the
@@ -452,10 +510,14 @@ export default function Hero() {
           Designers and Machines
         </h1>
         <p className="mt-1.5 max-w-[290px] text-center text-sm leading-snug text-[#8B8885]">
-          Monthly demo dinners in SF for designers who explore how we create
-          with machines.
+          A monthly dinner in SF where 5 designers demo what they&apos;re
+          building with AI. No slides, 5 min each.
           <br />
-          Next dinner on Aug 20th (7 spots left)
+          Next dinner on Aug 20th (<RotatingAvatar />
+          {spots.soldOut
+            ? "sold out"
+            : `${spots.remaining ?? "some"} spots left`}
+          )
         </p>
         <BottomDock
           settings={ropeSettings}

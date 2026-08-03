@@ -9,14 +9,16 @@ import type { MusicState, RopeSettings } from "./PlayTab";
 const PreviewTab = dynamic(() => import("./PreviewTab"));
 const PlayTab = dynamic(() => import("./PlayTab"));
 const ChatTab = dynamic(() => import("./ChatTab"));
+const PeopleTab = dynamic(() => import("./PeopleTab"));
 const JoinTab = dynamic(() => import("./JoinTab"));
 
-export type TabId = "preview" | "play" | "chat" | "join";
+export type TabId = "preview" | "play" | "chat" | "people" | "join";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "preview", label: "Lineup" },
-  { id: "play", label: "Play" },
   { id: "chat", label: "Chat" },
+  { id: "play", label: "Play" },
+  { id: "people", label: "People" },
   { id: "join", label: "Join" },
 ];
 
@@ -72,6 +74,7 @@ export default function BottomDock({
       void import("./PreviewTab");
       void import("./PlayTab");
       void import("./ChatTab");
+      void import("./PeopleTab");
       void import("./JoinTab");
     }, 2500);
     return () => clearTimeout(timeout);
@@ -174,6 +177,7 @@ export default function BottomDock({
               />
             )}
             {renderedTab === "chat" && <ChatTab />}
+            {renderedTab === "people" && <PeopleTab />}
             {renderedTab === "join" && <JoinTab />}
           </div>
         </div>
@@ -196,7 +200,7 @@ export default function BottomDock({
               type="button"
               data-sound="tab"
               onClick={() => setActiveTab(active ? null : tab.id)}
-              className={`rounded-full px-5 py-1.5 text-[13px] font-medium transition-colors ${
+              className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors ${
                 active
                   ? "bg-white text-black"
                   : "text-[#A29E9A] hover:text-[#EDEAE6]"

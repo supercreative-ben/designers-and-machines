@@ -20,6 +20,12 @@ export type DemoEvent = {
   /** Shown on the event's Lineup card — format, the why of the event, etc.
    * One paragraph per array entry. */
   description?: string[];
+  /**
+   * Featured photo from the dinner, shown at the bottom of the Lineup card.
+   * Drop the file in public/dinners/ and reference it like
+   * "/dinners/2026-03.jpg". A placeholder box shows until it's set.
+   */
+  featuredImage?: string;
   speakers: Speaker[];
 };
 

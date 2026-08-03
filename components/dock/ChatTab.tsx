@@ -245,12 +245,12 @@ export default function ChatTab() {
       </div>
       {/* 10px insets make the composer the same width as the tab pill below */}
       <div className="shrink-0 px-[10px] pb-[58px]">
+        {/* Only worth showing once it's an actual crowd — a lone "1
+            connected" (the visitor themselves) reads as an empty room. */}
         <div className="pb-1.5 text-center text-[11px] text-[#8B8885]">
-          {online === null
-            ? "\u00A0"
-            : online === 1
-              ? "1 designer connected"
-              : `${online} designers connected`}
+          {online !== null && online >= 2
+            ? `${online} designers connected`
+            : "\u00A0"}
         </div>
         {!status.user ? (
           // Anyone can read the chat; connecting X is only needed to post.

@@ -262,6 +262,36 @@ export default function PreviewTab({
               </div>
               );
             })}
+
+            {/* Featured photo from the dinner itself */}
+            {event.featuredImage ? (
+              <Image
+                src={event.featuredImage}
+                alt={`Photo from ${event.title}`}
+                width={560}
+                height={344}
+                loading="lazy"
+                className="h-[172px] w-full rounded-xl bg-[#55524F] object-cover"
+              />
+            ) : (
+              <div className="flex h-[172px] w-full items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.03]">
+                <span className="text-[13px] text-[#8B8885]">
+                  Dinner photo coming soon
+                </span>
+              </div>
+            )}
+
+            <p className="text-center text-sm leading-relaxed text-[#A5A19D]">
+              Want to host a future dinner?{" "}
+              <a
+                href="https://twitter.com/ben_issen"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium underline underline-offset-4 transition-colors hover:text-white"
+              >
+                Contact Ben directly.
+              </a>
+            </p>
           </div>
         )}
       </div>
