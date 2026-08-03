@@ -265,7 +265,6 @@ export default function PreviewTab({
           </div>
         ) : (
           <div className="flex flex-col gap-9">
-            <AttendeeGrid eventId={event.id} />
             {/* Data order, not like order — resorting after likes load made
                 the cards jump around. */}
             {event.speakers.map((speaker) => {
@@ -330,6 +329,8 @@ export default function PreviewTab({
               );
             })}
 
+            <AttendeeGrid eventId={event.id} />
+
             {/* Featured photo from the dinner itself */}
             {event.featuredImage ? (
               <Image
@@ -353,7 +354,9 @@ export default function PreviewTab({
             {event.tweets && event.tweets.length > 0 && (
               <div
                 data-theme="dark"
-                className="flex flex-col gap-1.5 [&_.react-tweet-theme]:my-0 [&_.react-tweet-theme]:max-w-none"
+                // .tweet-list (globals.css) strips react-tweet's built-in
+                // 1.5rem container margins so only our gap applies.
+                className="tweet-list flex flex-col gap-3"
               >
                 {event.tweets.map((url) => {
                   const id = url.match(/status(?:es)?\/(\d+)/)?.[1];

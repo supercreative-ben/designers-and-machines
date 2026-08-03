@@ -60,6 +60,14 @@ body {
     shimmer 1.5s ease-in-out infinite;
 }
 
+/* Testimonial tweet embeds: kill react-tweet's built-in container margins
+   (its CSS-module rule wins over utility classes) and let them fill the
+   card's width. */
+.tweet-list .react-tweet-theme {
+  margin: 0 !important;
+  max-width: none !important;
+}
+
 /* Subtle film grain over the whole page */
 body::after {
   content: "";

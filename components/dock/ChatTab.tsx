@@ -280,7 +280,7 @@ export default function ChatTab() {
               }
             }}
             placeholder="Message the group"
-            maxLength={500}
+            maxLength={280}
             className="min-w-0 flex-1 resize-none bg-transparent py-[7px] text-[13px] leading-snug text-white placeholder:text-[#8B8885] focus:outline-none"
           />
           <button

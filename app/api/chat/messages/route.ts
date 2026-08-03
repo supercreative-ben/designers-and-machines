@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   }
   const body = (await req.json().catch(() => null)) as { text?: string } | null;
   const text = body?.text?.trim();
-  if (!text || text.length > 500) {
+  if (!text || text.length > 280) {
     return NextResponse.json({ error: "invalid message" }, { status: 400 });
   }
   const message = await addMessage(user, text);
