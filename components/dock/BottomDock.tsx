@@ -20,7 +20,8 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "join", label: "Join" },
 ];
 
-const CARD_WIDTH = 352;
+/** Gap between the pill and the card's left/right/bottom edges. */
+const PILL_GAP = 12;
 const CARD_HEIGHT = "min(500px, calc(100dvh - 96px))";
 
 export default function BottomDock({
@@ -77,15 +78,16 @@ export default function BottomDock({
     return () => clearTimeout(timeout);
   }, []);
 
-  // On phones the card fills 92% of the viewport; elsewhere it's fixed.
-  const [cardWidth, setCardWidth] = React.useState(CARD_WIDTH);
+  // On phones the card fills 92% of the viewport and the pill stretches to
+  // match; elsewhere the pill keeps its natural width and the card hugs it.
+  const [mobileCardWidth, setMobileCardWidth] = React.useState<number | null>(
+    null
+  );
 
   React.useEffect(() => {
     const update = () =>
-      setCardWidth(
-        window.innerWidth < 640
-          ? Math.round(window.innerWidth * 0.92)
-          : CARD_WIDTH
+      setMobileCardWidth(
+        window.innerWidth < 640 ? Math.round(window.innerWidth * 0.92) : null
       );
     update();
     window.addEventListener("resize", update);
@@ -108,6 +110,9 @@ export default function BottomDock({
     return () => observer.disconnect();
   }, []);
 
+  // Same PILL_GAP breathing room on the card's left, right, and bottom.
+  const cardWidth = mobileCardWidth ?? pill.width + PILL_GAP * 2;
+
   return (
     <div className="pointer-events-auto relative mt-6">
       {/* Expanding card: morphs between the pill's rect and full size.
@@ -124,7 +129,7 @@ export default function BottomDock({
                 width: cardWidth,
                 height: CARD_HEIGHT,
                 borderRadius: 28,
-                bottom: -12,
+                bottom: -PILL_GAP,
               }
             : {
                 width: pill.width,
@@ -182,6 +187,11 @@ export default function BottomDock({
       {/* Tab pill — stays on top of the card when it's open */}
       <nav
         ref={navRef}
+        style={
+          mobileCardWidth
+            ? { width: mobileCardWidth - PILL_GAP * 2 }
+            : undefined
+        }
         className={`relative z-10 flex items-center rounded-full border p-[3px] transition-colors ${
           activeTab
             ? "border-transparent bg-[#211E1C]"
@@ -196,7 +206,7 @@ export default function BottomDock({
               type="button"
               data-sound="tab"
               onClick={() => setActiveTab(active ? null : tab.id)}
-              className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
+              className={`flex-1 rounded-full px-5 py-1.5 text-[13px] font-medium transition-colors ${
                 active
                   ? "bg-white text-black"
                   : "text-[#A29E9A] hover:text-[#EDEAE6]"

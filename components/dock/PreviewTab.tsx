@@ -4,7 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { EVENTS, avatarUrl, projectImageUrl } from "@/data/events";
 import { ATTENDEES } from "@/data/people";
-import TweetEmbed from "../TweetEmbed";
+import { Tweet } from "react-tweet";
 import type { TabId } from "./BottomDock";
 
 /** Stable per-browser id so likes survive reloads and can be undone. */
@@ -339,12 +339,20 @@ export default function PreviewTab({
               </div>
             )}
 
-            {/* Testimonials from X about this dinner */}
+            {/* Testimonials from X about this dinner, rendered statically by
+                react-tweet (no widgets.js iframes) via our cached /api/tweet */}
             {event.tweets && event.tweets.length > 0 && (
-              <div className="flex flex-col gap-3">
-                {event.tweets.map((url) => (
-                  <TweetEmbed key={url} url={url} />
-                ))}
+              <div
+                data-theme="dark"
+                className="flex flex-col gap-3 [&_.react-tweet-theme]:my-0 [&_.react-tweet-theme]:max-w-none"
+              >
+                {event.tweets.map((url) => {
+                  const id = url.match(/status(?:es)?\/(\d+)/)?.[1];
+                  if (!id) return null;
+                  return (
+                    <Tweet key={id} id={id} apiUrl={`/api/tweet/${id}`} />
+                  );
+                })}
               </div>
             )}
 
@@ -360,7 +368,8 @@ export default function PreviewTab({
                 </button>
               </p>
               <p className="text-center text-sm leading-relaxed text-[#A5A19D]">
-                Want to host a future dinner?{" "}
+                Want to host a future dinner?
+                <br />
                 <a
                   href="https://twitter.com/ben_issen"
                   target="_blank"
