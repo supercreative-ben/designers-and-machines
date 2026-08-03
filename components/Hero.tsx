@@ -505,11 +505,13 @@ export default function Hero() {
       </div>
 
       {/* Text + nav */}
-      <div className="pointer-events-none relative z-20 flex flex-col items-center px-6 pb-10">
+      <div className="pointer-events-none relative z-20 flex flex-col items-center px-4 pb-10">
         <h1 className="text-sm font-medium text-[#EDEAE6]">
           Designers and Machines
         </h1>
-        <p className="mt-1.5 max-w-[290px] text-center text-sm leading-snug text-[#8B8885]">
+        {/* Sized so the copy breaks into exactly 3 lines, even on narrow
+            phones (hence the 1px-smaller type below 380px). */}
+        <p className="mt-1.5 max-w-[340px] text-center text-sm leading-snug text-[#8B8885] max-[379px]:text-[13px]">
           A monthly dinner in SF where 5 designers demo what they&apos;re
           building with AI. No slides, 5 min each.
           <br />
