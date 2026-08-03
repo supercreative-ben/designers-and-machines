@@ -8,7 +8,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const clientId = process.env.X_CLIENT_ID;
   if (!clientId || !process.env.X_CLIENT_SECRET) {
-    return NextResponse.redirect(new URL("/#chat", req.nextUrl.origin));
+    const home = new URL("/#chat", req.nextUrl.origin);
+    home.searchParams.set("chat_error", "unconfigured");
+    return NextResponse.redirect(home);
   }
 
   const state = randomBytes(16).toString("base64url");
