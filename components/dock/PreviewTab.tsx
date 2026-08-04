@@ -47,10 +47,28 @@ function LikeButton({
   );
 }
 
-/** Name label that appears above an attendee's avatar on hover. */
-function AttendeeTooltip({ label }: { label: string }) {
+/**
+ * Name label that appears above an attendee's avatar on hover. Edge columns
+ * anchor to their side so the label never extends past the card and creates
+ * horizontal scroll.
+ */
+function AttendeeTooltip({
+  label,
+  align,
+}: {
+  label: string;
+  align: "left" | "center" | "right";
+}) {
+  const position =
+    align === "left"
+      ? "left-0"
+      : align === "right"
+        ? "right-0"
+        : "left-1/2 -translate-x-1/2";
   return (
-    <span className="pointer-events-none absolute -top-7 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-md bg-black/90 px-2 py-1 text-[11px] font-medium text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100">
+    <span
+      className={`pointer-events-none absolute -top-7 z-20 whitespace-nowrap rounded-md bg-black/90 px-2 py-1 text-[11px] font-medium text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 ${position}`}
+    >
       {label}
     </span>
   );
@@ -65,7 +83,9 @@ function AttendeeGrid({ eventId }: { eventId: string }) {
   if (attendees.length === 0) return null;
   return (
     <div className="grid grid-cols-6 gap-x-2 gap-y-2.5">
-      {attendees.map((person) => {
+      {attendees.map((person, i) => {
+        const align =
+          i % 6 === 0 ? "left" : i % 6 === 5 ? "right" : ("center" as const);
         const avatar =
           person.avatar ?? (person.handle ? avatarUrl(person.handle) : null);
         const face = avatar ? (
@@ -90,7 +110,7 @@ function AttendeeGrid({ eventId }: { eventId: string }) {
               className="group relative flex justify-center"
             >
               {face}
-              <AttendeeTooltip label={person.name} />
+              <AttendeeTooltip label={person.name} align={align} />
             </span>
           );
         }
@@ -103,7 +123,7 @@ function AttendeeGrid({ eventId }: { eventId: string }) {
             className="group relative flex justify-center"
           >
             {face}
-            <AttendeeTooltip label={person.name} />
+            <AttendeeTooltip label={person.name} align={align} />
           </a>
         );
       })}
@@ -209,7 +229,7 @@ export default function PreviewTab({
     "flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors enabled:hover:text-white disabled:opacity-40";
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto">
+    <div className="flex h-full flex-col overflow-y-auto overflow-x-hidden">
       <header className="relative shrink-0 px-5 pb-4 pt-5">
         {/* Only the title needs to clear the nav buttons; the venue line
             below them can use the full card width. */}
