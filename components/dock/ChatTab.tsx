@@ -58,6 +58,7 @@ export default function ChatTab() {
   const [draft, setDraft] = React.useState("");
   const [sending, setSending] = React.useState(false);
   const [online, setOnline] = React.useState<number | null>(null);
+  const [authError, setAuthError] = React.useState<string | null>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const stickToBottomRef = React.useRef(true);
@@ -66,6 +67,29 @@ export default function ChatTab() {
     width: number;
     height: number;
   } | null>(null);
+
+  // Surface OAuth failures passed back from the callback so sign-in
+  // problems are visible instead of silently landing on an empty tab.
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const reason = params.get("chat_error");
+    if (!reason) return;
+    const friendly: Record<string, string> = {
+      state: "Sign-in session expired — please try again.",
+      token: "X rejected the app credentials — the client secret needs updating.",
+      profile: "Couldn't load your X profile — please try again.",
+      unconfigured: "X sign-in isn't configured yet.",
+      access_denied: "X access was denied — please try again.",
+    };
+    setAuthError(friendly[reason] ?? `X sign-in failed (${reason}).`);
+    params.delete("chat_error");
+    const query = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`
+    );
+  }, []);
 
   React.useEffect(() => {
     const nav = document.querySelector("nav");
@@ -252,6 +276,11 @@ export default function ChatTab() {
             ? `${online} designers connected`
             : "\u00A0"}
         </div>
+        {authError && (
+          <p className="pb-2 text-center text-[11px] leading-snug text-[#E5928A]">
+            {authError}
+          </p>
+        )}
         {!status.user ? (
           // Anyone can read the chat; connecting X is only needed to post.
           <a

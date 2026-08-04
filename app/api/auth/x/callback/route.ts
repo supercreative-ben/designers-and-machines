@@ -18,6 +18,11 @@ export async function GET(req: NextRequest) {
   const clientSecret = process.env.X_CLIENT_SECRET;
   if (!clientId || !clientSecret) return fail("unconfigured");
 
+  // X reports authorize-step failures (denied consent, bad app config)
+  // via an `error` param instead of a code.
+  const xError = req.nextUrl.searchParams.get("error");
+  if (xError) return fail(xError);
+
   const code = req.nextUrl.searchParams.get("code");
   const state = req.nextUrl.searchParams.get("state");
   const expectedState = req.cookies.get("x_oauth_state")?.value;
