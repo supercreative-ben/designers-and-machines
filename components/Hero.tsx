@@ -518,7 +518,7 @@ export default function Hero() {
           A monthly dinner in SF where 5 designers demo what they&apos;re
           building with AI. 5 min each.
           <br />
-          Next dinner Aug 20th (<RotatingAvatar />
+          Next dinner Sep 24th (<RotatingAvatar />
           {spots.soldOut
             ? "sold out"
             : `${spots.remaining ?? "some"} spots left`}

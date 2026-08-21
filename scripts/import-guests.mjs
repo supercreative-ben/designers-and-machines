@@ -9,6 +9,7 @@ const FILES = [
   ["2026-04", "/Users/beni/Downloads/Designers & Machines April 2026 - Guests - 2026-08-03-01-14-09.csv"],
   ["2026-05", "/Users/beni/Downloads/Designers & Machines May 2026 - Guests - 2026-08-03-01-13-45.csv"],
   ["2026-06", "/Users/beni/Downloads/Designers & Machines June 2026 - Guests - 2026-08-03-01-13-25.csv"],
+  ["2026-08", "/Users/beni/Downloads/Designers & Machines August 2026 - Guests - 2026-08-21-06-05-48.csv"],
 ];
 
 const HANDLE_COLUMN = "What is your X (Twitter) handle?";

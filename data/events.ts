@@ -205,8 +205,9 @@ export const EVENTS: DemoEvent[] = [
         projectUrl: "https://nanocorp.so",
       },
       {
+        // @evanpun is a different (inactive) account; drcapsoul is his.
         name: "Evan Pun",
-        handle: "evanpun",
+        handle: "drcapsoul",
         projectUrl: "https://ghostpanel.design/",
       },
     ],
@@ -214,6 +215,51 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-08",
     title: "August 2026",
+    venue: "San Francisco",
+    speakers: [
+      {
+        // ref.design has no Open Graph image (login wall), so we ship a screenshot.
+        name: "Evan Pun",
+        handle: "drcapsoul",
+        projectUrl: "https://www.ref.design/",
+        projectImage: "/projects/ref-design.png",
+      },
+      {
+        name: "Tom Krcha",
+        handle: "tomkrcha",
+        projectUrl: "https://www.pen.design/",
+      },
+      {
+        // Demoed his hand-tracked gesture instrument. The page has no OG image.
+        name: "Matthew Yu",
+        handle: "matthewyuart",
+        projectUrl: "https://gesturewatcher.vercel.app/",
+        projectImage: "/projects/gesture-synth.png",
+      },
+      {
+        name: "Filip Skrzesinski",
+        handle: "uptightchill",
+        projectUrl: "https://subframe.com/",
+      },
+      {
+        name: "Kshitij Agrawal",
+        handle: "okkshitij",
+        projectUrl: "https://playground.aiverse.design/",
+      },
+      {
+        // Demoed "Compostable Interfaces" (composable UI); the demo video
+        // lives in this X post, so we ship its thumbnail as the card image.
+        name: "Jem Gold",
+        handle: "sheherenow_",
+        projectUrl:
+          "https://x.com/sheherenow_/status/2079363989994348943",
+        projectImage: "/projects/compostable-interfaces.jpg",
+      },
+    ],
+  },
+  {
+    id: "2026-09",
+    title: "September 2026",
     venue: "San Francisco",
     upcoming: true,
     description: ["5 demos, 5 min each. No slides."],
