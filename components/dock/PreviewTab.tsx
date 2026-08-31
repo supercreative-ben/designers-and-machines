@@ -349,6 +349,26 @@ export default function PreviewTab({
               );
             })}
 
+            {/* Testimonials from X about this dinner, rendered by react-tweet
+                via our cached /api/tweet. Sit under the lineup so they read
+                as featured, not after the attendee grid. */}
+            {event.tweets && event.tweets.length > 0 && (
+              <div
+                data-theme="dark"
+                // .tweet-list (globals.css) strips react-tweet's built-in
+                // 1.5rem container margins so only our gap applies.
+                className="tweet-list flex flex-col gap-3"
+              >
+                {event.tweets.map((url) => {
+                  const id = url.match(/status(?:es)?\/(\d+)/)?.[1];
+                  if (!id) return null;
+                  return (
+                    <Tweet key={id} id={id} apiUrl={`/api/tweet/${id}`} />
+                  );
+                })}
+              </div>
+            )}
+
             <AttendeeGrid eventId={event.id} />
 
             {/* Featured photo from the dinner itself */}
@@ -366,25 +386,6 @@ export default function PreviewTab({
                 <span className="text-[13px] text-[#8B8885]">
                   Dinner photo coming soon
                 </span>
-              </div>
-            )}
-
-            {/* Testimonials from X about this dinner, rendered statically by
-                react-tweet (no widgets.js iframes) via our cached /api/tweet */}
-            {event.tweets && event.tweets.length > 0 && (
-              <div
-                data-theme="dark"
-                // .tweet-list (globals.css) strips react-tweet's built-in
-                // 1.5rem container margins so only our gap applies.
-                className="tweet-list flex flex-col gap-3"
-              >
-                {event.tweets.map((url) => {
-                  const id = url.match(/status(?:es)?\/(\d+)/)?.[1];
-                  if (!id) return null;
-                  return (
-                    <Tweet key={id} id={id} apiUrl={`/api/tweet/${id}`} />
-                  );
-                })}
               </div>
             )}
 
