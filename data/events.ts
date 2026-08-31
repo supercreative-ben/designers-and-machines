@@ -216,6 +216,10 @@ export const EVENTS: DemoEvent[] = [
     id: "2026-08",
     title: "August 2026",
     venue: "San Francisco",
+    tweets: [
+      "https://x.com/aibek_design/status/2090667436723048489",
+      "https://x.com/bugmango/status/2091499667980763230",
+    ],
     speakers: [
       {
         // ref.design has no Open Graph image (login wall), so we ship a screenshot.
