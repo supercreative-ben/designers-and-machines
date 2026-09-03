@@ -26,3 +26,10 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Deploy
 
 Designed to deploy on [Vercel](https://vercel.com/new): import the GitHub repo and deploy with the default Next.js settings.
+
+### Chat sign-in (X)
+
+Posting in the chat requires signing in with X. Set `AUTH_SECRET` (any long random string) plus credentials from your [X developer app](https://developer.x.com/en/portal/dashboard), with `<site>/api/auth/x/callback` registered as a callback URL:
+
+- **Preferred — OAuth 1.0a**: `X_CONSUMER_KEY` / `X_CONSUMER_SECRET` (the "Consumer Keys" on the app's Keys & Tokens page). This flow gets the user's identity from the sign-in itself and avoids `GET /2/users/me`, which is heavily rate-limited on the free API tier.
+- **Fallback — OAuth 2.0**: `X_CLIENT_ID` / `X_CLIENT_SECRET`.

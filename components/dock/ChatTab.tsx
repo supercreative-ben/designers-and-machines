@@ -25,6 +25,29 @@ function timeAgo(timestamp: number) {
   return `${Math.floor(seconds / 86400)}d`;
 }
 
+/** Human-readable explanation for a ?chat_error=reason from the X callback. */
+function describeError(reason: string): string {
+  if (reason === "unconfigured")
+    return "X sign-in isn't configured on this deployment.";
+  if (reason === "state")
+    return "The sign-in attempt expired — please try connecting again.";
+  if (reason === "x_access_denied")
+    return "X sign-in was cancelled before finishing.";
+  if (reason.startsWith("x_"))
+    return `X refused the sign-in request (${reason.slice(2)}). The X app may be suspended — check the X developer portal.`;
+  if (reason === "token_401" || reason === "request_token_401")
+    return "X rejected the app credentials — the keys on the server no longer match the X app.";
+  if (reason.startsWith("request_token_") || reason.startsWith("access_token_"))
+    return `Couldn't start sign-in with X (error ${reason.split("_").pop()}). Please try again.`;
+  if (reason.startsWith("token_"))
+    return `Couldn't complete sign-in with X (error ${reason.slice(6)}). Please try again.`;
+  if (reason === "profile_429")
+    return "X is rate-limiting sign-ins right now — please try again later.";
+  if (reason.startsWith("profile_"))
+    return `Couldn't load your X profile (error ${reason.slice(8)}). Please try again.`;
+  return "X sign-in failed — please try again.";
+}
+
 function Avatar({ user, size }: { user: ChatUser; size: number }) {
   return user.avatar ? (
     // eslint-disable-next-line @next/next/no-img-element
@@ -48,7 +71,13 @@ function Avatar({ user, size }: { user: ChatUser; size: number }) {
   );
 }
 
-export default function ChatTab() {
+export default function ChatTab({
+  error,
+  onDismissError,
+}: {
+  error?: string | null;
+  onDismissError?: () => void;
+}) {
   const [status, setStatus] = React.useState<{
     loaded: boolean;
     configured: boolean;
@@ -271,6 +300,31 @@ export default function ChatTab() {
       <div className="shrink-0 px-[10px] pb-[58px]">
         {/* Only worth showing once it's an actual crowd — a lone "1
             connected" (the visitor themselves) reads as an empty room. */}
+        {error ? (
+          <div
+            role="alert"
+            className="mb-2 flex items-start gap-2 rounded-2xl border border-[#E4A08D]/25 bg-[#4A2E27]/60 px-3.5 py-2.5"
+          >
+            <p className="min-w-0 flex-1 text-xs leading-snug text-[#F0BCA9]">
+              {describeError(error)}
+            </p>
+            <button
+              type="button"
+              aria-label="Dismiss"
+              onClick={onDismissError}
+              className="shrink-0 text-[#F0BCA9]/60 transition-colors hover:text-[#F0BCA9]"
+            >
+              <svg viewBox="0 0 14 14" fill="none" className="size-3" aria-hidden>
+                <path
+                  d="M2 2L12 12M12 2L2 12"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </button>
+          </div>
+        ) : null}
         <div className="pb-1.5 text-center text-[11px] text-[#8B8885]">
           {online !== null && online >= 2
             ? `${online} designers connected`
