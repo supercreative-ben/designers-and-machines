@@ -25,7 +25,7 @@ export type DemoEvent = {
   /**
    * Featured photo from the dinner, shown at the bottom of the People card.
    * Drop the file in public/dinners/ and reference it like
-   * "/dinners/2026-03.jpg". A placeholder box shows until it's set.
+   * "/dinners/2026-03.jpg". Omit to hide the photo section.
    */
   featuredImage?: string;
   /**

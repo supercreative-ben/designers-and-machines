@@ -376,7 +376,7 @@ export default function PreviewTab({
             <AttendeeGrid eventId={event.id} />
 
             {/* Featured photo from the dinner itself */}
-            {event.featuredImage ? (
+            {event.featuredImage && (
               <Image
                 src={event.featuredImage}
                 alt={`Photo from ${event.title}`}
@@ -385,12 +385,6 @@ export default function PreviewTab({
                 loading="lazy"
                 className="h-[172px] w-full rounded-xl bg-[#55524F] object-cover"
               />
-            ) : (
-              <div className="flex h-[172px] w-full items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.03]">
-                <span className="text-[13px] text-[#8B8885]">
-                  Dinner photo coming soon
-                </span>
-              </div>
             )}
 
             <div className="flex flex-col gap-2">
