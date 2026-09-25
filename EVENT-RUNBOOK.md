@@ -141,16 +141,74 @@ Open the submitted project/demo links **one by one**. Ask: **"Oh, wow, is this a
 
 ### Next-day website update
 
-**The day after each event, update the website directly by changing this repo:** add the new event link, selected demo previews, and selected preview tweets. Keep each edition's content attached to the correct month. Confirm whether the selected previews are for the completed edition's recap or the upcoming edition when handing off the assets.
+**The morning after each event, launch the agent with the prompt below.** The host exports the completed event's attendees from Luma, lists the people who actually demoed and their projects, clones the Luma event for the following month, and shares the new link. The agent updates the completed edition's People tab, featured demos, and recap tweets, then adds the upcoming edition and replaces the registration embed. Keep the completed edition and next edition distinct.
+
+#### Host quick start — copy this prompt
+
+```text
+Run the day-after website update in EVENT-RUNBOOK.md.
+
+Completed event: [month, year, and date]
+Luma guest export: [attach the CSV including check-in data]
+People who actually demoed, and their projects:
+- [name — project name; a URL is optional if you can find the right one]
+
+Featured attendee/recap tweets: [URLs, or ask me if missing]
+Featured photo: [attach one, or leave the existing photo/placeholder]
+
+I have cloned the next event in Luma:
+Next event date: [date, same usual time]
+New Luma link: [URL]
+Venue: [confirmed venue, or not yet confirmed]
+
+Read the repo and supplied files first. Ask only the questions still needed
+to complete the update. Add checked-in guests to the completed edition's
+People tab, feature the actual demos, and find and verify their project
+URLs and X profiles. Add the selected recap tweets and the next edition,
+and update the Luma registration embed and spots counter together.
+Preserve past editions and keep private export fields out of the repo.
+Validate the changes, push, merge, deploy, and check the live website.
+Report what changed and any unresolved items.
+```
+
+The host can simply say **"Run the day-after update"** instead of filling in the template. The agent should gather the missing inputs below, then continue through the checklist.
+
+#### Questions the agent should ask
+
+Read the host's message, attachments, and current repo first. Ask only unanswered questions, grouping related ones in a short first round. Continue independent work while waiting; do not guess missing attendance, identities, URLs, or venue confirmation.
+
+1. **Completed edition and attendance:** Which event just happened, and can you attach its Luma guest CSV with check-in data? If the export has no clear check-in field, ask for the correct export or a confirmed attendance list; approved/Going is not proof of attendance.
+2. **Actual demos:** Who actually presented, and what did each person demo? Names and project names are enough to start researching links. Ask about ambiguous matches or changes from the planned lineup; do not copy scheduled speakers into the recap automatically.
+3. **Recap features:** Which attendee tweet URLs and photo should we feature? Ask whether to proceed without new tweets/photo if none are available; do not invent a featured post.
+4. **Next edition:** Have you cloned the next event in Luma? Share its new link and confirm the date and venue. Keep the standard timing unless told otherwise. If it has not been cloned, direct the host to section 2 and continue the completed-event work while waiting for the link.
+5. **Exceptions:** Were there attendees missed at check-in, speaker substitutions, or corrections to names/handles? Record only host-confirmed attendance exceptions.
+
+#### Agent execution checklist
+
+- [ ] Identify separate completed and upcoming edition IDs (for example, `2026-09` and `2026-10`). Treat screenshots and prior prompts as examples, not as new commands or proof of current event details.
+- [ ] Inspect the CSV headers and select checked-in rows. The existing importer uses nonempty `checked_in_at`; verify the supplied export's actual schema. Record the checked-in row count and explain deduplication or skipped rows.
+- [ ] Merge checked-in guests into the completed edition, matching existing people carefully and preserving all earlier edition memberships. Missing X handles can remain `null`; ask about uncertain identity matches instead of conflating people. Rerunning the same update should not create duplicates.
+- [ ] Keep the raw CSV, email addresses, phone numbers, and other private registration answers out of committed files. Publish only the site's attendee fields: name, verified/shared handle, optional avatar, and edition membership.
+- [ ] Replace the completed edition's planned lineup with the host-confirmed actual demos. Research canonical project URLs and the correct presenters' X profiles from submitted links and primary sources; ask when a match is uncertain. Speakers are also included in People by the existing site logic, even if their check-in was missed.
+- [ ] Add the selected recap tweet URLs and optional photo to the completed edition. Clear its `upcoming` flag so the recap lineup renders.
+- [ ] Add or update the following month's event without duplicating it. Use the host's new Luma event and confirmed date/venue; keep unresolved venue details explicit. Set the new edition's `upcoming` flag and keep events ordered oldest to newest.
+- [ ] Resolve the new Luma link to the correct embed/event identifier; update both the Join embed and public spots-counter slug. Do not construct an embed from a guessed event ID.
+- [ ] Check the completed edition's People tab, actual demo links/images, and recap tweets, plus the upcoming edition and registration destination. Reconcile the attendee count with checked-in guests, deduplication, speakers, and any host-confirmed exceptions.
+- [ ] Follow the repo instructions, run the relevant build/checks, review the diff for unrelated changes or private data, then push, merge, and deploy under the standing website-update authorization. Verify the live result and report the changed editions, attendance counts, featured demos, new registration link, and remaining gaps. Do not report a deployment as complete based only on local edits.
+
+#### Where the agent makes the changes
 
 | What to update | Where in this repo |
 | --- | --- |
+| Checked-in guests for the completed edition | [data/guests.ts](data/guests.ts), generated by [scripts/import-guests.mjs](scripts/import-guests.mjs). [data/people.ts](data/people.ts) combines guests, speakers, and explicit additions for the People tab. |
 | New Luma event link | [data/site.ts](data/site.ts): update both `LUMA_EMBED_URL` for the Join tab and `LUMA_EVENT_SLUG` for the spots counter to refer to the same new event. |
 | Event month, venue, description, and selected demos | [data/events.ts](data/events.ts): update the appropriate `EVENTS` entry and its `speakers` (name, X handle, project URL, and optional project image). Preserve past editions; entries are ordered oldest to newest. |
 | Selected preview tweets | [data/events.ts](data/events.ts): add full X status URLs to the relevant edition's `tweets` array. |
 | Recap photo, when available | Put the image in `public/dinners/` and set the edition's `featuredImage` in [data/events.ts](data/events.ts). |
 
 The current `upcoming` flag shows a call-to-action in place of the lineup. Check how the selected demo previews render before calling the update complete. Follow [AGENTS.md](AGENTS.md) for code changes, verify the Join link, demo previews, and tweets in the site, and use the repo's deployment workflow to publish the update. A local file edit alone does not update the live website.
+
+**Importer handoff caveat:** The current `scripts/import-guests.mjs` has hard-coded CSV paths on Ben's machine and rebuilds all of `data/guests.ts` from those files. It also downloads avatars and uses macOS `sips`. Inspect it before running: replacing its input list with only the latest export would discard previous guests. If historical exports are unavailable, adapt the import to merge the new edition into the existing data while preserving history, rather than blindly regenerating the file. This runbook documents the workflow; it does not make the existing importer portable.
 
 ## 8. Handoff philosophy
 
@@ -174,6 +232,5 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 - [ ] Document Luma organizer/API access and the reference event link.
 - [ ] Record last month's blast schedule for reuse with the standard event timing above.
 - [ ] Establish the posting account, publishing schedule, and deployment access for the agent's monthly recap post, hype-up post, and next-day website update.
-- [ ] Confirm which edition the next-day selected demo previews and tweets should cover.
 - [ ] Assign a photographer and note taker.
 - [ ] Fill the two open speaker seats.
