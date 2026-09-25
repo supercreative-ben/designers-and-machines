@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import ProfileAvatar from "@/components/ProfileAvatar";
 import ThinkingIndicator from "@/components/ThinkingIndicator";
 
 type ChatUser = {
@@ -26,26 +27,7 @@ function timeAgo(timestamp: number) {
 }
 
 function Avatar({ user, size }: { user: ChatUser; size: number }) {
-  return user.avatar ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={user.avatar}
-      alt={user.name}
-      width={size}
-      height={size}
-      loading="lazy"
-      decoding="async"
-      className="shrink-0 rounded-full bg-[#55524F] object-cover"
-      style={{ width: size, height: size }}
-    />
-  ) : (
-    <div
-      className="flex shrink-0 items-center justify-center rounded-full bg-[#55524F] text-xs font-medium text-white"
-      style={{ width: size, height: size }}
-    >
-      {user.name[0]}
-    </div>
-  );
+  return <ProfileAvatar name={user.name} handle={user.handle} size={size} />;
 }
 
 export default function ChatTab() {

@@ -1,3 +1,6 @@
+import { avatarUrl } from "@/data/events";
+import { savedAvatarUrl } from "@/data/avatars";
+import { loadAvatar } from "@/lib/avatar-storage";
 import { NextRequest, NextResponse } from "next/server";
 import {
   SESSION_COOKIE,
@@ -55,12 +58,15 @@ export async function GET(req: NextRequest) {
     data: { id: string; name: string; username: string; profile_image_url?: string };
   };
 
+  if (!savedAvatarUrl(me.data.username)) {
+    await loadAvatar(me.data.username, me.data.profile_image_url);
+  }
+
   const token = createSessionToken({
     id: me.data.id,
     name: me.data.name,
     handle: me.data.username,
-    // "_normal" is a 48x48 thumbnail; request the 400x400 variant.
-    avatar: (me.data.profile_image_url ?? "").replace("_normal", "_400x400"),
+    avatar: avatarUrl(me.data.username),
   });
 
   const res = NextResponse.redirect(home);

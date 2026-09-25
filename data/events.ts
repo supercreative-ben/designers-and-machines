@@ -1,3 +1,5 @@
+import { savedAvatarUrl } from "./avatars";
+
 export type Speaker = {
   name: string;
   /** X (Twitter) handle without the @ */
@@ -330,7 +332,7 @@ export const EVENTS: DemoEvent[] = [
 
 /** X profile picture, proxied and cached by our own /api/avatar route. */
 export function avatarUrl(handle: string) {
-  return `/api/avatar?handle=${encodeURIComponent(handle)}`;
+  return savedAvatarUrl(handle) ?? `/api/avatar?handle=${encodeURIComponent(handle)}`;
 }
 
 /** Project card image: manual override, or the page's own OG image. */
