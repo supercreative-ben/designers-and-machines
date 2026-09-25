@@ -2,6 +2,10 @@
 
 Monthly demo dinners in SF for designers who explore how we create with machines.
 
+## Hosting an event
+
+Start with the [Designers & Machines Event Runbook](EVENT-RUNBOOK.md) for event preparation, roles, the run of show, venue requirements, and organizer handoff. It includes the September 24, 2026 onboarding notes and pending items for edition #6.
+
 A single-screen site built with [Next.js](https://nextjs.org) (App Router, TypeScript, Tailwind CSS). The hero features an interactive canvas — a red rope hangs between the two silhouettes, reacts to the cursor, and clicking twice anywhere creates new ropes.
 
 ## Development
