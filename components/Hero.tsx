@@ -7,7 +7,7 @@ import BottomDock from "./dock/BottomDock";
 import type { MusicState, RopeSettings } from "./dock/PlayTab";
 import { TRACKS } from "@/data/tracks";
 import { playTrack, stopMusic } from "@/lib/strudel";
-import { avatarUrl } from "@/data/events";
+import ProfileAvatar from "./ProfileAvatar";
 
 // Loaded only when the visitor toggles the code overlay from Play.
 const CodeOverlay = dynamic(() => import("./CodeOverlay"), { ssr: false });
@@ -388,17 +388,14 @@ function RotatingAvatar() {
       aria-hidden
     >
       {handles.map((handle, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <span
           key={handle}
-          src={avatarUrl(handle)}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          className={`absolute inset-0 size-4 rounded-full bg-[#55524F] object-cover transition-opacity duration-300 ${
+          className={`absolute inset-0 transition-opacity duration-300 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
-        />
+        >
+          <ProfileAvatar name={handle} handle={handle} size={16} />
+        </span>
       ))}
     </span>
   );

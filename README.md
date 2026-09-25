@@ -32,3 +32,13 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Deploy
 
 Designed to deploy on [Vercel](https://vercel.com/new): import the GitHub repo and deploy with the default Next.js settings.
+
+## Profile photos
+
+Known profile photos are compressed JPEGs in `public/people/`, served by Vercel with each deployment. Chat, dinner guests, speakers, and the homepage use the same saved-photo inventory in `data/avatars.ts`. Run `node scripts/sync-avatar-manifest.mjs` after adding photos; the guest importer also runs it automatically.
+
+For new profiles, `/api/avatar` reads the existing private Vercel Blob store under `avatars/v1/` before consulting X. Successful images are decoded, resized to 96×96, and saved without overwriting an existing copy. Sign-in saves the authenticated profile photo while its source is available. The browser uses first-party URLs and falls back to initials if any image fails. This uses the same `BLOB_READ_WRITE_TOKEN` as chat storage.
+
+September 25 repair: recovered 12 additional photos, including `luorui2025` and `shahdappp`; all 29 current chat participants have local copies. Public lookups could not resolve `pallavibenawri`, `awwsillylife17`, `fleeting_land`, `yanatweets`, or `seansmithbuilds`; keep initials until a verified photo or updated handle is supplied.
+
+Run `node --test scripts/verify-avatar-storage.mjs` for storage and failure-handling checks.

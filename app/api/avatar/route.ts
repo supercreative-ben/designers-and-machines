@@ -1,83 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
+import { savedAvatarUrl } from "@/data/avatars";
+import { AVATAR_HANDLE, loadAvatar } from "@/lib/avatar-storage";
 
-/**
- * Serves X profile pictures through our own origin. fxtwitter is tried first:
- * it returns the real avatar URL and 404s on unknown handles, while
- * unavatar.io rate-limits aggressively (429s) and can serve X's generic
- * placeholder image with a 200. Successful images are cached for a week on
- * the CDN; if both sources fail we return a lettered placeholder with a
- * short cache so the next visit can retry.
- *
- *   /api/avatar?handle=pablostanley
- */
-
-export const revalidate = 604800;
-
-const HANDLE = /^[A-Za-z0-9_]{1,15}$/;
+export const runtime = "nodejs";
 const WEEK = 604800;
 
-async function fetchAvatar(
-  handle: string
-): Promise<{ body: ArrayBuffer; type: string } | null> {
-  try {
-    const res = await fetch(`https://api.fxtwitter.com/${handle}`, {
-      next: { revalidate: WEEK },
-    });
-    if (res.ok) {
-      const data = await res.json();
-      const url: string | undefined = data?.user?.avatar_url?.replace(
-        "_normal",
-        "_400x400"
-      );
-      if (url) {
-        const img = await fetch(url, { next: { revalidate: WEEK } });
-        if (img.ok) {
-          return {
-            body: await img.arrayBuffer(),
-            type: img.headers.get("content-type") ?? "image/jpeg",
-          };
-        }
-      }
-    }
-  } catch {}
-
-  try {
-    const res = await fetch(`https://unavatar.io/x/${handle}?fallback=false`, {
-      next: { revalidate: WEEK },
-    });
-    if (res.ok) {
-      return {
-        body: await res.arrayBuffer(),
-        type: res.headers.get("content-type") ?? "image/png",
-      };
-    }
-  } catch {}
-
-  return null;
-}
-
+/** Local deployment assets first, then durable private Blob copies. */
 export async function GET(req: NextRequest) {
   const handle = req.nextUrl.searchParams.get("handle") ?? "";
-  if (!HANDLE.test(handle)) {
+  if (!AVATAR_HANDLE.test(handle)) {
     return new NextResponse("Invalid handle", { status: 400 });
   }
+  const saved = savedAvatarUrl(handle);
+  if (saved) return NextResponse.redirect(new URL(saved, req.url));
 
-  const image = await fetchAvatar(handle);
+  const image = await loadAvatar(handle);
   if (image) {
-    return new NextResponse(image.body, {
+    return new NextResponse(new Uint8Array(image).buffer, {
       headers: {
-        "content-type": image.type,
-        "cache-control": `public, s-maxage=${WEEK}, stale-while-revalidate=${WEEK * 4}`,
+        "content-type": "image/jpeg",
+        "cache-control": `public, max-age=86400, s-maxage=${WEEK}, stale-while-revalidate=${WEEK * 4}`,
       },
     });
   }
-
   const letter = handle[0].toUpperCase();
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="#55524F"/><text x="40" y="53" font-family="system-ui, sans-serif" font-size="34" fill="#A5A19D" text-anchor="middle">${letter}</text></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><rect width="96" height="96" fill="#55524F"/><text x="48" y="63" font-family="system-ui, sans-serif" font-size="40" fill="#EDEAE6" text-anchor="middle">${letter}</text></svg>`;
   return new NextResponse(svg, {
     headers: {
       "content-type": "image/svg+xml",
-      "cache-control": "public, s-maxage=300",
+      "cache-control": "public, max-age=60, s-maxage=300",
     },
   });
 }

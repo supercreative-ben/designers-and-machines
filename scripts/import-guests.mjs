@@ -145,3 +145,6 @@ ${entries}
 `
 );
 console.log("wrote data/guests.ts");
+
+// Make newly downloaded photos available to chat and speaker avatars too.
+execFileSync(process.execPath, ["scripts/sync-avatar-manifest.mjs"], { stdio: "inherit" });

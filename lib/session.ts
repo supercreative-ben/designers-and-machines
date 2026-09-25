@@ -15,7 +15,7 @@ export type SessionUser = {
   name: string;
   /** X handle without the @ */
   handle: string;
-  /** X profile image URL */
+  /** First-party avatar URL (legacy sessions may contain an X URL). */
   avatar: string;
 };
 

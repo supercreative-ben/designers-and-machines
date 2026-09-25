@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { EVENTS, avatarUrl, projectImageUrl } from "@/data/events";
+import ProfileAvatar from "@/components/ProfileAvatar";
+import { EVENTS, projectImageUrl } from "@/data/events";
 import { ATTENDEES } from "@/data/people";
 import { Tweet } from "react-tweet";
 import type { TabId } from "./BottomDock";
@@ -86,22 +87,9 @@ function AttendeeGrid({ eventId }: { eventId: string }) {
       {attendees.map((person, i) => {
         const align =
           i % 6 === 0 ? "left" : i % 6 === 5 ? "right" : ("center" as const);
-        const avatar =
-          person.avatar ?? (person.handle ? avatarUrl(person.handle) : null);
-        const face = avatar ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={avatar}
-            alt={person.name}
-            loading="lazy"
-            decoding="async"
-            className="size-10 rounded-full bg-[#55524F] object-cover transition-transform duration-200 group-hover:scale-110"
-          />
-        ) : (
-          // Guests who didn't share an X handle get an initial
-          <span className="flex size-10 items-center justify-center rounded-full bg-[#55524F] text-sm font-medium text-[#D8D5D1]">
-            {person.name.charAt(0)}
-          </span>
+        const face = (
+          <ProfileAvatar name={person.name} handle={person.handle} src={person.avatar}
+            size={40} className="transition-transform duration-200 group-hover:scale-110" />
         );
         if (!person.handle) {
           return (
@@ -299,15 +287,7 @@ export default function PreviewTab({
                     rel="noopener noreferrer"
                     className="group flex min-w-0 items-center gap-3"
                   >
-                    <Image
-                      src={avatarUrl(speaker.handle)}
-                      alt={speaker.name}
-                      width={34}
-                      height={34}
-                      loading="lazy"
-                      className="size-[34px] rounded-full bg-[#55524F] object-cover"
-                      unoptimized
-                    />
+                    <ProfileAvatar name={speaker.name} handle={speaker.handle} size={34} />
                     <div className="min-w-0">
                       <div className="truncate text-sm font-medium text-white">
                         {speaker.name}
