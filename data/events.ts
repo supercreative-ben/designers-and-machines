@@ -2,6 +2,8 @@ export type Speaker = {
   name: string;
   /** X (Twitter) handle without the @ */
   handle: string;
+  /** Name of the project demonstrated, when supplied by the host. */
+  projectName?: string;
   /** Link to the project they demoed */
   projectUrl?: string;
   /**
@@ -264,9 +266,64 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-09",
     title: "September 2026",
+    venue: "Hosted at SPC in San Francisco",
+    tweets: ["https://x.com/elenahuxy/status/2103370645484847175"],
+    speakers: [
+      {
+        name: "Micka Touillaud",
+        handle: "micka_design",
+        projectName: "Vybe",
+        projectUrl: "https://www.vybe.build/",
+        projectImage: "/projects/vybe.jpg",
+      },
+      {
+        name: "Chloe Yan",
+        handle: "_chloeyan",
+        projectName: "Binoculars",
+        projectUrl: "https://x.com/_chloeyan/status/2044161732348883164",
+        projectImage: "/projects/binoculars.jpg",
+      },
+      {
+        name: "Maayan Albert",
+        handle: "maayanalbert",
+        projectName: "Proto",
+        projectUrl: "https://prototypes.fun/",
+        projectImage: "/projects/proto.jpg",
+      },
+      {
+        name: "Manan Dua",
+        handle: "manandua",
+        projectName: "Penguin",
+        projectUrl: "https://penguin.music/",
+        projectImage: "/projects/penguin.jpg",
+      },
+      {
+        name: "Aleksei Ivanovskii",
+        handle: "alex_ivanovskii",
+        projectName: "Wabi",
+        projectUrl: "https://wabi.ai/",
+        projectImage: "/projects/wabi.jpg",
+      },
+      {
+        name: "Aibek Yegemberdin",
+        handle: "aibek_design",
+        projectName: "Whimsical Wonder",
+        projectUrl: "https://x.com/aibek_design/status/2102590641528356905",
+        projectImage: "/projects/wonder.jpg",
+      },
+    ],
+  },
+  {
+    id: "2026-10",
+    title: "October 2026",
+    // TODO: Ben and Natalie to confirm the booking; Luma currently names SPC.
     venue: "San Francisco",
     upcoming: true,
-    description: ["5 demos, 5 min each. No slides."],
+    description: [
+      "Thursday, October 29. Demos, then dinner.",
+      "Check-in at 6:30 p.m. Doors close at 7:00 p.m. All times Pacific.",
+      "5 demos, 5 min each. No slides.",
+    ],
     speakers: [],
   },
 ];
