@@ -6,6 +6,8 @@ Monthly demo dinners in SF for designers who explore how we create with machines
 
 Start with the [Designers & Machines Event Runbook](EVENT-RUNBOOK.md) for event preparation, roles, the run of show, venue requirements, and organizer handoff. It includes the September 24, 2026 onboarding notes and pending items for edition #6.
 
+The morning after an event, use the [day-after agent prompt and checklist](EVENT-RUNBOOK.md#next-day-website-update) to update checked-in attendees, actual demos, recap tweets, and the next month's Luma registration link. The agent will ask for missing inputs.
+
 A single-screen site built with [Next.js](https://nextjs.org) (App Router, TypeScript, Tailwind CSS). The hero features an interactive canvas — a red rope hangs between the two silhouettes, reacts to the cursor, and clicking twice anywhere creates new ropes.
 
 ## Development
