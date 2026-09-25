@@ -331,10 +331,9 @@ export default function PreviewTab({
                     className="block overflow-hidden rounded-xl bg-[#55524F] transition-opacity hover:opacity-90"
                   >
                     {projectImage ? (
-                      // eslint-disable-next-line @next/next/no-img-element
                       <Image
                         src={projectImage}
-                        alt={`${speaker.name}'s project`}
+                        alt={speaker.projectName ?? `${speaker.name}'s project`}
                         width={560}
                         height={344}
                         loading="lazy"
@@ -342,6 +341,11 @@ export default function PreviewTab({
                       />
                     ) : (
                       <div className="h-[172px] w-full" />
+                    )}
+                    {speaker.projectName && (
+                      <p className="px-3 py-2 text-sm font-medium text-[#EDEAE6]">
+                        {speaker.projectName}
+                      </p>
                     )}
                   </a>
                 )}

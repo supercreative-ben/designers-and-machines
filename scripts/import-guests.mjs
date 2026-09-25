@@ -10,6 +10,7 @@ const FILES = [
   ["2026-05", "/Users/beni/Downloads/Designers & Machines May 2026 - Guests - 2026-08-03-01-13-45.csv"],
   ["2026-06", "/Users/beni/Downloads/Designers & Machines June 2026 - Guests - 2026-08-03-01-13-25.csv"],
   ["2026-08", "/Users/beni/Downloads/Designers & Machines August 2026 - Guests - 2026-08-21-06-05-48.csv"],
+  ["2026-09", "/Users/beni/Downloads/Designers & Machines September 2026 - Guests - 2026-09-25-14-34-56.csv"],
 ];
 
 const HANDLE_COLUMN = "What is your X (Twitter) handle?";
@@ -42,7 +43,7 @@ function normalizeHandle(raw) {
   if (!raw) return null;
   let value = raw.trim();
   const url = value.match(/(?:x\.com|twitter\.com)\/(?:#!\/)?@?([A-Za-z0-9_]{1,15})/i);
-  if (url) return url[1];
+  if (url) value = url[1];
   value = value.replace(/^@/, "").split(/[/?\s]/)[0];
   if (!/^[A-Za-z0-9_]{1,15}$/.test(value)) return null;
   if (/^(none|na|no|nil|null|x|nope)$/i.test(value)) return null;
