@@ -275,7 +275,7 @@ export const EVENTS: DemoEvent[] = [
         name: "Micka Touillaud",
         handle: "micka_design",
         projectName: "Vybe",
-        projectUrl: "https://www.vybe.build/",
+        projectUrl: "https://humanmemory.dev/",
         projectImage: "/projects/vybe.jpg",
       },
       {
