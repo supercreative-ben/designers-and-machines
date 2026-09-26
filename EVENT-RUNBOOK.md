@@ -89,39 +89,27 @@ Give everyone clear steps as they walk in — think of it as clear UX:
 
 Keep the core message consistent, updating the edition number and personal introduction for the current host. Each edition, add 2–3 sentences about what makes the current moment interesting. The onboarding notes suggested a new model release opening a new field of possibility (using "Opus 5.5" as an example): "no more excuses not to build." Choose and verify a timely example before using it.
 
-Original organizer's opening for edition #6:
+Organizer's opening:
 
-> Welcome, everybody. This is the sixth Designers and Machines.
+> Welcome, everybody. This is the #N Designers and Machines.
 >
-> I arrived in SF in January, and some of the coolest people I've met were at this event. Relationships and companies have started here.
+> I arrived in SF since XXX, and some of the coolest people I've met were at this event.
+> People have met co-founders here, started companies, even hooked up. Designers are passionate people who are tired of overly formal formats.
 >
 > Go on [designers-machines.com](https://www.designers-machines.com/) to chat and see the other attendees.
 >
-> Rules of the game: 50 attendees, 300 people on the waitlist, 5 minutes each, 1 minute Q&A, dinner after.
+> Rules of the game: 50 attendees, 300 people on the waitlist, you are here for a reason.
+> 5 minutes for each demo.  When the timer finishes, I will start clapping.
+> 1 minute of Q&A after each demos.
+> Dinner is served after.
 
-Community framing to weave in: people have met co-founders here, started companies, even hooked up. Designers are passionate people who are tired of overly formal formats.
+> Please join me in welcoming for this edition:
+> 1. ...
+> 2. ...
+> 3. ...
+> 4. ...
+> 5. ...
 
-### Demo format
-
-- **5-minute demos** per speaker — start clapping at 5 minutes to keep it moving.
-- **1-minute Q&A** between each.
-- Then a download / debrief.
-- **Dinner after.**
-
-### September 24 recap — confirmed September 25
-
-These presenters belong to the completed September edition, not the upcoming October lineup. Ben confirmed:
-
-1. Micka Touillaud — [Vybe](https://www.vybe.build/)
-2. Chloe Yan — [Binoculars demo](https://x.com/_chloeyan/status/2044161732348883164)
-3. Maayan Albert — [Proto](https://prototypes.fun/)
-4. Manan Dua — [Penguin](https://penguin.music/)
-5. Aleksei Ivanovskii — [Wabi](https://wabi.ai/)
-6. Aibek Yegemberdin — [Whimsical Wonder / DoorDash demo](https://x.com/aibek_design/status/2102590641528356905)
-
-The September 25 Luma CSV contains **32 checked-in guests**. The website also includes the three host-confirmed presenters absent from check-in (Micka, Maayan, and Aibek), for **35 September attendees**. Only public names, handles, and avatars are published; the raw CSV remains local.
-
-Featured attendee recap: [Elena Hu's post](https://x.com/elenahuxy/status/2103370645484847175). Demo previews use public project Open Graph images and the thumbnails from Chloe's and Aibek's videos, saved under `public/projects/`.
 
 ### October 29 — upcoming
 
@@ -228,12 +216,6 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 - Transition path: **Co-organize the next edition → the new organizer leads the one after, with the original organizer as backup.**
 - Lesson from the Paris Air Club: If you do not make an event easy to hand off, the community momentum dies. Document the process.
 - Keep all routines and recaps in this repo so they are accessible to future hosts and coding agents.
-
-## 9. Demo ideas for upcoming editions
-
-- Suggested format: **"3 hot takes with 3 proofs"** — concise and engaging.
-- Talk track worth exploring: The source of truth should be the code, so a separate design tool is redundant — vibe coding and cloud design as the preferred workflow.
-- Demo candidates floated: The landing page, Fluid, the State Project.
 
 ## 10. Open action items
 
