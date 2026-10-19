@@ -122,7 +122,9 @@ export default function BottomDock({
   React.useEffect(() => {
     if (!activeTab) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closePanel();
+      if (e.key !== "Escape" || e.defaultPrevented || e.isComposing) return;
+      e.preventDefault();
+      closePanel();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -211,6 +213,7 @@ export default function BottomDock({
               <button
                 type="button"
                 aria-label="Close"
+                aria-keyshortcuts="Escape"
                 onClick={closePanel}
                 className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
               >
