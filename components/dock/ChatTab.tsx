@@ -231,7 +231,7 @@ export default function ChatTab() {
             el.scrollHeight - el.scrollTop - el.clientHeight < 40;
         }}
         className="min-h-0 flex-1"
-        viewportClassName="scroll-fade px-5 pb-4 pt-5"
+        viewportClassName="dock-scroll-viewport scroll-fade px-5 pb-4 pt-5"
       >
         {messages === null ? (
           <ThinkingIndicator words={["Loading", "Fetching", "Listening"]} />

@@ -96,7 +96,7 @@ export default function PlayTab({
   };
 
   return (
-    <ScrollArea className="h-full" viewportClassName="scroll-fade">
+    <ScrollArea className="h-full" viewportClassName="dock-scroll-viewport scroll-fade">
       <div className="flex min-h-full flex-col gap-8 px-5 pb-20 pt-5">
         <div className="flex flex-col gap-3">
           <SectionLabel>Theme</SectionLabel>

@@ -93,9 +93,9 @@ body::after {
 }
 
 /* Fluid Functionalism scrollbars and scroll-fade utilities. */
-/* Radix's intrinsic table wrapper can grow to a project's image width.
-   Keep People cards inside the viewport; the native touch branch is unchanged. */
-.people-scroll-viewport[data-radix-scroll-area-viewport] > div {
+/* Radix's intrinsic table wrapper can grow to image or unbroken-text width.
+   Constrain vertical dock content without changing native touch scrolling. */
+.dock-scroll-viewport[data-radix-scroll-area-viewport] > div {
   display: block !important;
   width: 100%;
 }
