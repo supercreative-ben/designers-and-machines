@@ -2,6 +2,20 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
+import {
+  AnimatePresence,
+  motion,
+  useIsPresent,
+  useReducedMotion,
+} from "motion/react";
+import { LUMA_EVENT_SLUG } from "@/data/site";
+import { useFluidHover } from "@/hooks/use-fluid-hover";
+import {
+  FluidHoverHighlight,
+  resolveHighlightTransition,
+  toTarget,
+} from "@/components/ui/fluid-hover-highlight";
+import { spring } from "@/lib/springs";
 import type { MusicState, RopeSettings } from "./PlayTab";
 
 // Tab contents are code-split out of the initial bundle; they're prefetched
@@ -24,6 +38,50 @@ const TABS: { id: TabId; label: string }[] = [
 const PILL_GAP = 12;
 const CARD_HEIGHT = "min(500px, calc(100dvh - 96px))";
 
+/** Keep the exiting panel inert while AnimatePresence finishes its fade. */
+function DockPanel({
+  id,
+  labelledBy,
+  children,
+}: {
+  id: string;
+  labelledBy: string;
+  children: React.ReactNode;
+}) {
+  const present = useIsPresent();
+  const reduceMotion = useReducedMotion();
+  const panelRef = React.useRef<HTMLDivElement>(null);
+  const hidden = {
+    opacity: 0,
+    y: reduceMotion ? 0 : 16,
+    scale: reduceMotion ? 1 : 0.98,
+  };
+
+  React.useEffect(() => {
+    if (present) panelRef.current?.focus({ preventScroll: true });
+  }, [present]);
+
+  return (
+    <motion.div
+      ref={panelRef}
+      id={id}
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby={labelledBy}
+      inert={!present}
+      tabIndex={-1}
+      className="absolute inset-0 origin-bottom overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] outline-none backdrop-blur-md"
+      style={{ pointerEvents: present ? "auto" : "none" }}
+      initial={hidden}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ ...hidden, transition: spring.slow.exit }}
+      transition={spring.slow}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function BottomDock({
   settings,
   onSettingsChange,
@@ -36,35 +94,41 @@ export default function BottomDock({
   onMusicChange: (music: MusicState) => void;
 }) {
   const [activeTab, setActiveTab] = React.useState<TabId | null>(null);
-  // Keep the last tab's content mounted while the card animates out, so it
-  // doesn't fade away empty.
-  const [renderedTab, setRenderedTab] = React.useState<TabId | null>(null);
-
-  React.useEffect(() => {
-    if (activeTab) {
-      setRenderedTab(activeTab);
-      return;
-    }
-    const timeout = setTimeout(() => setRenderedTab(null), 500);
-    return () => clearTimeout(timeout);
+  const panelId = React.useId();
+  const navItemsRef = React.useRef<(HTMLElement | null)[]>([]);
+  const reduceMotion = useReducedMotion() ?? false;
+  const closePanel = React.useCallback(() => {
+    const index = TABS.findIndex((tab) => tab.id === activeTab);
+    setActiveTab(null);
+    navItemsRef.current[index]?.focus({ preventScroll: true });
   }, [activeTab]);
 
   // Returning from the X OAuth flow lands on /#chat — open the Chat tab.
   React.useEffect(() => {
-    if (window.location.hash === "#chat") {
+    if (window.location.hash !== "#chat") return;
+    // Let hydration and the navigation's first measurement finish before
+    // opening the panel and positioning its active pill.
+    const frame = requestAnimationFrame(() => {
       setActiveTab("chat");
-      history.replaceState(null, "", window.location.pathname);
-    }
+      history.replaceState(
+        history.state,
+        "",
+        `${window.location.pathname}${window.location.search}`
+      );
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   React.useEffect(() => {
     if (!activeTab) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveTab(null);
+      if (e.key !== "Escape" || e.defaultPrevented || e.isComposing) return;
+      e.preventDefault();
+      closePanel();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [activeTab]);
+  }, [activeTab, closePanel]);
 
   // Warm the code-split tab chunks once the page has settled, so the first
   // tab open doesn't wait on a network fetch.
@@ -94,16 +158,26 @@ export default function BottomDock({
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  // The closed card collapses to exactly the pill's rect so opening reads as
-  // the pill morphing into the card.
+  // One measured coordinate space for both the active and hover pills.
   const navRef = React.useRef<HTMLElement>(null);
-  const [pill, setPill] = React.useState({ width: 298, height: 40 });
+  const hover = useFluidHover(navRef, { axis: "x" });
+  const { registerItem } = hover;
+  const navItemRefs = React.useMemo(
+    () =>
+      TABS.map(
+        (_, index) => (element: HTMLButtonElement | HTMLAnchorElement | null) => {
+          navItemsRef.current[index] = element;
+          registerItem(index, element);
+        }
+      ),
+    [registerItem]
+  );
+  const [navWidth, setNavWidth] = React.useState(298);
 
   React.useEffect(() => {
     const el = navRef.current;
     if (!el) return;
-    const update = () =>
-      setPill({ width: el.offsetWidth, height: el.offsetHeight });
+    const update = () => setNavWidth(el.offsetWidth);
     update();
     const observer = new ResizeObserver(update);
     observer.observe(el);
@@ -111,106 +185,153 @@ export default function BottomDock({
   }, []);
 
   // Same PILL_GAP breathing room on the card's left, right, and bottom.
-  const cardWidth = mobileCardWidth ?? pill.width + PILL_GAP * 2;
+  const cardWidth = mobileCardWidth ?? navWidth + PILL_GAP * 2;
+  const selectedIndex = TABS.findIndex((tab) => tab.id === activeTab);
+  const selectedRect = hover.isMeasured
+    ? hover.itemRects[selectedIndex] ?? null
+    : null;
+  const hoveredRect =
+    hover.isMeasured && hover.activeIndex !== null
+      ? hover.itemRects[hover.activeIndex] ?? null
+      : null;
+  const hoveringOther = hoveredRect !== null && hover.activeIndex !== selectedIndex;
 
   return (
-    <div className="pointer-events-auto relative mt-6">
-      {/* Expanding card: morphs between the pill's rect and full size.
-          Content keeps its full-size layout and is cropped during the morph.
-          `visibility` transitions discretely — it hides only once the close
-          animation finishes, and shows immediately on open. */}
+    <div className="pointer-events-auto relative isolate mt-6">
+      {/* The panel keeps its own shape and exits behind the opaque dock. */}
       <div
-        className={`absolute left-1/2 -translate-x-1/2 overflow-hidden border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-          activeTab ? "" : "pointer-events-none invisible"
-        }`}
-        style={
-          activeTab
-            ? {
-                width: cardWidth,
-                height: CARD_HEIGHT,
-                borderRadius: 28,
-                bottom: -PILL_GAP,
-              }
-            : {
-                width: pill.width,
-                height: pill.height,
-                borderRadius: pill.height / 2,
-                bottom: 0,
-              }
-        }
-        role="dialog"
-        aria-modal="false"
+        className="pointer-events-none absolute left-1/2 z-0 -translate-x-1/2"
+        style={{ width: cardWidth, height: CARD_HEIGHT, bottom: -PILL_GAP }}
       >
-        {/* Full-size inner frame so content never reflows while morphing */}
-        <div
-          className="absolute left-1/2 top-0 -translate-x-1/2"
-          style={{ width: cardWidth, height: CARD_HEIGHT }}
-        >
-          <button
-            type="button"
-            aria-label="Close"
-            onClick={() => setActiveTab(null)}
-            className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
-          >
-            <svg
-              viewBox="0 0 14 14"
-              fill="none"
-              className="size-3.5"
-              aria-hidden
+        <AnimatePresence>
+          {activeTab && (
+            <DockPanel
+              key="dock-panel"
+              id={panelId}
+              labelledBy={`${panelId}-${activeTab}`}
             >
-              <path
-                d="M2 2L12 12M12 2L2 12"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-          <div className="h-full">
-            {renderedTab === "preview" && (
-              <PreviewTab onNavigate={setActiveTab} />
-            )}
-            {renderedTab === "play" && (
-              <PlayTab
-                settings={settings}
-                onSettingsChange={onSettingsChange}
-                music={music}
-                onMusicChange={onMusicChange}
-              />
-            )}
-            {renderedTab === "chat" && <ChatTab />}
-            {renderedTab === "join" && <JoinTab />}
-          </div>
-        </div>
+              <button
+                type="button"
+                aria-label="Close"
+                aria-keyshortcuts="Escape"
+                onClick={closePanel}
+                className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
+              >
+                <svg
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  className="size-3.5"
+                  aria-hidden
+                >
+                  <path
+                    d="M2 2L12 12M12 2L2 12"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+              <div className="h-full">
+                {activeTab === "preview" && (
+                  <PreviewTab onNavigate={setActiveTab} />
+                )}
+                {activeTab === "play" && (
+                  <PlayTab
+                    settings={settings}
+                    onSettingsChange={onSettingsChange}
+                    music={music}
+                    onMusicChange={onMusicChange}
+                  />
+                )}
+                {activeTab === "chat" && <ChatTab />}
+                {activeTab === "join" && <JoinTab />}
+              </div>
+            </DockPanel>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Tab pill — stays on top of the card when it's open */}
       <nav
         ref={navRef}
+        aria-label="Main navigation"
+        {...hover.handlers}
         style={
           mobileCardWidth
             ? { width: mobileCardWidth - PILL_GAP * 2 }
             : undefined
         }
-        className={`relative z-10 flex items-center rounded-full border p-[3px] transition-colors ${
-          activeTab
-            ? "border-transparent bg-[#211E1C]"
-            : "border-white/[0.06] bg-[#2A2725]/90"
-        }`}
+        className="relative z-20 flex items-center rounded-full border border-white/[0.06] bg-[#2A2725] p-[3px]"
       >
-        {TABS.map((tab) => {
+        <AnimatePresence>
+          {selectedRect && (
+            <motion.div
+              key="active-tab"
+              aria-hidden
+              data-slot="dock-active-tab"
+              className="pointer-events-none absolute left-0 top-0 rounded-full bg-active"
+              initial={false}
+              animate={{
+                ...toTarget(selectedRect),
+                opacity: hoveringOther ? 0.8 : 1,
+              }}
+              exit={{ opacity: 0, transition: spring.fast.exit }}
+              transition={resolveHighlightTransition(spring.moderate, reduceMotion)}
+            />
+          )}
+        </AnimatePresence>
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          animate={{ opacity: hoveringOther ? 0.4 : 0 }}
+          transition={hoveringOther ? spring.fast : spring.fast.exit}
+        >
+          <FluidHoverHighlight
+            rect={hoveringOther ? hoveredRect : selectedRect}
+            session={hover.session}
+            from={selectedRect}
+            transition={hoveringOther ? spring.fast : spring.moderate}
+            className="rounded-full bg-active"
+          />
+        </motion.div>
+        {TABS.map((tab, index) => {
           const active = activeTab === tab.id;
+          const className = `relative z-10 flex-1 rounded-full px-5 py-1.5 text-center text-[13px] font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EDEAE6] ${
+            active
+              ? "text-[#EDEAE6]"
+              : "text-[#A29E9A] data-[fluid-hover-active]:text-[#EDEAE6]"
+          }`;
+
+          if (tab.id === "join" && LUMA_EVENT_SLUG) {
+            return (
+              <a
+                key={tab.id}
+                ref={navItemRefs[index]}
+                id={`${panelId}-${tab.id}`}
+                href={`https://luma.com/${LUMA_EVENT_SLUG}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-sound="tab"
+                aria-label="Join on Luma (opens in a new tab)"
+                className={className}
+              >
+                {tab.label}
+              </a>
+            );
+          }
+
           return (
             <button
               key={tab.id}
+              ref={navItemRefs[index]}
+              id={`${panelId}-${tab.id}`}
               type="button"
+              aria-expanded={active}
+              aria-controls={panelId}
+              aria-haspopup="dialog"
               data-sound="tab"
-              onClick={() => setActiveTab(active ? null : tab.id)}
-              className={`flex-1 rounded-full px-5 py-1.5 text-[13px] font-medium transition-colors ${
-                active
-                  ? "bg-white text-black"
-                  : "text-[#A29E9A] hover:text-[#EDEAE6]"
-              }`}
+              onClick={() => active ? closePanel() : setActiveTab(tab.id)}
+              className={className}
             >
               {tab.label}
             </button>

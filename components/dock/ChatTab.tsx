@@ -3,6 +3,7 @@
 import * as React from "react";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import ThinkingIndicator from "@/components/ThinkingIndicator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type ChatUser = {
   id: string;
@@ -44,6 +45,17 @@ export default function ChatTab() {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const stickToBottomRef = React.useRef(true);
+  // FF switches to a native viewport on touch. Reattach and restore the
+  // bottom position when that viewport mounts, as well as on first load.
+  const attachScrollArea = React.useCallback((area: HTMLDivElement | null) => {
+    const viewport = area?.querySelector<HTMLDivElement>(
+      '[data-slot="scroll-area-viewport"]'
+    ) ?? null;
+    scrollRef.current = viewport;
+    if (stickToBottomRef.current && viewport) {
+      viewport.scrollTop = viewport.scrollHeight;
+    }
+  }, []);
   // The tab pill's rect, so the connect button can match it exactly.
   const [pill, setPill] = React.useState<{
     width: number;
@@ -53,24 +65,29 @@ export default function ChatTab() {
   // Surface OAuth failures passed back from the callback so sign-in
   // problems are visible instead of silently landing on an empty tab.
   React.useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const reason = params.get("chat_error");
-    if (!reason) return;
-    const friendly: Record<string, string> = {
-      state: "Sign-in session expired — please try again.",
-      token: "X rejected the app credentials — the client secret needs updating.",
-      profile: "Couldn't load your X profile — please try again.",
-      unconfigured: "X sign-in isn't configured yet.",
-      access_denied: "X access was denied — please try again.",
-    };
-    setAuthError(friendly[reason] ?? `X sign-in failed (${reason}).`);
-    params.delete("chat_error");
-    const query = params.toString();
-    window.history.replaceState(
-      null,
-      "",
-      `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`
-    );
+    // Consume the browser callback on the next frame. Reading and clearing
+    // together also keeps Strict Mode's cancelled first effect harmless.
+    const frame = requestAnimationFrame(() => {
+      const params = new URLSearchParams(window.location.search);
+      const reason = params.get("chat_error");
+      if (!reason) return;
+      const friendly: Record<string, string> = {
+        state: "Sign-in session expired — please try again.",
+        token: "X rejected the app credentials — the client secret needs updating.",
+        profile: "Couldn't load your X profile — please try again.",
+        unconfigured: "X sign-in isn't configured yet.",
+        access_denied: "X access was denied — please try again.",
+      };
+      setAuthError(friendly[reason] ?? `X sign-in failed (${reason}).`);
+      params.delete("chat_error");
+      const query = params.toString();
+      window.history.replaceState(
+        window.history.state,
+        "",
+        `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`
+      );
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   React.useEffect(() => {
@@ -128,8 +145,9 @@ export default function ChatTab() {
 
   // Keep the view pinned to the newest message unless the user scrolled up.
   React.useEffect(() => {
-    if (stickToBottomRef.current && scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    const viewport = scrollRef.current;
+    if (stickToBottomRef.current && viewport) {
+      viewport.scrollTop = viewport.scrollHeight;
     }
   }, [messages]);
 
@@ -204,14 +222,16 @@ export default function ChatTab() {
 
   return (
     <div className="flex h-full flex-col">
-      <div
-        ref={scrollRef}
-        onScroll={(e) => {
-          const el = e.currentTarget;
+      <ScrollArea
+        ref={attachScrollArea}
+        onScrollCapture={(e) => {
+          const el = e.target as HTMLElement;
+          if (el.dataset.slot !== "scroll-area-viewport") return;
           stickToBottomRef.current =
             el.scrollHeight - el.scrollTop - el.clientHeight < 40;
         }}
-        className="min-h-0 flex-1 overflow-y-auto px-5 pb-4 pt-5"
+        className="min-h-0 flex-1"
+        viewportClassName="dock-scroll-viewport scroll-fade px-5 pb-4 pt-5"
       >
         {messages === null ? (
           <ThinkingIndicator words={["Loading", "Fetching", "Listening"]} />
@@ -248,7 +268,7 @@ export default function ChatTab() {
             ))}
           </div>
         )}
-      </div>
+      </ScrollArea>
       {/* 10px insets make the composer the same width as the tab pill below */}
       <div className="shrink-0 px-[10px] pb-[58px]">
         {/* Only worth showing once it's an actual crowd — a lone "1

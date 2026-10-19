@@ -361,6 +361,8 @@ const FEATURED_HANDLES = [
   "eve_bouff",
   "pablostanley",
   "ben_issen",
+  "soleio",
+  "micka_design",
 ];
 
 /**
@@ -384,13 +386,13 @@ function RotatingAvatar() {
   if (handles.length === 0) return null;
   return (
     <span
-      className="relative mr-1.5 inline-block size-4 align-[-3px]"
+      className="relative mx-1 inline-flex size-4 shrink-0"
       aria-hidden
     >
       {handles.map((handle, i) => (
         <span
           key={handle}
-          className={`absolute inset-0 transition-opacity duration-300 ${
+          className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
             i === current ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -515,11 +517,17 @@ export default function Hero() {
           A monthly dinner in SF where 5 designers demo what they&apos;re
           building with AI. 5 min each.
           <br />
-          Next dinner Thu Oct 29th (<RotatingAvatar />
-          {spots.soldOut
-            ? "sold out"
-            : `${spots.remaining ?? "some"} spots left`}
-          )
+          Next dinner Thu Oct 29th{" "}
+          <span className="inline-flex items-center whitespace-nowrap align-middle">
+            <span>(</span>
+            <RotatingAvatar />
+            <span>
+              {spots.soldOut
+                ? "sold out"
+                : `${spots.remaining ?? "some"} spots left`}
+              )
+            </span>
+          </span>
         </p>
         <BottomDock
           settings={ropeSettings}

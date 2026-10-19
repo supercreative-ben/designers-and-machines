@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import ProfileAvatar from "@/components/ProfileAvatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { EVENTS, projectImageUrl } from "@/data/events";
 import { ATTENDEES } from "@/data/people";
 import { Tweet } from "react-tweet";
@@ -148,6 +149,42 @@ export default function PreviewTab({
   }, []);
   const [index, setIndex] = React.useState(defaultIndex);
   const event = EVENTS[index];
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const changeMonth = React.useCallback((direction: -1 | 1) => {
+    setIndex((current) =>
+      Math.max(0, Math.min(EVENTS.length - 1, current + direction))
+    );
+  }, []);
+
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (
+        e.defaultPrevented ||
+        e.isComposing ||
+        e.metaKey || e.ctrlKey || e.altKey || e.shiftKey ||
+        !contentRef.current ||
+        contentRef.current.closest("[inert]")
+      ) {
+        return;
+      }
+
+      const target = e.target;
+      if (
+        target instanceof Element &&
+        target.closest(
+          "input, textarea, select, [contenteditable]:not([contenteditable='false']), [role='textbox'], [role='slider'], [role='combobox'], [role='listbox'], [role='menu'], [role='tablist']"
+        )
+      ) {
+        return;
+      }
+
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      e.preventDefault();
+      changeMonth(e.key === "ArrowLeft" ? -1 : 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [changeMonth]);
 
   // Public like counts, keyed by "eventId/handle". Every project shows at
   // least the 1 baseline like until the real counts load.
@@ -217,11 +254,15 @@ export default function PreviewTab({
     "flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors enabled:hover:text-white disabled:opacity-40";
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto overflow-x-hidden">
+    <div ref={contentRef} className="flex h-full min-h-0 flex-col overflow-hidden">
       <header className="relative shrink-0 px-5 pb-4 pt-5">
         {/* Only the title needs to clear the nav buttons; the venue line
             below them can use the full card width. */}
-        <h2 className="pr-[120px] text-[15px] font-medium text-white">
+        <h2
+          aria-live="polite"
+          aria-atomic="true"
+          className="pr-[120px] text-[15px] font-medium text-white"
+        >
           {event.title}
         </h2>
         <p className="mt-1 text-sm text-[#A5A19D]">{event.venue}</p>
@@ -230,8 +271,9 @@ export default function PreviewTab({
           <button
             type="button"
             aria-label="Previous month"
+            aria-keyshortcuts="ArrowLeft"
             disabled={index === 0}
-            onClick={() => setIndex((i) => i - 1)}
+            onClick={() => changeMonth(-1)}
             className={navButtonClass}
           >
             <Chevron direction="left" />
@@ -239,8 +281,9 @@ export default function PreviewTab({
           <button
             type="button"
             aria-label="Next month"
+            aria-keyshortcuts="ArrowRight"
             disabled={index === EVENTS.length - 1}
-            onClick={() => setIndex((i) => i + 1)}
+            onClick={() => changeMonth(1)}
             className={navButtonClass}
           >
             <Chevron direction="right" />
@@ -248,7 +291,13 @@ export default function PreviewTab({
         </div>
       </header>
 
-      <div className="flex-1 px-5 pb-20">
+      {/* A fresh scroll container starts each month at the top. The header
+          stays mounted so arrow-button focus is preserved. */}
+      <ScrollArea
+        key={event.id}
+        className="min-h-0 flex-1"
+        viewportClassName="dock-scroll-viewport scroll-fade overflow-x-hidden px-5 pb-20 [&>div]:h-full"
+      >
         {event.upcoming ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
             {event.description?.map((paragraph) => (
@@ -393,7 +442,7 @@ export default function PreviewTab({
             </div>
           </div>
         )}
-      </div>
+      </ScrollArea>
     </div>
   );
 }
