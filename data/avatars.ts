@@ -136,6 +136,7 @@ const SAVED_HANDLES = new Set([
   "shivanimatla",
   "shkliarau",
   "shreyaspatil_",
+  "soleio",
   "sourabhmane_",
   "strawpari",
   "stu_part",

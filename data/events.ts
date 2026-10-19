@@ -49,7 +49,7 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-03",
     title: "March 2026",
-    venue: "Hosted at Rox in San Francisco",
+    venue: "Hosted at Rox",
     featuredImage: "/dinners/2026-03.jpg",
     tweets: [
       "https://x.com/ben_issen/status/2028944496617242913",
@@ -95,7 +95,7 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-04",
     title: "April 2026",
-    venue: "Hosted at Rox in San Francisco",
+    venue: "Hosted at Rox",
     featuredImage: "/dinners/2026-04.jpg",
     tweets: [
       "https://x.com/floguo/status/2050375812810223897",
@@ -124,7 +124,7 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-05",
     title: "May 2026",
-    venue: "Hosted at Rox in San Francisco",
+    venue: "Hosted at Rox",
     featuredImage: "/dinners/2026-05.jpg",
     tweets: [
       "https://x.com/MalayVasa/status/2054814709623456208",
@@ -175,7 +175,7 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-06",
     title: "June 2026",
-    venue: "Hosted at PostHog in San Francisco",
+    venue: "Hosted at PostHog",
     featuredImage: "/dinners/2026-06.jpg",
     tweets: [
       "https://x.com/tinathetechie/status/2069299201071346165",
@@ -268,7 +268,7 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-09",
     title: "September 2026",
-    venue: "Hosted at SPC in San Francisco",
+    venue: "Hosted at SPC",
     tweets: ["https://x.com/elenahuxy/status/2103370645484847175"],
     speakers: [
       {

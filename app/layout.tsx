@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import ClickSounds from "@/components/ClickSounds";
 import Presence from "@/components/Presence";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full">
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         <ClickSounds />
         <Presence />
         <Analytics />
