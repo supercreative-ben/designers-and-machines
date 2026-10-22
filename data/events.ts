@@ -19,6 +19,14 @@ export type DemoEvent = {
   id: string;
   title: string;
   venue: string;
+  /** Only host-confirmed dates/times; older editions may have just a month. */
+  date?: string;
+  startsAt?: string;
+  endsAt?: string;
+  timeZone?: string;
+  registrationUrl?: string;
+  /** False until the host confirms a pending venue booking. */
+  venueConfirmed?: boolean;
   /** Upcoming events show a call-to-action instead of the lineup. */
   upcoming?: boolean;
   /** Shown on the event's Lineup card — format, the why of the event, etc.
@@ -268,6 +276,7 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-09",
     title: "September 2026",
+    date: "2026-09-24",
     venue: "Hosted at SPC",
     tweets: ["https://x.com/elenahuxy/status/2103370645484847175"],
     speakers: [
@@ -317,8 +326,15 @@ export const EVENTS: DemoEvent[] = [
   {
     id: "2026-10",
     title: "October 2026",
+    // Confirmed in EVENT-RUNBOOK.md; keep registration settings in sync.
+    date: "2026-10-29",
+    startsAt: "2026-10-29T18:30:00-07:00",
+    endsAt: "2026-10-29T21:30:00-07:00",
+    timeZone: "America/Los_Angeles",
+    registrationUrl: "https://luma.com/u0l7j6iz",
     // TODO: Ben and Natalie to confirm the booking; Luma currently names SPC.
     venue: "San Francisco",
+    venueConfirmed: false,
     upcoming: true,
     description: [
       "Thursday, October 29. Demos, then dinner.",
