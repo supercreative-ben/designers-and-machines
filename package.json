@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:webmcp": "node --test scripts/verify-webmcp.mjs"
   },
   "dependencies": {
     "@radix-ui/react-scroll-area": "1.2.11",

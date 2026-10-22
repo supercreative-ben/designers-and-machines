@@ -204,6 +204,7 @@ Read the host's message, attachments, and current repo first. Ask only unanswere
 | New Luma event link | [data/site.ts](data/site.ts): update both `LUMA_EMBED_URL` for the Join tab and `LUMA_EVENT_SLUG` for the spots counter to refer to the same new event. |
 | Homepage next-dinner date | [components/Hero.tsx](components/Hero.tsx): update the visible date alongside the Luma registration settings. |
 | Event month, venue, description, and selected demos | [data/events.ts](data/events.ts): update the appropriate `EVENTS` entry and its `speakers` (name, X handle, project URL, and optional project image). Preserve past editions; entries are ordered oldest to newest. |
+| Public event details for browser agents | [data/events.ts](data/events.ts): add confirmed `date`, `startsAt`, `endsAt`, `timeZone`, and `registrationUrl`; set `venueConfirmed` only when known. Keep the upcoming URL consistent with `data/site.ts` and preserve old links. The [WebMCP directory](docs/webmcp.md) reads this data automatically; unknown details stay empty. |
 | Selected preview tweets | [data/events.ts](data/events.ts): add full X status URLs to the relevant edition's `tweets` array. |
 | Recap photo, when available | Put the image in `public/dinners/` and set the edition's `featuredImage` in [data/events.ts](data/events.ts). |
 

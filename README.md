@@ -25,13 +25,28 @@ Open [http://localhost:3000](http://localhost:3000).
 - `components/Hero.tsx` — hero layout: silhouettes, ampersand, text, and nav
 - `components/GravityLines.tsx` — canvas rope physics (verlet integration), ported from a Framer code component
 - `components/dock/` — bottom pill nav and the expanding card with the Preview / Play / Chat / Join tabs
-- `data/events.ts` — monthly demo lineups shown in the Preview tab (sample data, replace with real lineups)
+- `data/events.ts` — published monthly demo lineups, event details, and upcoming editions
 - `data/tracks.ts` — Strudel patterns for the Play tab's music section
 - `data/site.ts` — site config (set `LUMA_EMBED_URL` to enable the Join tab embed)
 
 ## Deploy
 
 Designed to deploy on [Vercel](https://vercel.com/new): import the GitHub repo and deploy with the default Next.js settings.
+
+## WebMCP
+
+The homepage exposes four read-only tools to browsers/agents that support WebMCP. They load automatically without opening the People tab or signing in:
+
+| Tool | Use |
+| --- | --- |
+| `dm_list_events` | Browse past/upcoming editions, dates, venues, public counts, and registration links. |
+| `dm_get_event` | Read one edition's details, demos, project links, and recap posts. |
+| `dm_search_attendees` | Search past attendees by name, handle, or demo project; filter by edition or demo giver. Includes each person's recorded edition history. |
+| `dm_search_demos` | Find presenters and projects across editions, with public profile/project links. |
+
+For example, ask a compatible browser agent: "Who demoed in September?", "Which dinners has Micka attended?", or "When is the next dinner and where can I register?"
+
+See [docs/webmcp.md](docs/webmcp.md) for arguments, coverage, compatibility, and browser verification. Run `npm run test:webmcp` for the directory and registration checks.
 
 ## Profile photos
 

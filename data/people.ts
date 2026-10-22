@@ -20,9 +20,9 @@ const MORE_ATTENDEES: Attendee[] = [
   { name: "Ben Issen", handle: "ben_issen", editions: [] },
 ];
 
-// Demo givers count as attendees of their month even if the guest export
-// missed them (hosts and speakers don't always register through Lu.ma).
-const speakerAttendees: Attendee[] = EVENTS.flatMap((event) =>
+// Confirmed demo givers count as attendees even if the guest export missed
+// them. Scheduled speakers do not count until the host publishes the recap.
+const speakerAttendees: Attendee[] = EVENTS.filter((event) => !event.upcoming).flatMap((event) =>
   event.speakers.map(({ name, handle }) => ({
     name,
     handle,
