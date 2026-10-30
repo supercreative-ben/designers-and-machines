@@ -100,6 +100,49 @@ body::after {
   width: 100%;
 }
 
+/* Fade fixed edge overlays, not the entire scrolling tweet subtree. An
+   animated mask under backdrop blur can make the browser repeatedly rasterize
+   the loaded embeds and flash their content while scrolling. */
+.recap-scroll-area {
+  --recap-fade-size: 48px;
+}
+.recap-scroll-area::before,
+.recap-scroll-area::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--recap-fade-size);
+  pointer-events: none;
+  z-index: 1;
+}
+.recap-scroll-area::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgb(var(--dock-panel-color) / 0.95), transparent);
+}
+.recap-scroll-area::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgb(var(--dock-panel-color) / 0.95), transparent);
+}
+@supports (animation-timeline: scroll()) and (timeline-scope: --recap-scroll) {
+  .recap-scroll-area {
+    timeline-scope: --recap-scroll;
+  }
+  .recap-scroll-area [data-slot="scroll-area-viewport"] {
+    scroll-timeline-name: --recap-scroll;
+  }
+  .recap-scroll-area::before {
+    animation: sf-divider-start both linear;
+    animation-timeline: --recap-scroll;
+    animation-range: 0 var(--recap-fade-size);
+  }
+  .recap-scroll-area::after {
+    animation: sf-divider-end both linear;
+    animation-timeline: --recap-scroll;
+    animation-range: calc(100% - var(--recap-fade-size)) 100%;
+  }
+}
+
 @property --sf-start {
   syntax: "<number>";
   inherits: false;
