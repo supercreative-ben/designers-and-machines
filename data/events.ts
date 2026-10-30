@@ -375,7 +375,8 @@ export const EVENTS: DemoEvent[] = [
         name: "Tareq Ismail",
         handle: "tareqismail",
         projectName: "Alternate Timeline",
-        // TODO: Host to supply the public demo URL; the submitted reading demo is different.
+        projectUrl: "https://tareqistyping.com/interfaces-that-think/",
+        projectImage: "/projects/alternate-timeline.png",
       },
       {
         name: "Sourabh Daroji",
