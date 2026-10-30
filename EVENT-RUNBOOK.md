@@ -121,7 +121,7 @@ Organizer's opening:
 - The host confirmed Chaitanya Landge (`chuodini` → `kindaChai`), Sean Smith (`seansmithbuilds` → `seansmithworks`), and Ayushi Sharma (`awwsillylife17` → `helloayushi`) are the same people; their attendance histories are merged under the current handles. Micka's checked-in row omitted his handle and was matched to the existing `micka_design` record.
 - Featured recap posts: [Mane](https://x.com/maneSora_/status/2116065310424158396), [Sourabh](https://x.com/gizmofalcon/status/2116073337529172157), and [Kevin](https://x.com/kevskgs/status/2116081381222797678). Host confirmed proceeding without a standalone photo.
 - Tareq's [Alternate Timeline demo link](https://tareqistyping.com/interfaces-that-think/) was supplied by the host and added on October 30.
-- TODO: Add Stefan's What if URL when the host receives it. His registration link points to a different demo and was not reused. A follow-up is scheduled for October 31 at 10:00 a.m. Pacific if still missing.
+- Stefan's [What if demo link](https://whatif.heystefan.com/) was supplied by the host and added on October 30, with its official preview image. Both pending October demo links are now supplied.
 - Kevin's `cot.kevinliu.studio` game failed TLS verification on October 30; the recap links to his [working public repository](https://github.com/Kevin-Liu-01/Claude-of-Tanks). TODO: switch to the live game when it works again.
 - Both editions' SPC venues are host-confirmed. October is the default recap; the homepage, Join embed, and spots counter point to November 19.
 - Publication and live verification: tracked in [PR #9](https://github.com/supercreative-ben/designers-and-machines/pull/9). Confirm its deployment and verification result before treating the release as complete.
@@ -247,4 +247,5 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 - [ ] Establish the posting account, publishing schedule, and deployment access for the agent's monthly recap post, hype-up post, and next-day website update.
 - [ ] Assign a photographer and note taker.
 - [x] Confirm October's seven actual demo givers and projects for the recap (host confirmed October 30, including Ben's Temple correction).
-- [ ] Add Stefan's pending October demo URL; confirm November's speaker lineup separately.
+- [x] Add Stefan's October demo URL (host supplied October 30).
+- [ ] Confirm November's speaker lineup.

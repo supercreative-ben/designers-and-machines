@@ -354,7 +354,8 @@ export const EVENTS: DemoEvent[] = [
         name: "Stefan",
         handle: "heystefan_",
         projectName: "What if",
-        // TODO: Host to supply the public demo URL; Timeplot is a different project.
+        projectUrl: "https://whatif.heystefan.com/",
+        projectImage: "/projects/what-if.png",
       },
       {
         name: "Kevin Liu",
