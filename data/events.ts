@@ -366,7 +366,7 @@ export const EVENTS: DemoEvent[] = [
         projectImage: "/projects/claude-of-tanks.png",
       },
       {
-        name: "Glauber Sampaio",
+        name: "Glauber",
         handle: "glauberxyz",
         projectName: "Enclose",
         projectUrl: "https://enclose.dev/",
