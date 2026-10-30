@@ -61,15 +61,17 @@ test("an overdue recap stops being upcoming without becoming confirmed attendanc
   assert.equal(november.publishedAttendeeCount, null);
 });
 
-test("October reconciles to 42 checked-in people, six confirmed demos, and three selected recap posts", () => {
+test("October reconciles to 42 checked-in people, seven confirmed demos, and three selected recap posts", () => {
   const event = directory.getEvent("2026-10", today);
   assert.equal(event.publishedAttendeeCount, 42);
-  assert.equal(event.demos.length, 6);
+  assert.equal(event.demos.length, 7);
   assert.equal(event.demos.every((demo) => demo.status === "presented"), true);
-  assert.deepEqual(event.demos.map((demo) => demo.handle), ["soleio", "heystefan_", "kevskgs", "glauberxyz", "tareqismail", "gizmofalcon"]);
+  assert.deepEqual(event.demos.map((demo) => demo.handle), ["soleio", "heystefan_", "kevskgs", "glauberxyz", "tareqismail", "gizmofalcon", "ben_issen"]);
+  assert.equal(event.demos.find((demo) => demo.handle === "ben_issen").projectUrl, "https://www.temple.so/");
   assert.equal(event.recapUrls.length, 3);
   const people = directory.searchAttendees({ eventId: event.id, limit: 50 });
   assert.equal(people.total, 42);
+  assert.equal(people.items.filter((person) => person.handle === "ben_issen").length, 1);
   for (const demo of event.demos) assert(people.items.some((person) => person.id === demo.personId));
   assert.equal(directory.searchAttendees({ query: "gizmofalcon" }).items[0].name, "Sourabh Daroji");
 });

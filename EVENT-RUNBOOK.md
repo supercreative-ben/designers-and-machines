@@ -116,8 +116,8 @@ Organizer's opening:
 
 - [Registration](https://luma.com/u0l7j6iz), event ID `evt-tI6RAfBrCDRleFb`.
 - Luma verified September 25: Thursday, October 29, 2026, **6:30–9:30 p.m. America/Los_Angeles**. Standard doors-close time remains 7:00 p.m.
-- Host confirmed the six actual demos: Soleio — Mosaic Studio; Stefan — What if; Kevin Liu — Claude of Tanks; Glauber Sampaio — Enclose; Tareq Ismail — Alternate Timeline; Sourabh Daroji — Watt. Public project names and identities were verified against presenters' pages, source repositories, and the registration links.
-- October's CSV contained 325 registration rows and 42 checked-in guests, all included once. The six presenters were already among those 42, so the public People count is also 42. Earlier attendance was preserved. No RSVP-only rows were imported.
+- Host confirmed the seven actual demos: Soleio — Mosaic Studio; Stefan — What if; Kevin Liu — Claude of Tanks; Glauber Sampaio — Enclose; Tareq Ismail — Alternate Timeline; Sourabh Daroji — Watt; Ben Issen — [Temple](https://www.temple.so/). Ben's missing demo was confirmed in a follow-up correction on October 30. Public project names and identities were verified against presenters' pages, source repositories, and the registration links.
+- October's CSV contained 325 registration rows and 42 checked-in guests, all included once. All seven presenters were already among those 42, so the public People count is also 42. Earlier attendance was preserved. No RSVP-only rows were imported.
 - The host confirmed Chaitanya Landge (`chuodini` → `kindaChai`), Sean Smith (`seansmithbuilds` → `seansmithworks`), and Ayushi Sharma (`awwsillylife17` → `helloayushi`) are the same people; their attendance histories are merged under the current handles. Micka's checked-in row omitted his handle and was matched to the existing `micka_design` record.
 - Featured recap posts: [Mane](https://x.com/maneSora_/status/2116065310424158396), [Sourabh](https://x.com/gizmofalcon/status/2116073337529172157), and [Kevin](https://x.com/kevskgs/status/2116081381222797678). Host confirmed proceeding without a standalone photo.
 - TODO: Add Stefan's What if and Tareq's Alternate Timeline URLs when the host receives them. Their registration links point to different demos and were not reused. A follow-up is scheduled for October 31 at 10:00 a.m. Pacific if still missing.
@@ -244,5 +244,5 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 - [ ] Record last month's blast schedule for reuse with the standard event timing above.
 - [ ] Establish the posting account, publishing schedule, and deployment access for the agent's monthly recap post, hype-up post, and next-day website update.
 - [ ] Assign a photographer and note taker.
-- [x] Confirm October's six actual demo givers and projects for the recap (host confirmed October 30).
+- [x] Confirm October's seven actual demo givers and projects for the recap (host confirmed October 30, including Ben's Temple correction).
 - [ ] Add the two pending October demo URLs; confirm November's speaker lineup separately.

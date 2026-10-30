@@ -335,7 +335,7 @@ export const EVENTS: DemoEvent[] = [
     venue: "Hosted at SPC",
     venueConfirmed: true,
     description: [
-      "Six demos, then dinner. Thursday, October 29, 2026.",
+      "Seven demos, then dinner. Thursday, October 29, 2026.",
     ],
     tweets: [
       "https://x.com/maneSora_/status/2116065310424158396",
@@ -383,6 +383,13 @@ export const EVENTS: DemoEvent[] = [
         projectName: "Watt",
         projectUrl: "https://watt.sourabhdaroji.com/",
         projectImage: "/projects/watt.png",
+      },
+      {
+        name: "Ben Issen",
+        handle: "ben_issen",
+        projectName: "Temple",
+        projectUrl: "https://www.temple.so/",
+        projectImage: "/projects/temple.jpg",
       },
     ],
   },
