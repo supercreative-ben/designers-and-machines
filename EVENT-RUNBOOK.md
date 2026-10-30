@@ -6,7 +6,8 @@ Edition-specific details below reflect that session; confirm pending items befor
 
 ## 1. Event overview
 
-- **Next event:** Designers & Machines #6 — **October 29, 2026**.
+- **Latest completed event:** Designers & Machines #6 — **October 29, 2026**, confirmed completed by the host on October 30.
+- **Next event:** TODO — host to share the cloned Luma event, date, and venue status.
 - **Venue:** Not locked yet, but there is a strong pipeline of companies that want to host — considered low risk in the onboarding session. If one falls through, find another. **Coordinate with Ben and talk to Natalie to confirm.**
 - **Preferred recurring venue:** Ideally, every edition runs at **SPC** to streamline organization. **Ben is the best person to book SPC; talk to Natalie for venue coordination.** Confirm each booking. Other companies have offered space before; add the supplied list here when available (not yet received in this handoff).
 - **Capacity:** Room for **50 attendees**, approximately **300 on the waitlist** in the onboarding notes. Fifty is a ceiling, not a target to fill at any cost. A smaller, inspiring group is better than a larger group with a lower bar. The exclusivity is part of the pitch — people should feel privileged to be in the room.
@@ -111,12 +112,13 @@ Organizer's opening:
 > 5. ...
 
 
-### October 29 — upcoming
+### October 29 — completed; recap in preparation
 
 - [Registration](https://luma.com/u0l7j6iz), event ID `evt-tI6RAfBrCDRleFb`.
 - Luma verified September 25: Thursday, October 29, 2026, **6:30–9:30 p.m. America/Los_Angeles**. Standard doors-close time remains 7:00 p.m.
-- Both website registration settings point to October; September remains the default Lineup recap.
-- TODO: Confirm the October speaker lineup. The earlier two open speaker seats remain unresolved and must not be treated as confirmed October slots.
+- Both website registration settings still point to October; September remains the default Lineup recap. TODO: replace registration only with the host's confirmed next-event link.
+- TODO: Import October check-ins and confirm the people/projects that actually demoed. The planned lineup and earlier open seats are not proof of actual presentations.
+- TODO: Host to select recap tweet URLs and a photo, or confirm proceeding without new assets.
 - TODO: Confirm the venue booking with Ben and Natalie. Luma's description names SPC, but the handoff booking item is still unresolved; the website says San Francisco until confirmed.
 
 ### Selecting speakers
@@ -210,7 +212,9 @@ Read the host's message, attachments, and current repo first. Ask only unanswere
 
 The current `upcoming` flag shows a call-to-action in place of the lineup. Check how the selected demo previews render before calling the update complete. Follow [AGENTS.md](AGENTS.md) for code changes, verify the Join link, demo previews, and tweets in the site, and use the repo's deployment workflow to publish the update. A local file edit alone does not update the live website.
 
-**Importer handoff caveat:** The current `scripts/import-guests.mjs` has hard-coded CSV paths on Ben's machine and rebuilds all of `data/guests.ts` from those files. It also downloads avatars and uses macOS `sips`. Inspect it before running: replacing its input list with only the latest export would discard previous guests. If historical exports are unavailable, adapt the import to merge the new edition into the existing data while preserving history, rather than blindly regenerating the file. This runbook documents the workflow; it does not make the existing importer portable.
+**Importing a new edition:** Keep the private CSV outside the repo (for example, in `/private/tmp/`). Preview a merge with `node scripts/merge-guests.mjs --edition 2026-10 --csv /private/tmp/guests.csv`. This reads the existing public guests, requires the `checked_in_at` column, adds checked-in guests without removing historical memberships, and reports counts and identity conflicts. Shared X handles match case-insensitively; historical name-only matches or conflicting handles require host confirmation. Resolve reported conflicts before rerunning with `--write`. Verify the actual export headers before importing. The merge preserves saved avatars and leaves missing handles null; it does not download new photos. Run `node --test scripts/verify-guest-merge.mjs` for import checks.
+
+**Legacy importer caveat:** `scripts/import-guests.mjs` still has hard-coded CSV paths on Ben's machine and rebuilds all of `data/guests.ts` from those files. It also downloads avatars and uses macOS `sips`. Do not replace its input list with only the latest export: that would discard previous guests. Use the merge command above when historical exports are unavailable.
 
 ## 8. Handoff philosophy
 
@@ -229,4 +233,4 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 - [ ] Record last month's blast schedule for reuse with the standard event timing above.
 - [ ] Establish the posting account, publishing schedule, and deployment access for the agent's monthly recap post, hype-up post, and next-day website update.
 - [ ] Assign a photographer and note taker.
-- [ ] Confirm the October lineup and resolve the two open speaker seats from the handoff notes.
+- [ ] Confirm October's actual demo givers and projects for the recap; the planned lineup and two open speaker seats from the handoff remain unverified.
