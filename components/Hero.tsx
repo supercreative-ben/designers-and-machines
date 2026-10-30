@@ -517,7 +517,7 @@ export default function Hero() {
           A monthly dinner in SF where 5 designers demo what they&apos;re
           building with AI. 5 min each.
           <br />
-          Next dinner Thu Oct 29th{" "}
+          Next dinner Thu Nov 19th{" "}
           <span className="inline-flex items-center whitespace-nowrap align-middle">
             <span>(</span>
             <RotatingAvatar />

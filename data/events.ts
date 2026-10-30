@@ -332,12 +332,73 @@ export const EVENTS: DemoEvent[] = [
     endsAt: "2026-10-29T21:30:00-07:00",
     timeZone: "America/Los_Angeles",
     registrationUrl: "https://luma.com/u0l7j6iz",
-    // TODO: Ben and Natalie to confirm the booking; Luma currently names SPC.
-    venue: "San Francisco",
-    venueConfirmed: false,
+    venue: "Hosted at SPC",
+    venueConfirmed: true,
+    description: [
+      "Six demos, then dinner. Thursday, October 29, 2026.",
+    ],
+    tweets: [
+      "https://x.com/maneSora_/status/2116065310424158396",
+      "https://x.com/gizmofalcon/status/2116073337529172157",
+      "https://x.com/kevskgs/status/2116081381222797678",
+    ],
+    speakers: [
+      {
+        name: "Soleio",
+        handle: "soleio",
+        projectName: "Mosaic Studio",
+        projectUrl: "https://x.com/agusegui/status/2113349291360325741",
+        projectImage: "/projects/mosaic-studio.jpg",
+      },
+      {
+        name: "Stefan",
+        handle: "heystefan_",
+        projectName: "What if",
+        // TODO: Host to supply the public demo URL; Timeplot is a different project.
+      },
+      {
+        name: "Kevin Liu",
+        handle: "kevskgs",
+        projectName: "Claude of Tanks",
+        // The live game currently fails TLS; link to the creator's working source.
+        projectUrl: "https://github.com/Kevin-Liu-01/Claude-of-Tanks",
+        projectImage: "/projects/claude-of-tanks.png",
+      },
+      {
+        name: "Glauber Sampaio",
+        handle: "glauberxyz",
+        projectName: "Enclose",
+        projectUrl: "https://enclose.dev/",
+        projectImage: "/projects/enclose.png",
+      },
+      {
+        name: "Tareq Ismail",
+        handle: "tareqismail",
+        projectName: "Alternate Timeline",
+        // TODO: Host to supply the public demo URL; the submitted reading demo is different.
+      },
+      {
+        name: "Sourabh Daroji",
+        handle: "gizmofalcon",
+        projectName: "Watt",
+        projectUrl: "https://watt.sourabhdaroji.com/",
+        projectImage: "/projects/watt.png",
+      },
+    ],
+  },
+  {
+    id: "2026-11",
+    title: "November 2026",
+    date: "2026-11-19",
+    startsAt: "2026-11-19T18:30:00-08:00",
+    endsAt: "2026-11-19T21:30:00-08:00",
+    timeZone: "America/Los_Angeles",
+    registrationUrl: "https://luma.com/e6i7lj6a",
+    venue: "Hosted at SPC",
+    venueConfirmed: true,
     upcoming: true,
     description: [
-      "Thursday, October 29. Demos, then dinner.",
+      "Thursday, November 19. Demos, then dinner.",
       "Check-in at 6:30 p.m. Doors close at 7:00 p.m. All times Pacific.",
       "5 demos, 5 min each. No slides.",
     ],

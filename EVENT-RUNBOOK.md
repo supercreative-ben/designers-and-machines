@@ -7,8 +7,8 @@ Edition-specific details below reflect that session; confirm pending items befor
 ## 1. Event overview
 
 - **Latest completed event:** Designers & Machines #6 — **October 29, 2026**, confirmed completed by the host on October 30.
-- **Next event:** TODO — host to share the cloned Luma event, date, and venue status.
-- **Venue:** Not locked yet, but there is a strong pipeline of companies that want to host — considered low risk in the onboarding session. If one falls through, find another. **Coordinate with Ben and talk to Natalie to confirm.**
+- **Next event:** Designers & Machines — **November 19, 2026**, 6:30–9:30 p.m. Pacific. [Registration](https://luma.com/e6i7lj6a), event ID `evt-ZkXNn1JD6H7BGhy`.
+- **Venue:** **SPC**, confirmed by the host on October 30 for both the completed October dinner and November's booking. Confirm future bookings with Ben and Natalie.
 - **Preferred recurring venue:** Ideally, every edition runs at **SPC** to streamline organization. **Ben is the best person to book SPC; talk to Natalie for venue coordination.** Confirm each booking. Other companies have offered space before; add the supplied list here when available (not yet received in this handoff).
 - **Capacity:** Room for **50 attendees**, approximately **300 on the waitlist** in the onboarding notes. Fifty is a ceiling, not a target to fill at any cost. A smaller, inspiring group is better than a larger group with a lower bar. The exclusivity is part of the pitch — people should feel privileged to be in the room.
 - **Framing:** "We're at a unique time where designers build the machines and the machines influence the designers back — we're inventing the future here, together." The event is an invitation to explore that future.
@@ -112,14 +112,25 @@ Organizer's opening:
 > 5. ...
 
 
-### October 29 — completed; recap in preparation
+### October 29 — completed
 
 - [Registration](https://luma.com/u0l7j6iz), event ID `evt-tI6RAfBrCDRleFb`.
 - Luma verified September 25: Thursday, October 29, 2026, **6:30–9:30 p.m. America/Los_Angeles**. Standard doors-close time remains 7:00 p.m.
-- Both website registration settings still point to October; September remains the default Lineup recap. TODO: replace registration only with the host's confirmed next-event link.
-- TODO: Import October check-ins and confirm the people/projects that actually demoed. The planned lineup and earlier open seats are not proof of actual presentations.
-- TODO: Host to select recap tweet URLs and a photo, or confirm proceeding without new assets.
-- TODO: Confirm the venue booking with Ben and Natalie. Luma's description names SPC, but the handoff booking item is still unresolved; the website says San Francisco until confirmed.
+- Host confirmed the six actual demos: Soleio — Mosaic Studio; Stefan — What if; Kevin Liu — Claude of Tanks; Glauber Sampaio — Enclose; Tareq Ismail — Alternate Timeline; Sourabh Daroji — Watt. Public project names and identities were verified against presenters' pages, source repositories, and the registration links.
+- October's CSV contained 325 registration rows and 42 checked-in guests, all included once. The six presenters were already among those 42, so the public People count is also 42. Earlier attendance was preserved. No RSVP-only rows were imported.
+- The host confirmed Chaitanya Landge (`chuodini` → `kindaChai`), Sean Smith (`seansmithbuilds` → `seansmithworks`), and Ayushi Sharma (`awwsillylife17` → `helloayushi`) are the same people; their attendance histories are merged under the current handles. Micka's checked-in row omitted his handle and was matched to the existing `micka_design` record.
+- Featured recap posts: [Mane](https://x.com/maneSora_/status/2116065310424158396), [Sourabh](https://x.com/gizmofalcon/status/2116073337529172157), and [Kevin](https://x.com/kevskgs/status/2116081381222797678). Host confirmed proceeding without a standalone photo.
+- TODO: Add Stefan's What if and Tareq's Alternate Timeline URLs when the host receives them. Their registration links point to different demos and were not reused. A follow-up is scheduled for October 31 at 10:00 a.m. Pacific if still missing.
+- Kevin's `cot.kevinliu.studio` game failed TLS verification on October 30; the recap links to his [working public repository](https://github.com/Kevin-Liu-01/Claude-of-Tanks). TODO: switch to the live game when it works again.
+- Both editions' SPC venues are host-confirmed. October is the default recap; the homepage, Join embed, and spots counter point to November 19.
+- Publication and live verification: tracked in [PR #9](https://github.com/supercreative-ben/designers-and-machines/pull/9). Confirm its deployment and verification result before treating the release as complete.
+
+### November 19 — upcoming
+
+- [Registration](https://luma.com/e6i7lj6a), event ID `evt-ZkXNn1JD6H7BGhy`.
+- Listing verified October 30: Thursday, November 19, 2026, **6:30–9:30 p.m. America/Los_Angeles** (PST, UTC−08:00). Standard doors-close time remains 7:00 p.m.
+- Venue: **SPC**, confirmed by the host October 30. Luma lists 380 Brannan St, San Francisco.
+- TODO: Confirm November's speakers and entrance instructions. Do not copy October's presenters into the next edition.
 
 ### Selecting speakers
 
@@ -224,8 +235,8 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 
 ## 10. Open action items
 
-- [ ] Have Ben book SPC and talk to Natalie to confirm the venue for October 29.
-- [ ] Add Micka as collaborator on the Designers & Machines GitHub repo.
+- [x] Confirm October's SPC venue; host also confirmed November's SPC booking on October 30.
+- [x] Add Micka as collaborator on the Designers & Machines GitHub repo (write access verified October 30).
 - [ ] Add Micka as collaborator on the video hackathon project.
 - [ ] Decide on the demo format for the next event (e.g. "3 hot takes with 3 proofs").
 - [ ] Add the list of other companies that have offered their space (attachment still needed).
@@ -233,4 +244,5 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 - [ ] Record last month's blast schedule for reuse with the standard event timing above.
 - [ ] Establish the posting account, publishing schedule, and deployment access for the agent's monthly recap post, hype-up post, and next-day website update.
 - [ ] Assign a photographer and note taker.
-- [ ] Confirm October's actual demo givers and projects for the recap; the planned lineup and two open speaker seats from the handoff remain unverified.
+- [x] Confirm October's six actual demo givers and projects for the recap (host confirmed October 30).
+- [ ] Add the two pending October demo URLs; confirm November's speaker lineup separately.
