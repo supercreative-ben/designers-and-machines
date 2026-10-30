@@ -295,8 +295,8 @@ export default function PreviewTab({
           stays mounted so arrow-button focus is preserved. */}
       <ScrollArea
         key={event.id}
-        className="min-h-0 flex-1"
-        viewportClassName="dock-scroll-viewport scroll-fade overflow-x-hidden px-5 pb-20 [&>div]:h-full"
+        className="recap-scroll-area min-h-0 flex-1"
+        viewportClassName="dock-scroll-viewport overflow-x-hidden px-5 pb-20 [&>div]:h-full"
       >
         {event.upcoming ? (
           <div className="flex h-full flex-col items-center justify-center gap-4 text-center">

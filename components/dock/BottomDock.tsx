@@ -70,13 +70,20 @@ function DockPanel({
       aria-labelledby={labelledBy}
       inert={!present}
       tabIndex={-1}
-      className="absolute inset-0 origin-bottom overflow-hidden rounded-[28px] border border-white/[0.06] bg-[#3A3735]/95 shadow-[0_30px_80px_rgba(0,0,0,0.5)] outline-none backdrop-blur-md"
+      className="absolute inset-0 isolate origin-bottom overflow-hidden rounded-[28px] border border-white/[0.06] shadow-[0_30px_80px_rgba(0,0,0,0.5)] outline-none [--dock-panel-color:58_55_53]"
       style={{ pointerEvents: present ? "auto" : "none" }}
       initial={hidden}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ ...hidden, transition: spring.slow.exit }}
       transition={spring.slow}
     >
+      {/* Keep the filtered glass behind the content, rather than making the
+          scrolling tweets descendants of a backdrop-filtered layer. */}
+      <div
+        aria-hidden="true"
+        data-slot="dock-panel-surface"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[rgb(var(--dock-panel-color)/0.95)] backdrop-blur-md"
+      />
       {children}
     </motion.div>
   );
