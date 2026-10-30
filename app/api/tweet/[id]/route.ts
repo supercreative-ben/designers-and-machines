@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { getTweet } from "react-tweet/api";
+import { localizeTweetImages } from "@/lib/tweet-images";
 
 /**
  * First-party tweet data for react-tweet embeds — served from our domain
  * and cached hard, so month cards don't wait on X's widgets.js iframes.
  */
 export async function GET(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
@@ -16,7 +17,7 @@ export async function GET(
   try {
     const tweet = await getTweet(id);
     return NextResponse.json(
-      { data: tweet ?? null },
+      { data: tweet ? localizeTweetImages(tweet, new URL(request.url).origin) : null },
       {
         status: tweet ? 200 : 404,
         headers: {

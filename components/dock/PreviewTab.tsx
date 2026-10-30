@@ -401,7 +401,7 @@ export default function PreviewTab({
                   const id = url.match(/status(?:es)?\/(\d+)/)?.[1];
                   if (!id) return null;
                   return (
-                    <Tweet key={id} id={id} apiUrl={`/api/tweet/${id}`} />
+                    <Tweet key={id} id={id} apiUrl={`/api/tweet/${id}?images=local-v1`} />
                   );
                 })}
               </div>
