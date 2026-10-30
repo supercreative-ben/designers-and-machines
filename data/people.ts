@@ -13,8 +13,8 @@ export type Attendee = {
 
 /**
  * Attendees who aren't in the Lu.ma guest exports. The bulk of the list is
- * generated into data/guests.ts by scripts/import-guests.mjs — add a new
- * month's CSV there and re-run it after each dinner.
+ * generated into data/guests.ts. Merge a new month's checked-in CSV with
+ * scripts/merge-guests.mjs so earlier attendance is preserved.
  */
 const MORE_ATTENDEES: Attendee[] = [
   { name: "Ben Issen", handle: "ben_issen", editions: [] },

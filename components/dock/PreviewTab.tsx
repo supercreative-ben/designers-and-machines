@@ -378,6 +378,11 @@ export default function PreviewTab({
                     )}
                   </a>
                 )}
+                {!speaker.projectUrl && speaker.projectName && (
+                  <p className="text-sm font-medium text-[#EDEAE6]">
+                    {speaker.projectName}
+                  </p>
+                )}
               </div>
               );
             })}
