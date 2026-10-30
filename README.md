@@ -57,3 +57,9 @@ For new profiles, `/api/avatar` reads the existing private Vercel Blob store und
 September 25 repair: recovered 12 additional photos, including `luorui2025` and `shahdappp`; all 29 current chat participants have local copies. Public lookups could not resolve `pallavibenawri`, `awwsillylife17`, `fleeting_land`, `yanatweets`, or `seansmithbuilds`; keep initials until a verified photo or updated handle is supplied.
 
 Run `node --test scripts/verify-avatar-storage.mjs` for storage and failure-handling checks.
+
+## Recap tweet images
+
+Tweet photos, author avatars, and affiliation badges are served from this site's domain. The tweet API rewrites X image URLs to `/api/tweet-image/…`; saved images redirect to static files in `public/tweets/`. Images not yet archived are fetched and validated on the server, then cached. This also covers quoted posts and video posters.
+
+After adding recap tweet URLs, run `node scripts/cache-tweet-images.mjs --edition 2026-10` with the completed edition's ID. The command downloads public images, preserves existing copies, and updates `data/tweet-images.json`. Omit `--edition` to archive all selected recap posts. Review any reported failures before publishing. Run `node --test scripts/verify-tweet-images.mjs` to check offline image resolution, the embed library's URL conversion, and image validation.
