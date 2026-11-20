@@ -134,6 +134,7 @@ Organizer's opening:
 - Host confirmed November 20 that the four actual demos were Putri Karunia, [Lunagraph 2.0](https://www.lunagraph.com/); Michael Markman, [Billy](https://heybilly.net/) (Everyday Devices); Sanjay, [Beethoven](https://www.youtube.com/watch?v=CbJZIyKqG6U) (music with Jev); and Matthew Yu, [Stanford Simulator](https://stanfordsimulator.com/). All four X profiles are verified; the host confirmed Matthew's identity and supplied the correct project link. Stanford Simulator has no Open Graph image, so its recap card uses a saved screenshot.
 - After Luma's access confirmation, the November 20 CSV contained **226 registration rows and 27 checked-in guests**, all included once. The merge added 18 new guests and November memberships for nine existing guests, with no identity conflicts. All four presenters were among those 27, so the public People count is also 27. Earlier attendance was preserved, and RSVP-only rows were excluded. The host reported no missed check-ins or identity corrections.
 - Host has no recap tweets or new featured photo selected yet. Proceed without new recap features for now; add them when supplied.
+- Beethoven's recap card uses the video's official YouTube thumbnail saved in `public/projects/`; fetching its YouTube preview through the image proxy failed on Vercel even though it worked locally.
 
 ### December 10 — upcoming, New York
 

@@ -428,6 +428,7 @@ export const EVENTS: DemoEvent[] = [
         handle: "Sanjayyb7",
         projectName: "Beethoven",
         projectUrl: "https://www.youtube.com/watch?v=CbJZIyKqG6U",
+        projectImage: "/projects/beethoven.jpg",
       },
       {
         name: "Matthew Yu",
