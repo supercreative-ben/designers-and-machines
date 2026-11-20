@@ -56,11 +56,30 @@ test("December registration and New York schedule agree without inventing a rost
 
 test("an overdue recap stops being upcoming without becoming confirmed attendance", () => {
   const later = new Date("2026-11-20T12:00:00-08:00");
-  assert.deepEqual(directory.listEvents({ status: "upcoming" }, later).items.map((event) => event.id), ["2026-12"]);
-  const november = directory.getEvent("2026-11", later);
+  const overdue = loader({
+    [resolve("data/events.ts")]: { EVENTS: [
+      { ...load("data/events.ts").EVENTS.find((event) => event.id === "2026-11"), upcoming: true },
+    ] },
+  })("lib/webmcp/directory.ts");
+  assert.equal(overdue.listEvents({ status: "upcoming" }, later).total, 0);
+  const november = overdue.getEvent("2026-11", later);
   assert.equal(november.status, "past");
   assert.equal(november.recapPublished, false);
   assert.equal(november.publishedAttendeeCount, null);
+});
+
+test("November reconciles to 27 checked-in people and four host-confirmed demos", () => {
+  const event = directory.getEvent("2026-11", today);
+  assert.equal(event.recapPublished, true);
+  assert.equal(event.publishedAttendeeCount, 27);
+  assert.equal(event.publishedDemoCount, 4);
+  assert.deepEqual(event.demos.map((demo) => demo.projectName), ["Lunagraph 2.0", "Billy", "Beethoven", "Stanford Simulator"]);
+  assert.equal(event.demos.every((demo) => demo.status === "presented"), true);
+  assert.equal(event.demos.find((demo) => demo.handle === "matthewyuart").projectUrl, "https://stanfordsimulator.com/");
+  const people = directory.searchAttendees({ eventId: event.id, limit: 50 });
+  assert.equal(people.total, 27);
+  for (const demo of event.demos) assert(people.items.some((person) => person.id === demo.personId));
+  assert.deepEqual(event.recapUrls, []);
 });
 
 test("October reconciles to 42 checked-in people, seven confirmed demos, and three selected recap posts", () => {
@@ -98,8 +117,8 @@ test("people search handles accents, case, @, project names and edition-specific
   assert.equal(directory.searchAttendees({ query: "Human Memory", eventId: "2026-09", role: "demo_giver" }).total, 1);
   assert.equal(directory.searchAttendees({ query: "Maayan", eventId: "2026-04", role: "demo_giver" }).total, 0);
   assert.equal(directory.searchAttendees({ query: "Maayan", eventId: "2026-09", role: "demo_giver" }).total, 1);
-  assert.deepEqual(directory.searchAttendees({ query: "ben_issen" }).items[0].editions, ["2026-06", "2026-10"]);
-  assert.equal(directory.searchAttendees({ eventId: "2026-11" }).attendancePublished, false);
+  assert.deepEqual(directory.searchAttendees({ query: "ben_issen" }).items[0].editions, ["2026-06", "2026-10", "2026-11"]);
+  assert.equal(directory.searchAttendees({ eventId: "2026-11" }).attendancePublished, true);
 });
 
 test("pagination traverses all records exactly once and handles empty pages", () => {

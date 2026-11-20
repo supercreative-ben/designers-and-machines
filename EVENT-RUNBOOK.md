@@ -6,7 +6,7 @@ Edition-specific details below reflect that session; confirm pending items befor
 
 ## 1. Event overview
 
-- **Latest completed event:** Designers & Machines #6 — **October 29, 2026**, confirmed completed by the host on October 30.
+- **Latest completed event:** Designers & Machines, **November 19, 2026**, confirmed completed by the host on November 20. Public recap includes 27 checked-in guests and four actual demos.
 - **Next event:** Double Diamond x Designers & Machines, **December 10, 2026**, 6–11 p.m. Eastern in **Chinatown, New York**. [Registration](https://luma.com/double-diamond-dec-2026), event ID `evt-DqfX20u6kHQiNfP`.
 - **Next venue:** Chinatown, New York; the Luma listing shares the exact address with approved guests. TODO: record the confirmed venue and organizer entrance instructions. SPC was confirmed for October and November in San Francisco; do not carry that venue into December.
 - **Preferred recurring venue:** Ideally, every edition runs at **SPC** to streamline organization. **Ben is the best person to book SPC; talk to Natalie for venue coordination.** Confirm each booking. Other companies have offered space before; add the supplied list here when available (not yet received in this handoff).
@@ -126,19 +126,21 @@ Organizer's opening:
 - Both editions' SPC venues are host-confirmed. October is the default recap; the homepage, Join embed, and spots counter point to November 19.
 - Publication and live verification: tracked in [PR #9](https://github.com/supercreative-ben/designers-and-machines/pull/9). Confirm its deployment and verification result before treating the release as complete.
 
-### November 19 — recap pending
+### November 19 — completed
 
 - [Registration](https://luma.com/e6i7lj6a), event ID `evt-ZkXNn1JD6H7BGhy`.
 - Listing verified October 30: Thursday, November 19, 2026, **6:30–9:30 p.m. America/Los_Angeles** (PST, UTC−08:00). Standard doors-close time remains 7:00 p.m.
 - Venue: **SPC**, confirmed by the host October 30. Luma lists 380 Brannan St, San Francisco.
-- TODO: Confirm November's speakers and entrance instructions. Do not copy October's presenters into the next edition.
+- Host confirmed November 20 that the four actual demos were Putri Karunia, [Lunagraph 2.0](https://www.lunagraph.com/); Michael Markman, [Billy](https://heybilly.net/) (Everyday Devices); Sanjay, [Beethoven](https://www.youtube.com/watch?v=CbJZIyKqG6U) (music with Jev); and Matthew Yu, [Stanford Simulator](https://stanfordsimulator.com/). All four X profiles are verified; the host confirmed Matthew's identity and supplied the correct project link. Stanford Simulator has no Open Graph image, so its recap card uses a saved screenshot.
+- After Luma's access confirmation, the November 20 CSV contained **226 registration rows and 27 checked-in guests**, all included once. The merge added 18 new guests and November memberships for nine existing guests, with no identity conflicts. All four presenters were among those 27, so the public People count is also 27. Earlier attendance was preserved, and RSVP-only rows were excluded. The host reported no missed check-ins or identity corrections.
+- Host has no recap tweets or new featured photo selected yet. Proceed without new recap features for now; add them when supplied.
 
 ### December 10 — upcoming, New York
 
 - Host supplied the date, Chinatown location, and [registration link](https://luma.com/double-diamond-dec-2026). Luma verified November 20: **Double Diamond x Designers & Machines**, Thursday, December 10, 2026, **6–11 p.m. America/New_York** (EST, UTC−05:00), event ID `evt-DqfX20u6kHQiNfP`.
 - This edition uses Luma's schedule: arrivals, happy hour, and DJ from 6–7:15 p.m.; doors close at 7:15 p.m.; demos from 7:15–8:15 p.m.; open hang, drinks, and DJ from 8:45–11 p.m. These times are specific to the New York collaboration, replacing the standard SF attendee schedule for this edition.
 - Public location: **Chinatown, New York**. The exact address is visible to approved guests only. TODO: confirm the venue booking, setup access, and entrance instructions with the local hosts.
-- Homepage date, Join embed, registration link, spots-counter slug, and public event directory now point to December. November's attendance and recap remain unpublished pending host inputs.
+- Homepage date, Join embed, registration link, spots-counter slug, and public event directory point to December. November is the default completed recap.
 
 ### Selecting speakers
 
@@ -255,4 +257,4 @@ The current `upcoming` flag shows a call-to-action in place of the lineup. Check
 - [ ] Assign a photographer and note taker.
 - [x] Confirm October's seven actual demo givers and projects for the recap (host confirmed October 30, including Ben's Temple correction).
 - [x] Add Stefan's October demo URL (host supplied October 30).
-- [ ] Confirm November's speaker lineup.
+- [x] Confirm November's four actual demos and merge its 27 checked-in guests.

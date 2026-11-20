@@ -405,13 +405,38 @@ export const EVENTS: DemoEvent[] = [
     registrationUrl: "https://luma.com/e6i7lj6a",
     venue: "Hosted at SPC",
     venueConfirmed: true,
-    upcoming: true,
     description: [
       "Thursday, November 19. Demos, then dinner.",
       "Check-in at 6:30 p.m. Doors close at 7:00 p.m. All times Pacific.",
-      "5 demos, 5 min each. No slides.",
+      "4 demos, 5 min each. No slides.",
     ],
-    speakers: [],
+    speakers: [
+      {
+        name: "Putri Karunia",
+        handle: "putrikarunian",
+        projectName: "Lunagraph 2.0",
+        projectUrl: "https://www.lunagraph.com/",
+      },
+      {
+        name: "Michael Markman",
+        handle: "michaelgmarkman",
+        projectName: "Billy",
+        projectUrl: "https://heybilly.net/",
+      },
+      {
+        name: "Sanjay",
+        handle: "Sanjayyb7",
+        projectName: "Beethoven",
+        projectUrl: "https://www.youtube.com/watch?v=CbJZIyKqG6U",
+      },
+      {
+        name: "Matthew Yu",
+        handle: "matthewyuart",
+        projectName: "Stanford Simulator",
+        projectUrl: "https://stanfordsimulator.com/",
+        projectImage: "/projects/stanford-simulator.jpg",
+      },
+    ],
   },
   {
     id: "2026-12",
