@@ -514,10 +514,10 @@ export default function Hero() {
         {/* Sized so the copy breaks into exactly 3 lines, even on narrow
             phones (hence the 1px-smaller type below 380px). */}
         <p className="mt-1.5 max-w-[340px] text-center text-sm leading-snug text-[#8B8885] max-[379px]:text-[13px]">
-          A monthly dinner in SF where 5 designers demo what they&apos;re
+          A monthly dinner where 5 designers demo what they&apos;re
           building with AI. 5 min each.
           <br />
-          Next dinner Thu Nov 19th{" "}
+          Next event Thu Dec 10th in NYC{" "}
           <span className="inline-flex items-center whitespace-nowrap align-middle">
             <span>(</span>
             <RotatingAvatar />

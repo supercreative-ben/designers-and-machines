@@ -27,34 +27,36 @@ const load = loader();
 const directory = load("lib/webmcp/directory.ts");
 const { DIRECTORY_TOOLS } = load("lib/webmcp/tools.ts");
 const { getModelContext, registerDirectoryTools } = load("lib/webmcp/register.ts");
-const today = new Date("2026-10-30T12:00:00-07:00");
+const today = new Date("2026-11-20T12:00:00-08:00");
 
 async function call(name, args) {
   const result = await DIRECTORY_TOOLS.find((tool) => tool.name === name).execute(args);
   return { ...result, data: JSON.parse(result.content[0].text) };
 }
 
-test("November registration, confirmed venue, and schedule agree without inventing a roster", () => {
+test("December registration and New York schedule agree without inventing a roster or venue booking", () => {
   const result = directory.listEvents({ status: "upcoming" }, today);
   assert.equal(result.total, 1);
-  const november = result.items[0];
-  assert.equal(november.id, "2026-11");
-  assert.equal(november.startsAt, "2026-11-19T18:30:00-08:00");
-  assert.equal(november.timeZone, "America/Los_Angeles");
-  assert.equal(november.venueConfirmed, true);
-  assert.equal(november.venue, "Hosted at SPC");
-  assert.equal(november.publishedAttendeeCount, null);
-  assert.equal(november.publishedDemoCount, null);
+  const december = result.items[0];
+  assert.equal(december.id, "2026-12");
+  assert.equal(december.date, "2026-12-10");
+  assert.equal(december.startsAt, "2026-12-10T18:00:00-05:00");
+  assert.equal(december.endsAt, "2026-12-10T23:00:00-05:00");
+  assert.equal(december.timeZone, "America/New_York");
+  assert.equal(december.venueConfirmed, null);
+  assert.equal(december.venue, "Chinatown, New York");
+  assert.equal(december.publishedAttendeeCount, null);
+  assert.equal(december.publishedDemoCount, null);
   const { LUMA_EVENT_SLUG, LUMA_EMBED_URL } = load("data/site.ts");
-  assert.equal(november.registrationUrl, `https://luma.com/${LUMA_EVENT_SLUG}`);
-  assert.equal(LUMA_EMBED_URL, "https://luma.com/embed/event/evt-ZkXNn1JD6H7BGhy/simple");
-  assert.equal(directory.listEvents({ status: "past" }, today).total, 7);
+  assert.equal(december.registrationUrl, `https://luma.com/${LUMA_EVENT_SLUG}`);
+  assert.equal(LUMA_EMBED_URL, "https://luma.com/embed/event/evt-DqfX20u6kHQiNfP/simple");
+  assert.equal(directory.listEvents({ status: "past" }, today).total, 8);
   assert.equal(directory.getEvent("2026-03", today).date, null);
 });
 
 test("an overdue recap stops being upcoming without becoming confirmed attendance", () => {
   const later = new Date("2026-11-20T12:00:00-08:00");
-  assert.equal(directory.listEvents({ status: "upcoming" }, later).total, 0);
+  assert.deepEqual(directory.listEvents({ status: "upcoming" }, later).items.map((event) => event.id), ["2026-12"]);
   const november = directory.getEvent("2026-11", later);
   assert.equal(november.status, "past");
   assert.equal(november.recapPublished, false);

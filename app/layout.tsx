@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://designers-and-machines.vercel.app"),
   title: "Designers and Machines",
   description:
-    "Monthly demo dinners in SF for designers who explore how we create with machines.",
+    "Monthly demo dinners for designers who explore how we create with machines.",
   twitter: {
     card: "summary_large_image",
   },
