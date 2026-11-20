@@ -77,7 +77,7 @@ function tool(name: string, description: string, properties: Record<string, Prop
 }
 
 export const DIRECTORY_TOOLS: DirectoryTool[] = [
-  tool("dm_list_events", "Browse Designers & Machines dinners in San Francisco, newest first. Filter past or upcoming events; get edition IDs, known dates, venues, public counts, and registration links. Published records only; null means unknown.", {
+  tool("dm_list_events", "Browse Designers & Machines dinners, newest first. Filter past or upcoming events; get edition IDs, known dates, venues, public counts, and registration links. Published records only; null means unknown.", {
     query,
     status: { type: "string", description: "Filter by calendar status. Events remain upcoming until their published end time (or through their date when no time is known).", enum: ["all", "past", "upcoming"], default: "all" },
     ...pagination,

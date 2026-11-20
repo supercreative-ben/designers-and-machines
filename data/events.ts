@@ -413,6 +413,23 @@ export const EVENTS: DemoEvent[] = [
     ],
     speakers: [],
   },
+  {
+    id: "2026-12",
+    title: "December 2026",
+    date: "2026-12-10",
+    startsAt: "2026-12-10T18:00:00-05:00",
+    endsAt: "2026-12-10T23:00:00-05:00",
+    timeZone: "America/New_York",
+    registrationUrl: "https://luma.com/double-diamond-dec-2026",
+    venue: "Chinatown, New York",
+    upcoming: true,
+    description: [
+      "Double Diamond x Designers & Machines. Thursday, December 10 in Chinatown, New York.",
+      "6–11 p.m. Eastern. Doors close at 7:15 p.m., followed by demos until 8:15 p.m.",
+      "The exact address is shared with approved guests on Luma.",
+    ],
+    speakers: [],
+  },
 ];
 
 /** X profile picture, proxied and cached by our own /api/avatar route. */
