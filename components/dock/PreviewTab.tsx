@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tooltip, TooltipGroup } from "@/components/ui/tooltip";
 import { EVENTS, projectImageUrl } from "@/data/events";
 import { ATTENDEES } from "@/data/people";
 import { Tweet } from "react-tweet";
@@ -29,50 +30,25 @@ function LikeButton({
   onToggle: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      aria-label={liked ? "Unlike project" : "Like project"}
-      aria-pressed={liked}
-      className={`flex shrink-0 items-center gap-1.5 rounded-full bg-white/[0.08] px-3.5 py-2 text-sm font-medium transition-colors ${
-        liked ? "text-[#EB5545]" : "text-[#D8D5D1] hover:text-white"
-      }`}
-    >
-      <svg viewBox="0 0 16 16" className="size-[15px]" aria-hidden>
-        <path
-          d="M8 13.8 2.9 8.9a3.4 3.4 0 0 1 0-4.9 3.6 3.6 0 0 1 5 0l.1.1.1-.1a3.6 3.6 0 0 1 5 0 3.4 3.4 0 0 1 0 4.9L8 13.8Z"
-          fill="currentColor"
-        />
-      </svg>
-      {count}
-    </button>
-  );
-}
-
-/**
- * Name label that appears above an attendee's avatar on hover. Edge columns
- * anchor to their side so the label never extends past the card and creates
- * horizontal scroll.
- */
-function AttendeeTooltip({
-  label,
-  align,
-}: {
-  label: string;
-  align: "left" | "center" | "right";
-}) {
-  const position =
-    align === "left"
-      ? "left-0"
-      : align === "right"
-        ? "right-0"
-        : "left-1/2 -translate-x-1/2";
-  return (
-    <span
-      className={`pointer-events-none absolute -top-7 z-20 whitespace-nowrap rounded-md bg-black/90 px-2 py-1 text-[11px] font-medium text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 ${position}`}
-    >
-      {label}
-    </span>
+    <Tooltip content={liked ? "Unlike project" : "Like project"} hoverable={false}>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={liked ? "Unlike project" : "Like project"}
+        aria-pressed={liked}
+        className={`flex shrink-0 items-center gap-1.5 rounded-full bg-white/[0.08] px-3.5 py-2 text-sm font-medium transition-colors ${
+          liked ? "text-[#EB5545]" : "text-[#D8D5D1] hover:text-white"
+        }`}
+      >
+        <svg viewBox="0 0 16 16" className="size-[15px]" aria-hidden>
+          <path
+            d="M8 13.8 2.9 8.9a3.4 3.4 0 0 1 0-4.9 3.6 3.6 0 0 1 5 0l.1.1.1-.1a3.6 3.6 0 0 1 5 0 3.4 3.4 0 0 1 0 4.9L8 13.8Z"
+            fill="currentColor"
+          />
+        </svg>
+        {count}
+      </button>
+    </Tooltip>
   );
 }
 
@@ -83,40 +59,43 @@ function AttendeeGrid({ eventId }: { eventId: string }) {
     [eventId]
   );
   if (attendees.length === 0) return null;
+  const triggerClassName =
+    "group relative flex justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EDEAE6]";
   return (
-    <div className="grid grid-cols-6 gap-x-2 gap-y-2.5">
-      {attendees.map((person, i) => {
-        const align =
-          i % 6 === 0 ? "left" : i % 6 === 5 ? "right" : ("center" as const);
-        const face = (
-          <ProfileAvatar name={person.name} handle={person.handle} src={person.avatar}
-            size={40} className="transition-transform duration-200 group-hover:scale-110" />
-        );
-        if (!person.handle) {
-          return (
-            <span
-              key={person.name}
-              className="group relative flex justify-center"
-            >
-              {face}
-              <AttendeeTooltip label={person.name} align={align} />
-            </span>
+    <TooltipGroup>
+      <div className="grid grid-cols-6 gap-x-2 gap-y-2.5">
+        {attendees.map((person) => {
+          const face = (
+            <ProfileAvatar
+              name={person.name}
+              handle={person.handle}
+              src={person.avatar}
+              size={40}
+              className="transition-transform duration-200 group-hover:scale-110"
+            />
           );
-        }
-        return (
-          <a
-            key={person.handle}
-            href={`https://x.com/${person.handle}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative flex justify-center"
-          >
-            {face}
-            <AttendeeTooltip label={person.name} align={align} />
-          </a>
-        );
-      })}
-    </div>
+          return (
+            <Tooltip key={person.handle ?? person.name} content={person.name}>
+              {person.handle ? (
+                <a
+                  href={`https://x.com/${person.handle}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={person.name}
+                  className={triggerClassName}
+                >
+                  {face}
+                </a>
+              ) : (
+                <span tabIndex={0} aria-label={person.name} className={triggerClassName}>
+                  {face}
+                </span>
+              )}
+            </Tooltip>
+          );
+        })}
+      </div>
+    </TooltipGroup>
   );
 }
 
@@ -267,28 +246,34 @@ export default function PreviewTab({
         </h2>
         <p className="mt-1 text-sm text-[#A5A19D]">{event.venue}</p>
         {/* Pinned right so the buttons never shift with the title's width */}
-        <div className="absolute right-[54px] top-3.5 flex items-center gap-1.5">
-          <button
-            type="button"
-            aria-label="Previous month"
-            aria-keyshortcuts="ArrowLeft"
-            disabled={index === 0}
-            onClick={() => changeMonth(-1)}
-            className={navButtonClass}
-          >
-            <Chevron direction="left" />
-          </button>
-          <button
-            type="button"
-            aria-label="Next month"
-            aria-keyshortcuts="ArrowRight"
-            disabled={index === EVENTS.length - 1}
-            onClick={() => changeMonth(1)}
-            className={navButtonClass}
-          >
-            <Chevron direction="right" />
-          </button>
-        </div>
+        <TooltipGroup>
+          <div className="absolute right-[54px] top-3.5 flex items-center gap-1.5">
+            <Tooltip content="Previous month" shortcut="←">
+              <button
+                type="button"
+                aria-label="Previous month"
+                aria-keyshortcuts="ArrowLeft"
+                disabled={index === 0}
+                onClick={() => changeMonth(-1)}
+                className={navButtonClass}
+              >
+                <Chevron direction="left" />
+              </button>
+            </Tooltip>
+            <Tooltip content="Next month" shortcut="→">
+              <button
+                type="button"
+                aria-label="Next month"
+                aria-keyshortcuts="ArrowRight"
+                disabled={index === EVENTS.length - 1}
+                onClick={() => changeMonth(1)}
+                className={navButtonClass}
+              >
+                <Chevron direction="right" />
+              </button>
+            </Tooltip>
+          </div>
+        </TooltipGroup>
       </header>
 
       {/* A fresh scroll container starts each month at the top. The header
@@ -296,10 +281,10 @@ export default function PreviewTab({
       <ScrollArea
         key={event.id}
         className="recap-scroll-area min-h-0 flex-1"
-        viewportClassName="dock-scroll-viewport overflow-x-hidden px-5 pb-20 [&>div]:h-full"
+        viewportClassName="dock-scroll-viewport overflow-x-hidden px-5 [&>div]:h-full"
       >
         {event.upcoming ? (
-          <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+          <div className="flex h-full flex-col items-center justify-center gap-4 pb-20 text-center">
             {event.description?.map((paragraph) => (
               <p
                 key={paragraph}
@@ -321,7 +306,7 @@ export default function PreviewTab({
             </button>
           </div>
         ) : (
-          <div className="flex flex-col gap-9">
+          <div className="flex flex-col gap-9 pb-24">
             {/* Data order, not like order — resorting after likes load made
                 the cards jump around. */}
             {event.speakers.map((speaker) => {

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Slider as FluidSlider } from "@/components/ui/slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tooltip, TooltipGroup } from "@/components/ui/tooltip";
 import { TRACKS } from "@/data/tracks";
 
 export type RopeSettings = {
@@ -100,94 +101,103 @@ export default function PlayTab({
       <div className="flex min-h-full flex-col gap-8 px-5 pb-20 pt-5">
         <div className="flex flex-col gap-3">
           <SectionLabel>Theme</SectionLabel>
-          <div className="flex items-center gap-2.5">
-            {SWATCHES.map((swatch, i) => {
-              const selected = settings.color === swatch.value;
-              return (
-                <button
-                  key={swatch.id}
-                  type="button"
-                  aria-label={`${swatch.id} theme`}
-                  onClick={() => pickTheme(i)}
-                  className={`size-7 rounded-full transition-transform hover:scale-110 ${
-                    selected ? "ring-2 ring-white ring-offset-2 ring-offset-[#3A3735]" : ""
-                  }`}
-                  style={{ background: swatch.css }}
-                />
-              );
-            })}
-          </div>
+          <TooltipGroup>
+            <div className="flex items-center gap-2.5">
+              {SWATCHES.map((swatch, i) => {
+                const selected = settings.color === swatch.value;
+                return (
+                  <Tooltip key={swatch.id} content={`${swatch.id} theme`}>
+                    <button
+                      type="button"
+                      aria-label={`${swatch.id} theme`}
+                      onClick={() => pickTheme(i)}
+                      className={`size-7 rounded-full transition-transform hover:scale-110 ${
+                        selected ? "ring-2 ring-white ring-offset-2 ring-offset-[#3A3735]" : ""
+                      }`}
+                      style={{ background: swatch.css }}
+                    />
+                  </Tooltip>
+                );
+              })}
+            </div>
+          </TooltipGroup>
         </div>
 
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <SectionLabel>Music</SectionLabel>
-            <div className="flex items-center gap-2.5">
-              <button
-                type="button"
-                onClick={togglePlay}
-                aria-label={playing ? "Pause music" : "Play music"}
-                className={`flex size-7 items-center justify-center rounded-full transition-colors ${
-                  playing
-                    ? "bg-white text-black"
-                    : "bg-white/[0.08] text-[#A5A19D] hover:text-white"
-                }`}
-              >
-                {playing ? (
-                  <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
-                    <rect x="2" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
-                    <rect x="7" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
-                    <path d="M3.5 1.8v8.4c0 .5.55.8.98.54l6.6-4.2a.63.63 0 0 0 0-1.08l-6.6-4.2a.63.63 0 0 0-.98.54Z" fill="currentColor" />
-                  </svg>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  onMusicChange({ ...music, codeVisible: !music.codeVisible })
-                }
-                aria-label={
-                  music.codeVisible ? "Hide Strudel code" : "Show Strudel code"
-                }
-                aria-pressed={music.codeVisible}
-                className={`flex size-7 items-center justify-center rounded-full transition-colors ${
-                  music.codeVisible
-                    ? "bg-white text-black"
-                    : "bg-white/[0.08] text-[#A5A19D] hover:text-white"
-                }`}
-              >
-                {music.codeVisible ? (
-                  <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
-                    <path
-                      d="M1.2 7S3.3 3.2 7 3.2 12.8 7 12.8 7 10.7 10.8 7 10.8 1.2 7 1.2 7Z"
-                      stroke="currentColor"
-                      strokeWidth="1.3"
-                      strokeLinejoin="round"
-                    />
-                    <circle cx="7" cy="7" r="1.7" fill="currentColor" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
-                    <path
-                      d="M1.2 7S3.3 3.2 7 3.2 12.8 7 12.8 7 10.7 10.8 7 10.8 1.2 7 1.2 7Z"
-                      stroke="currentColor"
-                      strokeWidth="1.3"
-                      strokeLinejoin="round"
-                    />
-                    <circle cx="7" cy="7" r="1.7" fill="currentColor" />
-                    <path
-                      d="M2.2 12 11.8 2"
-                      stroke="currentColor"
-                      strokeWidth="1.3"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
+            <TooltipGroup>
+              <div className="flex items-center gap-2.5">
+                <Tooltip content={playing ? "Pause music" : "Play music"}>
+                  <button
+                    type="button"
+                    onClick={togglePlay}
+                    aria-label={playing ? "Pause music" : "Play music"}
+                    className={`flex size-7 items-center justify-center rounded-full transition-colors ${
+                      playing
+                        ? "bg-white text-black"
+                        : "bg-white/[0.08] text-[#A5A19D] hover:text-white"
+                    }`}
+                  >
+                    {playing ? (
+                      <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
+                        <rect x="2" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
+                        <rect x="7" y="1.5" width="3" height="9" rx="1" fill="currentColor" />
+                      </svg>
+                    ) : (
+                      <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
+                        <path d="M3.5 1.8v8.4c0 .5.55.8.98.54l6.6-4.2a.63.63 0 0 0 0-1.08l-6.6-4.2a.63.63 0 0 0-.98.54Z" fill="currentColor" />
+                      </svg>
+                    )}
+                  </button>
+                </Tooltip>
+                <Tooltip content={music.codeVisible ? "Hide Strudel code" : "Show Strudel code"}>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onMusicChange({ ...music, codeVisible: !music.codeVisible })
+                    }
+                    aria-label={
+                      music.codeVisible ? "Hide Strudel code" : "Show Strudel code"
+                    }
+                    aria-pressed={music.codeVisible}
+                    className={`flex size-7 items-center justify-center rounded-full transition-colors ${
+                      music.codeVisible
+                        ? "bg-white text-black"
+                        : "bg-white/[0.08] text-[#A5A19D] hover:text-white"
+                    }`}
+                  >
+                    {music.codeVisible ? (
+                      <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
+                        <path
+                          d="M1.2 7S3.3 3.2 7 3.2 12.8 7 12.8 7 10.7 10.8 7 10.8 1.2 7 1.2 7Z"
+                          stroke="currentColor"
+                          strokeWidth="1.3"
+                          strokeLinejoin="round"
+                        />
+                        <circle cx="7" cy="7" r="1.7" fill="currentColor" />
+                      </svg>
+                    ) : (
+                      <svg viewBox="0 0 14 14" fill="none" className="size-3.5" aria-hidden>
+                        <path
+                          d="M1.2 7S3.3 3.2 7 3.2 12.8 7 12.8 7 10.7 10.8 7 10.8 1.2 7 1.2 7Z"
+                          stroke="currentColor"
+                          strokeWidth="1.3"
+                          strokeLinejoin="round"
+                        />
+                        <circle cx="7" cy="7" r="1.7" fill="currentColor" />
+                        <path
+                          d="M2.2 12 11.8 2"
+                          stroke="currentColor"
+                          strokeWidth="1.3"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                </Tooltip>
+              </div>
+            </TooltipGroup>
           </div>
         </div>
 

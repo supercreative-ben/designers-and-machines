@@ -6,7 +6,7 @@ Edition-specific details below reflect that session; confirm pending items befor
 
 ## 1. Event overview
 
-- **Latest completed event:** Designers & Machines, **November 19, 2026**, confirmed completed by the host on November 20. Public recap includes 27 checked-in guests and four actual demos.
+- **Latest completed event:** Designers & Machines, **November 19, 2026**, confirmed completed by the host on November 20. Public recap includes 28 participants (27 check-ins plus Micka's confirmed attendance) and four actual demos.
 - **Next event:** Double Diamond x Designers & Machines, **December 10, 2026**, 6–11 p.m. Eastern in **Chinatown, New York**. [Registration](https://luma.com/double-diamond-dec-2026), event ID `evt-DqfX20u6kHQiNfP`.
 - **Next venue:** Chinatown, New York; the Luma listing shares the exact address with approved guests. TODO: record the confirmed venue and organizer entrance instructions. SPC was confirmed for October and November in San Francisco; do not carry that venue into December.
 - **Preferred recurring venue:** Ideally, every edition runs at **SPC** to streamline organization. **Ben is the best person to book SPC; talk to Natalie for venue coordination.** Confirm each booking. Other companies have offered space before; add the supplied list here when available (not yet received in this handoff).
@@ -132,7 +132,8 @@ Organizer's opening:
 - Listing verified October 30: Thursday, November 19, 2026, **6:30–9:30 p.m. America/Los_Angeles** (PST, UTC−08:00). Standard doors-close time remains 7:00 p.m.
 - Venue: **SPC**, confirmed by the host October 30. Luma lists 380 Brannan St, San Francisco.
 - Host confirmed November 20 that the four actual demos were Putri Karunia, [Lunagraph 2.0](https://www.lunagraph.com/); Michael Markman, [Billy](https://heybilly.net/) (Everyday Devices); Sanjay, [Beethoven](https://www.youtube.com/watch?v=CbJZIyKqG6U) (music with Jev); and Matthew Yu, [Stanford Simulator](https://stanfordsimulator.com/). All four X profiles are verified; the host confirmed Matthew's identity and supplied the correct project link. Stanford Simulator has no Open Graph image, so its recap card uses a saved screenshot.
-- After Luma's access confirmation, the November 20 CSV contained **226 registration rows and 27 checked-in guests**, all included once. The merge added 18 new guests and November memberships for nine existing guests, with no identity conflicts. All four presenters were among those 27, so the public People count is also 27. Earlier attendance was preserved, and RSVP-only rows were excluded. The host reported no missed check-ins or identity corrections.
+- After Luma's access confirmation, the November 20 CSV contained **226 registration rows and 27 checked-in guests**, all included once. The merge added 18 new guests and November memberships for nine existing guests, with no identity conflicts. All four presenters were among those 27. Earlier attendance was preserved, and RSVP-only rows were excluded.
+- In a November 20 follow-up, Micka confirmed his own attendance and asked to be added to November. His existing `Micka_design` record now includes November, making **28 public participants**. The host also supplied `MichelleHuttC` for Michelle (Michi), updating her existing November record.
 - Host has no recap tweets or new featured photo selected yet. Proceed without new recap features for now; add them when supplied.
 - Beethoven's recap card uses the video's official YouTube thumbnail saved in `public/projects/`; fetching its YouTube preview through the image proxy failed on Vercel even though it worked locally.
 

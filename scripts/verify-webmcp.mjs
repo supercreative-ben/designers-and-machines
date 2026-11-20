@@ -68,16 +68,21 @@ test("an overdue recap stops being upcoming without becoming confirmed attendanc
   assert.equal(november.publishedAttendeeCount, null);
 });
 
-test("November reconciles to 27 checked-in people and four host-confirmed demos", () => {
+test("November reconciles to 27 check-ins, Micka's confirmed attendance, and four demos", () => {
   const event = directory.getEvent("2026-11", today);
   assert.equal(event.recapPublished, true);
-  assert.equal(event.publishedAttendeeCount, 27);
+  assert.equal(event.publishedAttendeeCount, 28);
   assert.equal(event.publishedDemoCount, 4);
   assert.deepEqual(event.demos.map((demo) => demo.projectName), ["Lunagraph 2.0", "Billy", "Beethoven", "Stanford Simulator"]);
   assert.equal(event.demos.every((demo) => demo.status === "presented"), true);
   assert.equal(event.demos.find((demo) => demo.handle === "matthewyuart").projectUrl, "https://stanfordsimulator.com/");
   const people = directory.searchAttendees({ eventId: event.id, limit: 50 });
-  assert.equal(people.total, 27);
+  assert.equal(people.total, 28);
+  const micka = people.items.filter((person) => person.handle?.toLowerCase() === "micka_design");
+  assert.equal(micka.length, 1);
+  assert(micka[0].editions.includes("2026-10"));
+  assert(micka[0].editions.includes("2026-11"));
+  assert.equal(people.items.find((person) => person.name === "Michelle").profileUrl, "https://x.com/MichelleHuttC");
   for (const demo of event.demos) assert(people.items.some((person) => person.id === demo.personId));
   assert.deepEqual(event.recapUrls, []);
 });
