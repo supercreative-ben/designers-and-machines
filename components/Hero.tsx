@@ -523,7 +523,7 @@ export default function Hero() {
             <RotatingAvatar />
             <span>
               {spots.soldOut
-                ? "sold out"
+                ? "fully booked"
                 : `${spots.remaining ?? "some"} spots left`}
               )
             </span>

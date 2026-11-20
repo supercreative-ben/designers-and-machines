@@ -17,13 +17,17 @@ export async function GET() {
     if (!res.ok) throw new Error(`luma ${res.status}`);
     const data = await res.json();
     const info = data?.data?.ticket_info ?? {};
+    const soldOut =
+      info.is_sold_out === true ||
+      (typeof data?.data?.guest_count === "number" && data.data.guest_count > 50);
     return NextResponse.json(
       {
-        spotsRemaining:
-          typeof info.spots_remaining === "number"
+        spotsRemaining: soldOut
+          ? 0
+          : typeof info.spots_remaining === "number"
             ? info.spots_remaining
             : null,
-        soldOut: info.is_sold_out === true,
+        soldOut,
       },
       {
         headers: {
