@@ -451,7 +451,6 @@ export const EVENTS: DemoEvent[] = [
     upcoming: true,
     description: [
       "Double Diamond x Designers & Machines. Thursday, December 10 in Chinatown, New York.",
-      "6–11 p.m. Eastern. Doors close at 7:15 p.m., followed by demos until 8:15 p.m.",
       "The exact address is shared with approved guests on Luma.",
     ],
     speakers: [],
