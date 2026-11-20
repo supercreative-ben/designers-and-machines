@@ -16,6 +16,7 @@ import {
   toTarget,
 } from "@/components/ui/fluid-hover-highlight";
 import { spring } from "@/lib/springs";
+import { Tooltip } from "@/components/ui/tooltip";
 import type { MusicState, RopeSettings } from "./PlayTab";
 
 // Tab contents are code-split out of the initial bundle; they're prefetched
@@ -217,27 +218,29 @@ export default function BottomDock({
               id={panelId}
               labelledBy={`${panelId}-${activeTab}`}
             >
-              <button
-                type="button"
-                aria-label="Close"
-                aria-keyshortcuts="Escape"
-                onClick={closePanel}
-                className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
-              >
-                <svg
-                  viewBox="0 0 14 14"
-                  fill="none"
-                  className="size-3.5"
-                  aria-hidden
+              <Tooltip content="Close" shortcut="Esc">
+                <button
+                  type="button"
+                  aria-label="Close"
+                  aria-keyshortcuts="Escape"
+                  onClick={closePanel}
+                  className="absolute right-3.5 top-3.5 z-10 flex size-9 items-center justify-center rounded-full bg-white/[0.06] text-[#A5A19D] transition-colors hover:text-white"
                 >
-                  <path
-                    d="M2 2L12 12M12 2L2 12"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    className="size-3.5"
+                    aria-hidden
+                  >
+                    <path
+                      d="M2 2L12 12M12 2L2 12"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </button>
+              </Tooltip>
               <div className="h-full">
                 {activeTab === "preview" && (
                   <PreviewTab onNavigate={setActiveTab} />
