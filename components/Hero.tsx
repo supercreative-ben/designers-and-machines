@@ -524,7 +524,7 @@ export default function Hero() {
             <span>
               {spots.soldOut
                 ? "fully booked"
-                : `${spots.remaining ?? "some"} spots left`}
+                : `${spots.remaining === null ? "some" : Math.min(spots.remaining, 48)} spots left`}
               )
             </span>
           </span>
